@@ -129,20 +129,47 @@ ID3D11Buffer* DirectXDevice::createConstantBuffer(unsigned bytes)
 	return buffer;
 }
 
-ID3D11Buffer* DirectXDevice::createStructuredBuffer(unsigned numElements, unsigned strideBytes)
+ID3D11Buffer* DirectXDevice::createBuffer(unsigned numElements, unsigned strideBytes, BufferType type)
 {
 	D3D11_BUFFER_DESC desc;
 	desc.ByteWidth = strideBytes * numElements;
+	desc.StructureByteStride = strideBytes;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-	desc.StructureByteStride = strideBytes;
+	desc.MiscFlags = 0;
+
+	if (type == BufferType::Structured) 
+		desc.MiscFlags |= D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	if (type == BufferType::ByteAddress)
+		desc.MiscFlags |= D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
 
 	ID3D11Buffer *buffer = nullptr;
 	HRESULT result = device->CreateBuffer(&desc, nullptr, &buffer);
 	assert(SUCCEEDED(result));
 	return buffer;
+}
+
+ID3D11Texture2D* DirectXDevice::createTexture2d(int2 dimensions, DXGI_FORMAT format, int mips)
+{
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = dimensions.x;
+	desc.Height = dimensions.y;
+	desc.ArraySize = 1;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.MipLevels = mips;
+	desc.Format = format;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+	ID3D11Texture2D *texture = nullptr;
+	HRESULT result = device->CreateTexture2D(&desc, nullptr, &texture);
+	assert(SUCCEEDED(result));
+	return texture;
 }
 
 ID3D11Texture3D* DirectXDevice::createTexture3d(int3 dimensions, DXGI_FORMAT format, int mips)
@@ -172,17 +199,29 @@ ID3D11UnorderedAccessView* DirectXDevice::createUAV(ID3D11Resource *buffer)
 	return view;
 }
 
-ID3D11UnorderedAccessView* DirectXDevice::createUAVTexture3dSlice(ID3D11Resource *buffer, int3 dimensions, DXGI_FORMAT format, int mip)
+ID3D11UnorderedAccessView* DirectXDevice::createByteAddressUAV(ID3D11Resource *buffer, unsigned numElements)
 {
 	D3D11_UNORDERED_ACCESS_VIEW_DESC desc;
-	desc.Format = format;
-	desc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE3D;
+	desc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	desc.Format = DXGI_FORMAT_R32_TYPELESS;
 	desc.Buffer.FirstElement = 0;
-	desc.Buffer.NumElements = 0;
+	desc.Buffer.NumElements = numElements;
+	desc.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
+
+	ID3D11UnorderedAccessView *view = nullptr;
+	HRESULT result = device->CreateUnorderedAccessView(buffer, &desc, &view);
+	assert(SUCCEEDED(result));
+	return view;
+}
+
+ID3D11UnorderedAccessView* DirectXDevice::createTypedUAV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format)
+{
+	D3D11_UNORDERED_ACCESS_VIEW_DESC desc;
+	desc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	desc.Format = format;
+	desc.Buffer.FirstElement = 0;
+	desc.Buffer.NumElements = numElements;
 	desc.Buffer.Flags = 0;
-	desc.Texture3D.MipSlice = mip;
-	desc.Texture3D.FirstWSlice = 0;
-	desc.Texture3D.WSize = dimensions.z >> mip;
 
 	ID3D11UnorderedAccessView *view = nullptr;
 	HRESULT result = device->CreateUnorderedAccessView(buffer, &desc, &view);
@@ -194,6 +233,20 @@ ID3D11ShaderResourceView* DirectXDevice::createSRV(ID3D11Resource *buffer)
 {
 	ID3D11ShaderResourceView *view = nullptr;
 	HRESULT result = device->CreateShaderResourceView(buffer, nullptr, &view);
+	assert(SUCCEEDED(result));
+	return view;
+}
+
+ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	desc.ViewDimension = D3D_SRV_DIMENSION_BUFFER;
+	desc.Format = format;
+	desc.Buffer.FirstElement = 0;
+	desc.Buffer.NumElements = numElements;
+
+	ID3D11ShaderResourceView *view = nullptr;
+	HRESULT result = device->CreateShaderResourceView(buffer, &desc, &view);
 	assert(SUCCEEDED(result));
 	return view;
 }

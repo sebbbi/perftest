@@ -10,6 +10,13 @@ class DirectXDevice
 {
 public:
 
+	enum class BufferType
+	{
+		Default,
+		Structured,
+		ByteAddress
+	};
+
 	DirectXDevice(HWND window, int2 resolution);
 
 	// Create resources
@@ -18,11 +25,15 @@ public:
 	ID3D11RenderTargetView* DirectXDevice::createBackBufferRTV();
 	ID3D11ComputeShader* createComputeShader(const std::vector<unsigned char> &shaderBytes);
 	ID3D11Buffer* createConstantBuffer(unsigned bytes);
-	ID3D11Buffer* createStructuredBuffer(unsigned numElements, unsigned strideBytes);
+	ID3D11Buffer* createBuffer(unsigned numElements, unsigned strideBytes, BufferType type = BufferType::Default);
+	// TODO: Add support for 1d textures
+	ID3D11Texture2D* createTexture2d(int2 dimensions, DXGI_FORMAT format, int mips);
 	ID3D11Texture3D* createTexture3d(int3 dimensions, DXGI_FORMAT format, int mips);
 	ID3D11UnorderedAccessView* createUAV(ID3D11Resource *buffer);
-	ID3D11UnorderedAccessView* createUAVTexture3dSlice(ID3D11Resource *buffer, int3 dimensions, DXGI_FORMAT format, int mip);
+	ID3D11UnorderedAccessView* createByteAddressUAV(ID3D11Resource *buffer, unsigned numElements);
+	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format);
 	ID3D11ShaderResourceView* createSRV(ID3D11Resource *buffer);
+	ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format);
 	ID3D11SamplerState* createSampler();
 
 	// Data update
