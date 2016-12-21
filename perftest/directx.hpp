@@ -17,6 +17,13 @@ public:
 		ByteAddress
 	};
 
+	enum class SamplerType
+	{
+		Nearest,
+		Bilinear,
+		Trilinear
+	};
+
 	DirectXDevice(HWND window, int2 resolution);
 
 	// Create resources
@@ -34,7 +41,7 @@ public:
 	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format);
 	ID3D11ShaderResourceView* createSRV(ID3D11Resource *buffer);
 	ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format);
-	ID3D11SamplerState* createSampler();
+	ID3D11SamplerState* createSampler(SamplerType type);
 
 	// Data update
 	template <typename T>

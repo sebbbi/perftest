@@ -251,21 +251,31 @@ ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, 
 	return view;
 }
 
-ID3D11SamplerState* DirectXDevice::createSampler()
+ID3D11SamplerState* DirectXDevice::createSampler(SamplerType type)
 {
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	//desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
-	desc.BorderColor[0] = D3D11_FLOAT32_MAX;
-	desc.BorderColor[1] = D3D11_FLOAT32_MAX;
-	desc.BorderColor[2] = D3D11_FLOAT32_MAX;
-	desc.BorderColor[3] = D3D11_FLOAT32_MAX;
+
+	switch (type)
+	{
+	case SamplerType::Nearest: 
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		break;
+
+	case SamplerType::Bilinear:
+		desc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		break;
+
+	case SamplerType::Trilinear:
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		break;
+	}
 
 	ID3D11SamplerState *sampler = nullptr;
 	HRESULT result = device->CreateSamplerState(&desc, &sampler);
