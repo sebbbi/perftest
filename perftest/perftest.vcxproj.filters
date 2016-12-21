@@ -50,10 +50,21 @@
     <ClInclude Include="file.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="loadConstantsGPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="load1d.hlsl">
+    <FxCompile Include="load1dLinear.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="load1dRandom.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hash.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

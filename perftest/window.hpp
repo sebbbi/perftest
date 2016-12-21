@@ -9,5 +9,5 @@ enum class MessageStatus
 	Exit
 };
 
-HWND createWindow(int2 resolution/*, WNDPROC windowProc*/);
+HWND createWindow(uint2 resolution/*, WNDPROC windowProc*/);
 MessageStatus messagePump();

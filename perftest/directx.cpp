@@ -1,7 +1,7 @@
 #include "directx.hpp"
 #include <assert.h>
 
-DirectXDevice::DirectXDevice(HWND window, int2 resolution) : 
+DirectXDevice::DirectXDevice(HWND window, uint2 resolution) : 
 	windowHandle(window),
 	resolution(resolution)
 
@@ -33,10 +33,10 @@ DirectXDevice::DirectXDevice(HWND window, int2 resolution) :
 		1, // num feature levels
 		D3D11_SDK_VERSION, // sdk version
 		&swapDesc,
-		&swapChain.ptr,
-		&device.ptr,
+		&swapChain,
+		&device,
 		nullptr, // selected feature level
-		&deviceContext.ptr);
+		&deviceContext);
 
 	assert(SUCCEEDED(result));
 
@@ -64,7 +64,7 @@ ID3D11UnorderedAccessView* DirectXDevice::createBackBufferUAV()
 	return view;
 }
 
-ID3D11DepthStencilView* DirectXDevice::createDepthStencilView(int2 size)
+ID3D11DepthStencilView* DirectXDevice::createDepthStencilView(uint2 size)
 {
 	D3D11_TEXTURE2D_DESC texDesc;
 	texDesc.ArraySize = 1;
@@ -151,7 +151,7 @@ ID3D11Buffer* DirectXDevice::createBuffer(unsigned numElements, unsigned strideB
 	return buffer;
 }
 
-ID3D11Texture2D* DirectXDevice::createTexture2d(int2 dimensions, DXGI_FORMAT format, int mips)
+ID3D11Texture2D* DirectXDevice::createTexture2d(uint2 dimensions, DXGI_FORMAT format, unsigned mips)
 {
 	D3D11_TEXTURE2D_DESC desc;
 	desc.Width = dimensions.x;
@@ -172,7 +172,7 @@ ID3D11Texture2D* DirectXDevice::createTexture2d(int2 dimensions, DXGI_FORMAT for
 	return texture;
 }
 
-ID3D11Texture3D* DirectXDevice::createTexture3d(int3 dimensions, DXGI_FORMAT format, int mips)
+ID3D11Texture3D* DirectXDevice::createTexture3d(uint3 dimensions, DXGI_FORMAT format, unsigned mips)
 {
 	D3D11_TEXTURE3D_DESC desc;
 	desc.Width = dimensions.x;
@@ -291,7 +291,7 @@ ID3D11ComputeShader* DirectXDevice::createComputeShader(const std::vector<unsign
 	return shader;
 }
 
-void DirectXDevice::dispatch(ID3D11ComputeShader *shader, int3 resolution, int3 groupSize,
+void DirectXDevice::dispatch(ID3D11ComputeShader *shader, uint3 resolution, uint3 groupSize,
 								std::initializer_list<ID3D11Buffer*> cbs,
 								std::initializer_list<ID3D11ShaderResourceView*> srvs,
 								std::initializer_list<ID3D11UnorderedAccessView*> uavs,
@@ -335,7 +335,7 @@ void DirectXDevice::dispatch(ID3D11ComputeShader *shader, int3 resolution, int3 
 	}
 
 	// Render
-	int3 groups = divRoundUp(resolution, groupSize);
+	uint3 groups = divRoundUp(resolution, groupSize);
 	deviceContext->CSSetShader(shader, nullptr, 0);
 	deviceContext->Dispatch(groups.x, groups.y, groups.z);
 

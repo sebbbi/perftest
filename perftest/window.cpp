@@ -13,7 +13,7 @@ LRESULT CALLBACK windowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-HWND createWindow(int2 resolution/*, WNDPROC windowProc*/)
+HWND createWindow(uint2 resolution/*, WNDPROC windowProc*/)
 {
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));

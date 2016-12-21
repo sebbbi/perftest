@@ -24,18 +24,18 @@ public:
 		Trilinear
 	};
 
-	DirectXDevice(HWND window, int2 resolution);
+	DirectXDevice(HWND window, uint2 resolution);
 
 	// Create resources
 	ID3D11UnorderedAccessView* createBackBufferUAV();
-	ID3D11DepthStencilView* createDepthStencilView(int2 size);
+	ID3D11DepthStencilView* createDepthStencilView(uint2 size);
 	ID3D11RenderTargetView* DirectXDevice::createBackBufferRTV();
 	ID3D11ComputeShader* createComputeShader(const std::vector<unsigned char> &shaderBytes);
 	ID3D11Buffer* createConstantBuffer(unsigned bytes);
 	ID3D11Buffer* createBuffer(unsigned numElements, unsigned strideBytes, BufferType type = BufferType::Default);
 	// TODO: Add support for 1d textures
-	ID3D11Texture2D* createTexture2d(int2 dimensions, DXGI_FORMAT format, int mips);
-	ID3D11Texture3D* createTexture3d(int3 dimensions, DXGI_FORMAT format, int mips);
+	ID3D11Texture2D* createTexture2d(uint2 dimensions, DXGI_FORMAT format, unsigned mips);
+	ID3D11Texture3D* createTexture3d(uint3 dimensions, DXGI_FORMAT format, unsigned mips);
 	ID3D11UnorderedAccessView* createUAV(ID3D11Resource *buffer);
 	ID3D11UnorderedAccessView* createByteAddressUAV(ID3D11Resource *buffer, unsigned numElements);
 	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource *buffer, unsigned numElements, DXGI_FORMAT format);
@@ -57,7 +57,7 @@ public:
 	void clear(ID3D11RenderTargetView *rtv, const float4 &color);
 	void clearDepth(ID3D11DepthStencilView *depthStencilView);
 	void setRenderTargets(std::initializer_list<ID3D11RenderTargetView*> rtvs, ID3D11DepthStencilView *depthStencilView);
-	void dispatch(ID3D11ComputeShader *shader, int3 resolution, int3 groupSize,
+	void dispatch(ID3D11ComputeShader *shader, uint3 resolution, uint3 groupSize,
 					std::initializer_list<ID3D11Buffer*> cbs,
 					std::initializer_list<ID3D11ShaderResourceView*> srvs,
 					std::initializer_list<ID3D11UnorderedAccessView*> uavs = {},
@@ -67,16 +67,16 @@ public:
 
 	HWND getWindowHandle() { return windowHandle; }
 
-	ID3D11Device *getDevice() { return device.ptr; }
+	ID3D11Device *getDevice() { return device; }
 
-	int2 getResolution() { return resolution; }
+	uint2 getResolution() { return resolution; }
 
-	ID3D11DeviceContext *getDeviceContext() { return deviceContext.ptr; }
+	ID3D11DeviceContext *getDeviceContext() { return deviceContext; }
 
 private:
 
 	HWND windowHandle;
-	int2 resolution;
+	uint2 resolution;
 	com_ptr<IDXGISwapChain> swapChain;
 	com_ptr<ID3D11Device> device;
 	com_ptr<ID3D11DeviceContext> deviceContext;
