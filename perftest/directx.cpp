@@ -48,6 +48,18 @@ DirectXDevice::DirectXDevice(HWND window, uint2 resolution) :
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
 	deviceContext->RSSetViewports(1, &viewport);
+
+	// Queries
+	for (auto &&q : queries)
+	{
+		D3D11_QUERY_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Query = D3D11_QUERY_TIMESTAMP_DISJOINT;
+		device->CreateQuery(&desc, &q.disjoint);
+		desc.Query = D3D11_QUERY_TIMESTAMP;
+		device->CreateQuery(&desc, &q.start);
+		device->CreateQuery(&desc, &q.end);
+	}
 }
 
 ID3D11UnorderedAccessView* DirectXDevice::createBackBufferUAV()
@@ -397,4 +409,56 @@ void DirectXDevice::presentFrame()
 void DirectXDevice::clearUAV(ID3D11UnorderedAccessView* uav, std::array<float, 4> color)
 {
 	deviceContext->ClearUnorderedAccessViewFloat(uav, color.data());
+}
+
+QueryHandle DirectXDevice::startPerformanceQuery(const std::string& name)
+{
+	PerformanceQuery& query = queries[queryCounter % queries.size()];	
+	
+	query.name = name;
+	deviceContext->Begin(query.disjoint);
+	deviceContext->End(query.start);	// NOTE: timestamp queries don't use Begin(), only End()
+	
+	QueryHandle out {queryCounter};
+	queryCounter++;
+	return out;
+}
+
+void DirectXDevice::endPerformanceQuery(QueryHandle queryHandle)
+{
+	PerformanceQuery& query = queries[queryHandle.queryIndex % queries.size()];
+
+	deviceContext->End(query.end);	// NOTE: timestamp queries don't use Begin(), only End()
+	deviceContext->End(query.disjoint);
+}
+
+void DirectXDevice::processPerformanceResults(const std::function<void(float, std::string&)>& functor)
+{
+	while(true)
+	{
+		PerformanceQuery& query = queries[queryProcessCounter % queries.size()];
+
+		D3D11_QUERY_DATA_TIMESTAMP_DISJOINT disjoint;
+		bool succDisjoint = deviceContext->GetData(query.disjoint, &disjoint, sizeof(disjoint), 0) == S_OK;
+
+		UINT64 start = 0;
+		UINT64 end = 0;
+		bool succStart = deviceContext->GetData(query.start, &start, sizeof(start), 0) == S_OK;
+		bool succEnd = deviceContext->GetData(query.end, &end, sizeof(end), 0) == S_OK;
+
+		// Wait until all queries are ready
+		if (!succDisjoint || !succStart || !succEnd)
+			break;
+
+		if (!disjoint.Disjoint)
+		{
+			UINT64 d = end - start;
+			float delta = (float(d) / float(disjoint.Frequency)) * 1000.0f;
+
+			// Call functor to process results
+			functor(delta, query.name);
+		}
+
+		queryProcessCounter++;
+	}
 }

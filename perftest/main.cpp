@@ -36,8 +36,19 @@ int main()
 	MessageStatus status = MessageStatus::Default;
 	do
 	{
+		dx.processPerformanceResults([](float timeMillis, std::string& name)
+		{
+			printf("%s: %.3fms\n", name.c_str(), timeMillis);
+		});
+
+		QueryHandle q1dlinr16f = dx.startPerformanceQuery("Load 1d linear R16F");
 		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { typedUAV_R32F }, { });
+		dx.endPerformanceQuery(q1dlinr16f);
+		
+		QueryHandle q1drandr16f = dx.startPerformanceQuery("Load 1d random R16F");
 		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { typedUAV_R32F }, { });
+		dx.endPerformanceQuery(q1drandr16f);
+
 		dx.presentFrame();
 		status = messagePump();
 	}
