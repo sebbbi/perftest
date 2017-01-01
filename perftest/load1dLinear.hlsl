@@ -16,7 +16,12 @@ groupshared float dummyLDS[THREAD_GROUP_SIZE];
 [numthreads(THREAD_GROUP_SIZE, 1, 1)]
 void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 {
-	dummyLDS[gix] = sourceData[tid.x % loadConstants.numElements];
+	float value = 0.0;
+	
+	for (int i = 0; i < 256; ++i)
+		value += sourceData[(tid.x + i) & loadConstants.elementsMask];
+
+	dummyLDS[gix] = value;
 
 	GroupMemoryBarrierWithGroupSync();
 

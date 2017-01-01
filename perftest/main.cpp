@@ -5,7 +5,7 @@
 
 int main()
 {
-	const uint3 workloadThreadCount(1024, 1024, 1024);
+	const uint3 workloadThreadCount(1024, 1024, 1);
 	const uint3 workloadGroupSize(256, 1, 1);
 
 	// Init systems
@@ -27,7 +27,7 @@ int main()
 
 	// Setup constant buffer
 	LoadConstants loadConstants;
-	loadConstants.numElements = 1024;
+	loadConstants.elementsMask = 1024 - 1;
 	loadConstants.writeIndex = 0xffffffff;	// Never write
 	com_ptr<ID3D11Buffer> loadCB = dx.createConstantBuffer(sizeof(LoadConstants));
 	dx.updateConstantBuffer(loadCB, loadConstants);
