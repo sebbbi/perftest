@@ -79,6 +79,22 @@ int main()
 		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA16F }, { outputUAV }, {});
 		dx.endPerformanceQuery(q4drandr16f);
 
+		QueryHandle q1dlinr32f = dx.startPerformanceQuery("Load 1d linear R32F");
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R32F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q1dlinr32f);
+
+		QueryHandle q1drandr32f = dx.startPerformanceQuery("Load 1d random R32F");
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R32F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q1drandr32f);
+
+		QueryHandle q4dlinr32f = dx.startPerformanceQuery("Load 4d linear R32F");
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA32F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4dlinr32f);
+
+		QueryHandle q4drandr32f = dx.startPerformanceQuery("Load 4d random R32F");
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA32F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4drandr32f);
+
 		dx.presentFrame();
 		status = messagePump();
 	}

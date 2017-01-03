@@ -28,7 +28,7 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	GroupMemoryBarrierWithGroupSync();
 
 	// This branch is never taken, but the compiler doesn't know it
-	// Optimizer will remove the memory loads if the data is not potentially used
+	// Optimizer would remove all the memory loads if the data wouldn't be potentially used
 	[branch]
 	if (loadConstants.writeIndex != 0xffffffff)
 	{
