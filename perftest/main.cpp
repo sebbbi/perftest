@@ -17,13 +17,19 @@ int main()
 	com_ptr<ID3D11ComputeShader> shaderLoad1dLinear = loadComputeShader(dx, "shaders/load1dLinear.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoad1dRandom = loadComputeShader(dx, "shaders/load1dRandom.cso");
 
-	// Create resources
-	com_ptr<ID3D11Buffer> buffer1 = dx.createBuffer(1024, 32, DirectXDevice::BufferType::ByteAddress);
-	com_ptr<ID3D11Buffer> buffer2 = dx.createBuffer(1024, 32, DirectXDevice::BufferType::ByteAddress);
-	com_ptr<ID3D11UnorderedAccessView> typedUAV_RGBA32 = dx.createTypedUAV(buffer1, 1024, DXGI_FORMAT_R32G32B32A32_UINT);
-	com_ptr<ID3D11UnorderedAccessView> typedUAV_R32F = dx.createTypedUAV(buffer1, 1024 * 8, DXGI_FORMAT_R32_FLOAT);
-	com_ptr<ID3D11UnorderedAccessView> byteAddressUAV = dx.createByteAddressUAV(buffer1, 1024 * 8);
-	com_ptr<ID3D11ShaderResourceView> typedSRV_R16F = dx.createTypedSRV(buffer2, 1024, DXGI_FORMAT_R16_FLOAT);
+	// Create buffers and output UAV
+	com_ptr<ID3D11Buffer> bufferOutput = dx.createBuffer(1024, 32, DirectXDevice::BufferType::ByteAddress);
+	com_ptr<ID3D11Buffer> bufferInput = dx.createBuffer(1024, 32, DirectXDevice::BufferType::ByteAddress);
+	com_ptr<ID3D11UnorderedAccessView> outputUAV = dx.createTypedUAV(bufferOutput, 1024 * 8, DXGI_FORMAT_R32_FLOAT);
+
+	// SRVs for benchmarking different formats and view types
+	com_ptr<ID3D11ShaderResourceView> typedSRV_RGBA8 = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R8G8B8A8_UNORM);
+	com_ptr<ID3D11ShaderResourceView> typedSRV_RGBA16F = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R16G16B16A16_FLOAT);
+	com_ptr<ID3D11ShaderResourceView> typedSRV_RGBA32F = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R32G32B32A32_FLOAT);
+	com_ptr<ID3D11ShaderResourceView> typedSRV_R8 = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R8_UNORM);
+	com_ptr<ID3D11ShaderResourceView> typedSRV_R16F = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R16_FLOAT);
+	com_ptr<ID3D11ShaderResourceView> typedSRV_R32F = dx.createTypedSRV(bufferInput, 1024, DXGI_FORMAT_R32_FLOAT);
+	com_ptr<ID3D11ShaderResourceView> byteAddressSRV = dx.createByteAddressSRV(bufferInput, 1024);
 
 	// Setup constant buffer
 	LoadConstants loadConstants;
@@ -41,13 +47,37 @@ int main()
 			printf("%s: %.3fms\n", name.c_str(), timeMillis);
 		});
 
+		QueryHandle q1dlinr8 = dx.startPerformanceQuery("Load 1d linear R8");
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R8 }, { outputUAV }, {});
+		dx.endPerformanceQuery(q1dlinr8);
+
+		QueryHandle q1drandr8 = dx.startPerformanceQuery("Load 1d random R8");
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R8 }, { outputUAV }, {});
+		dx.endPerformanceQuery(q1drandr8);
+
+		QueryHandle q4dlinr8 = dx.startPerformanceQuery("Load 4d linear R8");
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA8 }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4dlinr8);
+
+		QueryHandle q4drandr8 = dx.startPerformanceQuery("Load 4d random R8");
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA8 }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4drandr8);
+
 		QueryHandle q1dlinr16f = dx.startPerformanceQuery("Load 1d linear R16F");
-		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { typedUAV_R32F }, { });
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { outputUAV }, { });
 		dx.endPerformanceQuery(q1dlinr16f);
 		
 		QueryHandle q1drandr16f = dx.startPerformanceQuery("Load 1d random R16F");
-		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { typedUAV_R32F }, { });
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_R16F }, { outputUAV }, { });
 		dx.endPerformanceQuery(q1drandr16f);
+
+		QueryHandle q4dlinr16f = dx.startPerformanceQuery("Load 4d linear R16F");
+		dx.dispatch(shaderLoad1dLinear, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA16F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4dlinr16f);
+
+		QueryHandle q4drandr16f = dx.startPerformanceQuery("Load 4d random R16F");
+		dx.dispatch(shaderLoad1dRandom, workloadThreadCount, workloadGroupSize, { loadCB }, { typedSRV_RGBA16F }, { outputUAV }, {});
+		dx.endPerformanceQuery(q4drandr16f);
 
 		dx.presentFrame();
 		status = messagePump();
