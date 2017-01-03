@@ -46,17 +46,20 @@ public:
 	ID3D11DepthStencilView* createDepthStencilView(uint2 size);
 	ID3D11RenderTargetView* DirectXDevice::createBackBufferRTV();
 	ID3D11ComputeShader* createComputeShader(const std::vector<unsigned char>& shaderBytes);
+
 	ID3D11Buffer* createConstantBuffer(unsigned bytes);
 	ID3D11Buffer* createBuffer(unsigned numElements, unsigned strideBytes, BufferType type = BufferType::Default);
-	// TODO: Add support for 1d textures
 	ID3D11Texture2D* createTexture2d(uint2 dimensions, DXGI_FORMAT format, unsigned mips);
 	ID3D11Texture3D* createTexture3d(uint3 dimensions, DXGI_FORMAT format, unsigned mips);
-	ID3D11UnorderedAccessView* createUAV(ID3D11Resource* buffer);
-	ID3D11UnorderedAccessView* createByteAddressUAV(ID3D11Resource* buffer, unsigned numElements);
-	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
-	ID3D11ShaderResourceView* createSRV(ID3D11Resource* buffer);
-	ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
 	ID3D11SamplerState* createSampler(SamplerType type);
+
+	ID3D11UnorderedAccessView* createUAV(ID3D11Resource* buffer);
+	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
+	ID3D11UnorderedAccessView* createByteAddressUAV(ID3D11Resource* buffer, unsigned numElements);
+
+	ID3D11ShaderResourceView* createSRV(ID3D11Resource* buffer);
+	ID3D11ShaderResourceView* createTypedSRV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
+	ID3D11ShaderResourceView* createByteAddressSRV(ID3D11Resource* buffer, unsigned numElements);
 
 	// Data update
 	template <typename T>

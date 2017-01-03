@@ -263,6 +263,21 @@ ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, 
 	return view;
 }
 
+ID3D11ShaderResourceView* DirectXDevice::createByteAddressSRV(ID3D11Resource *buffer, unsigned numElements)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	desc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
+	desc.Format = DXGI_FORMAT_R32_TYPELESS;
+	desc.BufferEx.FirstElement = 0;
+	desc.BufferEx.NumElements = numElements;
+	desc.BufferEx.Flags = D3D11_BUFFEREX_SRV_FLAG_RAW;
+
+	ID3D11ShaderResourceView *view = nullptr;
+	HRESULT result = device->CreateShaderResourceView(buffer, &desc, &view);
+	assert(SUCCEEDED(result));
+	return view;
+}
+
 ID3D11SamplerState* DirectXDevice::createSampler(SamplerType type)
 {
 	D3D11_SAMPLER_DESC desc;
