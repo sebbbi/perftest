@@ -17,7 +17,7 @@ Designed to measure performance of various types of buffer and image loads. This
 - Coherent loads (SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
 - Texture loads (1d/2d/3d)
-- Extended format support v1 (uint/unorm/float of all widths)
+- Extended format support (uint/unorm/float of all widths)
 
 ## Wish list
 
