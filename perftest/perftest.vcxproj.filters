@@ -73,6 +73,15 @@
     <FxCompile Include="load4dRandom.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="load1dInvariant.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="load2dInvariant.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="load4dInvariant.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
@@ -82,6 +91,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="loadRandomBody.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="loadInvariantBody.hlsli">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

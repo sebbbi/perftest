@@ -17,8 +17,8 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 {
 	float value = 0.0;
 	
-    // Randomize start address to prevent memory coalescing
-	uint htid = hash1(gix);
+    // Randomize start address offset (0-15) to prevent memory coalescing
+	uint htid = hash1(gix) & 0xf;
 
 	for (int i = 0; i < 256; ++i)
 		value += sourceData[(htid + i) & loadConstants.elementsMask];

@@ -17,8 +17,8 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 {
 	float value = 0.0;
 	
-    // Linearly increasing starting address to allow memory coalescing
-	uint htid = gix;
+    // All threads load from same address. Index is wave invariant.
+	uint htid = 0;
 
 	for (int i = 0; i < 256; ++i)
 		value += sourceData[(htid + i) & loadConstants.elementsMask];
