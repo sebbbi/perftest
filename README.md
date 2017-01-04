@@ -8,13 +8,13 @@ Designed to measure performance of various types of buffer and image loads. This
 
 - Coalesced loads (100% L1 cache hit). All threads (in group of 256 threads) access linearly increasing memory addresses.
 - Random loads (100% L1 cache hit). Thread's start address is randomized. After that thread loads addresses linearly.
+- Invariant loads (equal address for all threads)
 - Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
 
 ## Todo list
 
 - Elements/s and bytes/s output (easier to read & compare results)
 - 32 bit byte address SRVs (load, load2, load4)
-- Coherent loads (constant address & SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
 - Texture loads (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths)
