@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dataTypes.hpp"
+#include "dataTypes.h"
 #include <windows.h>
 
 enum class MessageStatus

@@ -32,25 +32,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="directx.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="loadConstantsGPU.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="com_ptr.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="window.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="window.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="com_ptr.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="datatypes.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="directx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="graphicsUtil.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="file.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loadConstantsGPU.h">
+    <ClInclude Include="file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

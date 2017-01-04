@@ -1,6 +1,6 @@
 // SHARED HEADER BETWEEN CPU AND GPU
 #ifdef __cplusplus
-#include "dataTypes.hpp"
+#include "dataTypes.h"
 #endif
 
 struct LoadConstants

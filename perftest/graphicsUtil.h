@@ -1,6 +1,6 @@
 #pragma once
-#include "directx.hpp"
-#include "file.hpp"
+#include "directx.h"
+#include "file.h"
 
 inline ID3D11ComputeShader *loadComputeShader(DirectXDevice &dx, const std::string &filename)
 {

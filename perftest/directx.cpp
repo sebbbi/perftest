@@ -1,4 +1,4 @@
-#include "directx.hpp"
+#include "directx.h"
 #include <assert.h>
 
 DirectXDevice::DirectXDevice(HWND window, uint2 resolution) : 

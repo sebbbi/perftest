@@ -1,5 +1,5 @@
-#include "window.hpp"
-#include "directx.hpp"
+#include "window.h"
+#include "directx.h"
 #include "graphicsUtil.h"
 #include "loadConstantsGPU.h"
 

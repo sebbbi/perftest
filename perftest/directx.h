@@ -1,6 +1,6 @@
 #pragma once
-#include "datatypes.hpp"
-#include "com_ptr.hpp"
+#include "datatypes.h"
+#include "com_ptr.h"
 #include <windows.h>
 #include <d3d11.h>
 #include <vector>
