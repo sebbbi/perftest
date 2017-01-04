@@ -6,9 +6,9 @@ A simple GPU shader memory operation performance test tool. Current implementati
 
 Designed to measure performance of various types of buffer and image loads. This application is not a GPU memory bandwidth benchmark tool. All tests operate inside GPUs L1 caches (no larger than 16 KB working sets). 
 
-- Random loads (100% L1 cache hit)
-- Coalesced loads (100% L1 cache hit)
-- Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
+- Coalesced loads (100% L1 cache hit). All threads (in group of 256 threads) access linearly increasing memory addresses.
+- Random loads (100% L1 cache hit). Thread's start address is randomized. After that thread loads addresses linearly.
+- Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel (2d missing)
 
 ## Todo list
 
@@ -30,6 +30,26 @@ Designed to measure performance of various types of buffer and image loads. This
 ## Results
 
 **TODO:** Add AMD, NV & Intel results here. Key differences + some graphs.
+
+**Preliminary Nvidia GTX 980 results:**
+Load R8 linear: 1.637ms
+Load R8 random: 2.606ms
+Load RG8 linear: 1.630ms
+Load RG8 random: 2.619ms
+Load RGBA8 linear: 1.634ms
+Load RGBA8 random: 2.592ms
+Load R16f linear: 1.855ms
+Load R16f random: 2.617ms
+Load RG16f linear: 1.632ms
+Load RG16f random: 2.593ms
+Load RGBA16f linear: 1.634ms
+Load RGBA16f random: 2.543ms
+Load R32f linear: 1.631ms
+Load R32f random: 2.595ms
+Load RG32f linear: 1.635ms
+Load RG32f random: 2.544ms
+Load RGBA32f linear: 1.632ms
+Load RGBA32f random: 2.640ms
 
 ## License
 
