@@ -17,6 +17,12 @@ Designed to measure performance of various types of buffer and image loads. This
 - Coherent loads (SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
 
+## Wish list
+
+- Port to Vulkan or DX12
+-- Measure upload heap load performance
+- 
+
 ## License
 
 PerfTest is released under the MIT license. See [LICENSE.md](LICENSE.md) for full text.
