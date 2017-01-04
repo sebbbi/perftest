@@ -12,7 +12,7 @@ Designed to measure performance of various types of buffer and image loads. This
 
 ## Todo list
 
-- Elements/s and bytes/s output
+- Elements/s and bytes/s output (easier to read and compare results)
 - 32 bit byte address SRVs (load, load2, load4)
 - Coherent loads (constant address & SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
