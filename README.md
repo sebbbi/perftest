@@ -31,8 +31,10 @@ Designed to measure performance of various types of buffer and image loads. This
 
 **TODO:** Add AMD, NV & Intel results here. Key differences + some graphs.
 
+Preliminary results:
+
+**Nvidia GTX 980**
 ```markdown
-**Preliminary Nvidia GTX 980 results:**
 Load R8 linear: 1.637ms
 Load R8 random: 2.606ms
 Load RG8 linear: 1.630ms
