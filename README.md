@@ -8,7 +8,7 @@ Designed to measure performance of various types of buffer and image loads. This
 
 - Coalesced loads (100% L1 cache hit). All threads (in group of 256 threads) access linearly increasing memory addresses.
 - Random loads (100% L1 cache hit). Thread's start address is randomized. After that thread loads addresses linearly.
-- Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel (2d missing)
+- Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
 
 ## Todo list
 
@@ -29,7 +29,7 @@ Designed to measure performance of various types of buffer and image loads. This
 
 ## Results
 
-**TODO:** Add AMD, NV & Intel results here. Key differences + some graphs.
+**TODO:** Add comprehensive AMD, NV & Intel results here. Add some graphs. Add percentage comparison and/or ops per cycle.
 
 **Preliminary results:**
 ```markdown
@@ -52,6 +52,28 @@ Load RG32f linear: 1.635ms
 Load RG32f random: 2.544ms
 Load RGBA32f linear: 1.632ms
 Load RGBA32f random: 2.640ms
+```
+
+```markdown
+**AMD Radeon 7970 GE**
+Load R8 linear: 0.792ms
+Load R8 random: 3.312ms
+Load RG8 linear: 2.120ms
+Load RG8 random: 3.378ms
+Load RGBA8 linear: 2.120ms
+Load RGBA8 random: 3.312ms
+Load R16f linear: 0.772ms
+Load R16f random: 3.444ms
+Load RG16f linear: 2.120ms
+Load RG16f random: 3.312ms
+Load RGBA16f linear: 2.120ms
+Load RGBA16f random: 3.444ms
+Load R32f linear: 0.773ms
+Load R32f random: 3.709ms
+Load RG32f linear: 2.120ms
+Load RG32f random: 3.444ms
+Load RGBA32f linear: 2.120ms
+Load RGBA32f random: 3.709ms
 ```
 
 ## License
