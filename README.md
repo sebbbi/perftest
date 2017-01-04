@@ -29,7 +29,7 @@ Designed to measure performance of various types of buffer and image loads. This
 
 ## Results
 
-TODO: Add AMD, NV & Intel results here. Key differences + some graphs.
+**TODO:** Add AMD, NV & Intel results here. Key differences + some graphs.
 
 ## License
 
