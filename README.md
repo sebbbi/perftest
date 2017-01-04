@@ -27,6 +27,10 @@ Designed to measure performance of various types of buffer and image loads. This
 - Port to Vulkan and/or DX12
 - Measure upload heap load performance
 
+## Results
+
+TODO: Add AMD, NV & Intel results here. Key differences + some graphs.
+
 ## License
 
 PerfTest is released under the MIT license. See [LICENSE.md](LICENSE.md) for full text.
