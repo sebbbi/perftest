@@ -19,4 +19,4 @@ Designed to measure performance of various types of buffer and image loads. This
 
 ## License
 
-PerfTest is released under the MIT license. See LICENSE.md for full text.
+PerfTest is released under the MIT license. See [LICENSE.md](LICENSE.md) for full text.
