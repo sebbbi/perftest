@@ -13,8 +13,7 @@ Designed to measure performance of various types of buffer and image loads. This
 ## Todo list
 
 - 32 bit byte address SRVs (load, load2, load4)
-- Coherent loads (constant address)
-- Coherent loads (SV_GroupID)
+- Coherent loads (constant address & SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
 - Texture loads (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths)
