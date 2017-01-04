@@ -16,12 +16,14 @@ Designed to measure performance of various types of buffer and image loads. This
 - Coherent loads (constant address)
 - Coherent loads (SV_GroupID)
 - Constant buffer loads (both constant address and indexed)
+- 2d/3d texture loads
+- 2d/3d texture sampling
 
 ## Wish list
 
-- Port to Vulkan or DX12
--- Measure upload heap load performance
-- 
+- Measure write performance
+- Port to Vulkan and/or DX12
+- Measure upload heap load performance
 
 ## License
 
