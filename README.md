@@ -31,14 +31,13 @@ Designed to measure performance of various types of buffer and image loads. This
 
 **TODO:** Add comprehensive AMD, NV & Intel results here. Add some graphs. Add percentage comparison and/or ops per cycle.
 
-**Preliminary results:**
-```markdown
 **Nvidia GTX 980**
+```markdown
 TODO
 ```
 
-```markdown
 **AMD Radeon 7970 GE (GCN1)**
+```markdown
 Load R8 invariant: 0.690ms
 Load R8 linear: 0.791ms
 Load R8 random: 2.125ms
@@ -66,9 +65,10 @@ Load RG32f random: 2.120ms
 Load RGBA32f invariant: 2.120ms
 Load RGBA32f linear: 2.120ms
 Load RGBA32f random: 2.385ms
+```
 
 AMD GCN1 coalesces 1d typed reads only. Linear access pattern (next thread in wave always addresses next element) and invariant access (each thread in wave access same location) coalesce. Coalesced load performance is around 3x. Wide loads (4d) and wide formats (32 bit) do not cause slow down. Widest (RGBA32) loads thus offer best bytes / cycle rate.
-```
+
 
 ## License
 
