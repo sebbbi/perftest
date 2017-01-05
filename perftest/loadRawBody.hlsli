@@ -34,6 +34,8 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	htid = htid * 4 + loadConstants.readStartAddress;
 #elif LOAD_WIDTH == 2
 	htid = htid * 8 + loadConstants.readStartAddress;
+#elif LOAD_WIDTH == 3
+	htid = htid * 12 + loadConstants.readStartAddress;
 #elif LOAD_WIDTH == 4
 	htid = htid * 16 + loadConstants.readStartAddress;
 #endif
@@ -45,6 +47,8 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 		value += sourceData.Load(htid + i * 4).xxxx;
 #elif LOAD_WIDTH == 2
 		value += sourceData.Load2(htid + i * 8).xyxy;
+#elif LOAD_WIDTH == 3
+		value += sourceData.Load3(htid + i * 12).xyzx;
 #elif LOAD_WIDTH == 4
 		value += sourceData.Load4(htid + i * 16).xyzw;
 #endif

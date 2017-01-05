@@ -115,6 +115,15 @@
     <FxCompile Include="loadTyped4dRandom.hlsl">
       <Filter>Shaders\typed_load</Filter>
     </FxCompile>
+    <FxCompile Include="loadRaw3dInvariant.hlsl">
+      <Filter>Shaders\raw_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadRaw3dLinear.hlsl">
+      <Filter>Shaders\raw_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadRaw3dRandom.hlsl">
+      <Filter>Shaders\raw_load</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">

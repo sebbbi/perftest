@@ -36,6 +36,9 @@ int main()
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dInvariant = loadComputeShader(dx, "shaders/loadRaw2dInvariant.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dLinear = loadComputeShader(dx, "shaders/loadRaw2dLinear.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dRandom = loadComputeShader(dx, "shaders/loadRaw2dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw3dInvariant = loadComputeShader(dx, "shaders/loadRaw3dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw3dLinear = loadComputeShader(dx, "shaders/loadRaw3dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw3dRandom = loadComputeShader(dx, "shaders/loadRaw3dRandom.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dInvariant = loadComputeShader(dx, "shaders/loadRaw4dInvariant.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dLinear = loadComputeShader(dx, "shaders/loadRaw4dLinear.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dRandom = loadComputeShader(dx, "shaders/loadRaw4dRandom.cso");
@@ -107,15 +110,18 @@ int main()
 		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f linear");
 		benchTest(dx, shaderLoadTyped4dRandom, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f random");
 
-		benchTest(dx, shaderLoadRaw1dInvariant, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 aligned invariant");
-		benchTest(dx, shaderLoadRaw1dLinear, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 aligned linear");
-		benchTest(dx, shaderLoadRaw1dRandom, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 aligned random");
-		benchTest(dx, shaderLoadRaw2dInvariant, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 aligned invariant");
-		benchTest(dx, shaderLoadRaw2dLinear, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 aligned linear");
-		benchTest(dx, shaderLoadRaw2dRandom, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 aligned random");
-		benchTest(dx, shaderLoadRaw4dInvariant, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 aligned invariant");
-		benchTest(dx, shaderLoadRaw4dLinear, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 aligned linear");
-		benchTest(dx, shaderLoadRaw4dRandom, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 aligned random");
+		benchTest(dx, shaderLoadRaw1dInvariant, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 invariant");
+		benchTest(dx, shaderLoadRaw1dLinear, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 linear");
+		benchTest(dx, shaderLoadRaw1dRandom, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 random");
+		benchTest(dx, shaderLoadRaw2dInvariant, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 invariant");
+		benchTest(dx, shaderLoadRaw2dLinear, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 linear");
+		benchTest(dx, shaderLoadRaw2dRandom, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 random");
+		benchTest(dx, shaderLoadRaw3dInvariant, loadCB, outputUAV, byteAddressSRV, "Load3 raw32 invariant");
+		benchTest(dx, shaderLoadRaw3dLinear, loadCB, outputUAV, byteAddressSRV, "Load3 raw32 linear");
+		benchTest(dx, shaderLoadRaw3dRandom, loadCB, outputUAV, byteAddressSRV, "Load3 raw32 random");
+		benchTest(dx, shaderLoadRaw4dInvariant, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 invariant");
+		benchTest(dx, shaderLoadRaw4dLinear, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 linear");
+		benchTest(dx, shaderLoadRaw4dRandom, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 random");
 
 		benchTest(dx, shaderLoadRaw2dInvariant, loadCBUnaligned, outputUAV, byteAddressSRV, "Load2 raw32 unaligned invariant");
 		benchTest(dx, shaderLoadRaw2dLinear, loadCBUnaligned, outputUAV, byteAddressSRV, "Load2 raw32 unaligned linear");
