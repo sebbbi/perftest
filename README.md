@@ -48,46 +48,49 @@ Load RG8 random: 2.385ms
 Load RGBA8 linear: 2.121ms
 Load RGBA8 linear: 2.121ms
 Load RGBA8 random: 2.121ms
-Load R16f invariant: 0.534ms
+Load R16f invariant: 0.535ms
 Load R16f linear: 0.534ms
-Load R16f random: 2.121ms
+Load R16f random: 2.120ms
 Load RG16f invariant: 2.385ms
 Load RG16f linear: 2.385ms
 Load RG16f random: 2.385ms
-Load RGBA16f invariant: 2.124ms
-Load RGBA16f linear: 2.121ms
+Load RGBA16f invariant: 2.125ms
+Load RGBA16f linear: 2.120ms
 Load RGBA16f random: 2.120ms
 Load R32f invariant: 0.534ms
 Load R32f linear: 0.534ms
-Load R32f random: 2.120ms
+Load R32f random: 2.121ms
 Load RG32f invariant: 2.385ms
 Load RG32f linear: 2.385ms
 Load RG32f random: 2.385ms
 Load RGBA32f invariant: 2.121ms
 Load RGBA32f linear: 2.120ms
 Load RGBA32f random: 2.385ms
-Load1 raw32 aligned invariant: 0.277ms
-Load1 raw32 aligned linear: 0.559ms
-Load1 raw32 aligned random: 0.811ms
-Load2 raw32 aligned invariant: 0.542ms
-Load2 raw32 aligned linear: 1.078ms
-Load2 raw32 aligned random: 2.122ms
-Load4 raw32 aligned invariant: 1.087ms
-Load4 raw32 aligned linear: 2.121ms
-Load4 raw32 aligned random: 2.369ms
-Load2 raw32 unaligned invariant: 0.541ms
+Load1 raw32 invariant: 0.274ms
+Load1 raw32 linear: 0.560ms
+Load1 raw32 random: 0.817ms
+Load2 raw32 invariant: 0.546ms
+Load2 raw32 linear: 1.078ms
+Load2 raw32 random: 2.122ms
+Load3 raw32 invariant: 0.817ms
+Load3 raw32 linear: 2.121ms
+Load3 raw32 random: 4.239ms
+Load4 raw32 invariant: 1.079ms
+Load4 raw32 linear: 2.121ms
+Load4 raw32 random: 2.369ms
+Load2 raw32 unaligned invariant: 0.537ms
 Load2 raw32 unaligned linear: 1.076ms
 Load2 raw32 unaligned random: 2.122ms
-Load4 raw32 unaligned invariant: 1.077ms
+Load4 raw32 unaligned invariant: 1.075ms
 Load4 raw32 unaligned linear: 2.121ms
 Load4 raw32 unaligned random: 2.621ms
 ```
 
 **Typed loads:** GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and invariant access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
 
-**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (2x faster than coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16).
+**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d raw loads coalesce perfectly (4x) on linear access. 2d raw loads also seems to coalesce (but only 2x faster). Invariant raw loads generates scalar unit loads on GCN (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (2x faster than coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16). 3d raw linear loads have equal performance to 4d loads, but random 3d loads are 2x slower than 4d loads. 
 
-**Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads invariant loads to scalar unit, saving VGPR pressure and vector memory instructions.
+**Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads invariant loads to scalar unit, saving VGPR pressure and vector memory instructions. Avoid 3d random loads if possible (4d load is 2x faster).
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
