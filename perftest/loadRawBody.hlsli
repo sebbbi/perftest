@@ -29,15 +29,24 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	uint htid = hash1(gix) & 0xf;
 #endif
 
+	// Moved out all math from the inner loop
+#if LOAD_WIDTH == 1
+	htid = htid * 4 + loadConstants.readStartAddress;
+#elif LOAD_WIDTH == 2
+	htid = htid * 8 + loadConstants.readStartAddress;
+#elif LOAD_WIDTH == 4
+	htid = htid * 16 + loadConstants.readStartAddress;
+#endif
+
+	[unroll]
 	for (int i = 0; i < 256; ++i)
 	{
-		uint elemIdx = (htid + i) & loadConstants.elementsMask;
 #if LOAD_WIDTH == 1
-		value += sourceData.Load(elemIdx * 4).xxxx;
+		value += sourceData.Load(htid + i * 4).xxxx;
 #elif LOAD_WIDTH == 2
-		value += sourceData.Load2(elemIdx * 8).xyxy;
+		value += sourceData.Load2(htid + i * 8).xyxy;
 #elif LOAD_WIDTH == 4
-		value += sourceData.Load4(elemIdx * 16).xyzw;
+		value += sourceData.Load4(htid + i * 16).xyzw;
 #endif
 	}
 

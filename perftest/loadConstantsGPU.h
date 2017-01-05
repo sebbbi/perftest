@@ -7,7 +7,8 @@ struct LoadConstants
 {
 	uint elementsMask;
 	uint writeIndex;		// Always 0xffffffff (= never write). But the compiler doesn't know this :)
+	uint readStartAddress;
 
-	uint2 padding;
+	uint padding;
 };
 

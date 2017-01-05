@@ -25,12 +25,13 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	uint htid = gix;
 #elif defined(LOAD_RANDOM)
     // Randomize start address offset (0-15) to prevent memory coalescing
-	uint htid = hash1(gix) & 0xf;
+	uint htid = (hash1(gix) & 0xf);
 #endif
 
+	[unroll]
 	for (int i = 0; i < 256; ++i)
 	{
-		uint elemIdx = (htid + i) & loadConstants.elementsMask;
+		uint elemIdx = htid + i;
 #if LOAD_WIDTH == 1
 		value += sourceData[elemIdx].xxxx;
 #elif LOAD_WIDTH == 2
