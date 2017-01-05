@@ -81,6 +81,8 @@ Load4 raw32 random: 2.371ms
 
 **Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d/2d load seems to match coalesced 1d vector load in performance. 4d invariant case is slightly slower, but still 2x faster than similar width vector loads.
 
+**Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads, unless you have perfectly linear memory access pattern. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads invariant loads to scalar unit, saving VGPR pressure and vector memory instructions.
+
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
 
@@ -128,7 +130,9 @@ Load4 raw32 random: 6.520ms
 
 **Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower than 1d and 4d is 4x slower. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment. My test case is perfectly aligned. HLSL ByteAddressBuffer.Load4() only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
 
-NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent (public) low level hardware performance documents and advice as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
+**Suggestions:** Prefer 64+ bit typed loads (RGBA16, RG32, RGBA32). ByteAddressBuffer wide loads and coalescing doesn't seem to work in DirectX.
+
+NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent low level hardware performance documents/benchmarks as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
 
 ## License
 
