@@ -28,15 +28,10 @@ All threads in group load simultaneously from the same address. This triggers co
 - Better output (elements/s or bytes/s, etc)
 - Constant buffer loads (both constant address and indexed)
 - Texture loads (1d/2d/3d)
-- Extended format support (uint/unorm/float of all widths)
-
-## Wish list
-
 - Texture sampling (1d/2d/3d)
-- Extended format support v2 (R10G10B10, R11G11B10f, etc)
+- Extended format support (uint/unorm/float of all widths, R10G10B10, R11G11B10f)
 - Measure write performance
-- Port to Vulkan and/or DX12
-- Measure upload heap load performance
+- Port to Vulkan and/or DX12 (upload heap load performance, etc)
 
 ## Results
 
