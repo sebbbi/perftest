@@ -76,7 +76,7 @@ Load4 raw32 linear: 2.128ms
 Load4 raw32 random: 2.371ms
 ```
 
-Typed loads: AMD GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (next thread in wave always addresses next element) and invariant access (each thread in wave access same location) coalesce. Wide loads (4d) and wide formats (32 bit) do not cause any slow down. Widest (RGBA32) loads thus offer best bytes / cycle rate.
+Typed loads: AMD GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (next thread in wave always addresses next element) and invariant access (each thread in wave access same location) coalesce. Wide loads (4d) and wide formats (32 bit) do not cause any slow down. Widest (RGBA32) loads thus offer best bytes per cycle rate.
 
 Raw (ByteAddressBuffer) loads: Similar to typed loads. 1d formats coalesce perfectly (4x) on lineat access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d/2d load seems to match coalesced vector load in performance. 4d invariant case is slightly slower, but still 2x faster than linear vector load. Mixed vector + scalar load would be fastest (but I don't have test case for it yet).
 
