@@ -10,7 +10,7 @@ Designed to measure performance of various types of buffer and image loads. This
 - Random loads (100% L1 cache hit)
 - Invariant loads (same address for all threads)
 - Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
-- 32 bit byte address SRVs (load, load2, load4)
+- 32 bit byte address SRVs (load, load2, load3, load4 - aligned and unaligned)
 
 ## Explanations
 
