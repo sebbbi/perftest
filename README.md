@@ -75,9 +75,6 @@ Load2 raw32 aligned random: 2.122ms
 Load4 raw32 aligned invariant: 1.087ms
 Load4 raw32 aligned linear: 2.121ms
 Load4 raw32 aligned random: 2.369ms
-Load1 raw32 unaligned invariant: 0.273ms
-Load1 raw32 unaligned linear: 0.534ms
-Load1 raw32 unaligned random: 0.800ms
 Load2 raw32 unaligned invariant: 0.541ms
 Load2 raw32 unaligned linear: 1.076ms
 Load2 raw32 unaligned random: 2.122ms
@@ -88,7 +85,7 @@ Load4 raw32 unaligned random: 2.621ms
 
 **Typed loads:** GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and invariant access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
 
-**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (2x faster than coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load.
+**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (2x faster than coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16).
 
 **Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads invariant loads to scalar unit, saving VGPR pressure and vector memory instructions.
 
