@@ -77,9 +77,9 @@ Load4 raw32 linear: 2.128ms
 Load4 raw32 random: 2.371ms
 ```
 
-Typed loads: GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and invariant access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
+**Typed loads:** GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and invariant access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
 
-Raw (ByteAddressBuffer) loads: Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d/2d load seems to match coalesced 1d vector load in performance. 4d invariant case is slightly slower, but still 2x faster than similar width vector loads.
+**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d formats coalesce perfectly (4x) on linear access. Invariant access generates scalar unit loads on GCN1 (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d/2d load seems to match coalesced 1d vector load in performance. 4d invariant case is slightly slower, but still 2x faster than similar width vector loads.
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
@@ -124,9 +124,9 @@ Load4 raw32 linear: 7.773ms
 Load4 raw32 random: 6.520ms
 ```
 
-Typed loads: Maxwell2 doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32).
+**Typed loads:** Maxwell2 doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32).
 
-Raw (ByteAddressBuffer) loads: Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower than 1d and 4d is 4x slower. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment. My test case is perfectly aligned. HLSL ByteAddressBuffer.Load4() only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
+**Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower than 1d and 4d is 4x slower. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment. My test case is perfectly aligned. HLSL ByteAddressBuffer.Load4() only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
 
 NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent (public) low level hardware performance documents and advice as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
 
