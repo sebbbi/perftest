@@ -6,8 +6,8 @@ A simple GPU shader memory operation performance test tool. Current implementati
 
 Designed to measure performance of various types of buffer and image loads. This application is not a GPU memory bandwidth benchmark tool. All tests operate inside GPUs L1 caches (no larger than 16 KB working sets). 
 
-- Coalesced loads (100% L1 cache hit).
-- Random loads (100% L1 cache hit).
+- Coalesced loads (100% L1 cache hit)
+- Random loads (100% L1 cache hit)
 - Invariant loads (same address for all threads)
 - Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
 - 32 bit byte address SRVs (load, load2, load4)
@@ -15,7 +15,7 @@ Designed to measure performance of various types of buffer and image loads. This
 ## Explanations
 
 **Coalesced loads:**
-GPUs optimize linear address patterns. Coalescing occurs when all threads in a warp/wave (32/64 threads) load from contiguous (or identical) addresses. In my "linear" test case, loads access contiguous addresses in the whole thread group (256 threads). This should coalesce perfectly on all GPUs, independent of warp/wave width.
+GPUs optimize linear address patterns. Coalescing occurs when all threads in a warp/wave (32/64 threads) load from contiguous (or identical) addresses. In my "linear" test case, memory loads access contiguous addresses in the whole thread group (256 threads). This should coalesce perfectly on all GPUs, independent of warp/wave width.
 
 **Random loads:**
 I add a random start offset of 0-15 for each thread. This prevents GPU coalescing, and provides more realistic view of performance for common case (non-linear) memory accessing. This benchmark is as cache efficient as the previous. All data still comes from the L1 cache.
