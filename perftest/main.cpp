@@ -117,9 +117,6 @@ int main()
 		benchTest(dx, shaderLoadRaw4dLinear, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 aligned linear");
 		benchTest(dx, shaderLoadRaw4dRandom, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 aligned random");
 
-		benchTest(dx, shaderLoadRaw1dInvariant, loadCBUnaligned, outputUAV, byteAddressSRV, "Load1 raw32 unaligned invariant");
-		benchTest(dx, shaderLoadRaw1dLinear, loadCBUnaligned, outputUAV, byteAddressSRV, "Load1 raw32 unaligned linear");
-		benchTest(dx, shaderLoadRaw1dRandom, loadCBUnaligned, outputUAV, byteAddressSRV, "Load1 raw32 unaligned random");
 		benchTest(dx, shaderLoadRaw2dInvariant, loadCBUnaligned, outputUAV, byteAddressSRV, "Load2 raw32 unaligned invariant");
 		benchTest(dx, shaderLoadRaw2dLinear, loadCBUnaligned, outputUAV, byteAddressSRV, "Load2 raw32 unaligned linear");
 		benchTest(dx, shaderLoadRaw2dRandom, loadCBUnaligned, outputUAV, byteAddressSRV, "Load2 raw32 unaligned random");
