@@ -14,13 +14,13 @@ Designed to measure performance of various types of buffer and image loads. This
 
 ## Explanations
 
-**Coalesced loads**
+**Coalesced loads:**
 GPUs optimize linear address patterns. Coalescing occurs when all threads in a warp/wave (32/64 threads) load from contiguous (or identical) addresses. In my "linear" test case, loads access contiguous addresses in the whole thread group (256 threads). This should coalesce perfectly on all GPUs, independent of warp/wave width.
 
-**Random loads**
+**Random loads:**
 My test case add a random offset of 0-15 for each thread. This prevents GPU coalescing, and provides more realistic view of performance for common case (non-linear) memory accessing. This benchmark is as cache efficient as the previous. All data still comes from the L1 cache.
 
-**Invariant loads**
+**Invariant loads:**
 All threads in group load simultaneously from the same address. This triggers coalesced path on some GPUs and additonal optimizations on some GPUs, such as scalar loads (SGPR storage) on AMD GCN.
 
 ## Todo list
