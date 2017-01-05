@@ -37,7 +37,7 @@ All threads in group simultaneously load from the same address. This triggers co
 
 **TODO:** Add comprehensive AMD, NV & Intel results here. Add some graphs. Add percentage comparison and/or ops per cycle.
 
-**AMD Radeon 7970 GE (GCN1)**
+### AMD Radeon 7970 GE (GCN1)
 ```markdown
 Load R8 invariant: 0.541ms
 Load R8 linear: 0.539ms
@@ -86,7 +86,7 @@ Load4 raw32 random: 2.371ms
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
 
-**NVIDIA GeForce GTX 980 (Maxwell2)**
+### NVIDIA GeForce GTX 980 (Maxwell2)
 ```markdown
 Load R8 invariant: 1.632ms
 Load R8 linear: 1.825ms
