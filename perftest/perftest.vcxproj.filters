@@ -16,6 +16,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{a6a1644d-0cd8-4fc3-87df-0efe5e723cdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\typed_load">
+      <UniqueIdentifier>{df3f5c35-620c-4bdb-85cb-dbcc5a5ff880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\raw_load">
+      <UniqueIdentifier>{789c5a00-0b5b-41a2-862d-694ca2bbdc42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="directx.cpp">
@@ -55,46 +61,70 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="load1dLinear.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw1dInvariant.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load1dRandom.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw1dLinear.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load2dLinear.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw1dRandom.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load2dRandom.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw2dInvariant.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load4dLinear.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw2dLinear.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load4dRandom.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw2dRandom.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load1dInvariant.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw4dInvariant.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load2dInvariant.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw4dLinear.hlsl">
+      <Filter>Shaders\raw_load</Filter>
     </FxCompile>
-    <FxCompile Include="load4dInvariant.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="loadRaw4dRandom.hlsl">
+      <Filter>Shaders\raw_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped1dInvariant.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped1dLinear.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped1dRandom.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped2dInvariant.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped2dLinear.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped2dRandom.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped4dInvariant.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped4dLinear.hlsl">
+      <Filter>Shaders\typed_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTyped4dRandom.hlsl">
+      <Filter>Shaders\typed_load</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="loadLinearBody.hlsli">
-      <Filter>Shaders</Filter>
+    <None Include="loadRawBody.hlsli">
+      <Filter>Shaders\raw_load</Filter>
     </None>
-    <None Include="loadRandomBody.hlsli">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="loadInvariantBody.hlsli">
-      <Filter>Shaders</Filter>
+    <None Include="loadTypedBody.hlsli">
+      <Filter>Shaders\typed_load</Filter>
     </None>
   </ItemGroup>
 </Project>

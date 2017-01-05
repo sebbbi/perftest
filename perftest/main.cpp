@@ -20,16 +20,25 @@ int main()
 	HWND window = createWindow(resolution);
 	DirectXDevice dx(window, resolution);
 
-	// Load shaders
-	com_ptr<ID3D11ComputeShader> shaderLoad1dInvariant = loadComputeShader(dx, "shaders/load1dInvariant.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad1dLinear = loadComputeShader(dx, "shaders/load1dLinear.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad1dRandom = loadComputeShader(dx, "shaders/load1dRandom.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad2dInvariant = loadComputeShader(dx, "shaders/load2dInvariant.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad2dLinear = loadComputeShader(dx, "shaders/load2dLinear.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad2dRandom = loadComputeShader(dx, "shaders/load2dRandom.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad4dInvariant = loadComputeShader(dx, "shaders/load4dInvariant.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad4dLinear = loadComputeShader(dx, "shaders/load4dLinear.cso");
-	com_ptr<ID3D11ComputeShader> shaderLoad4dRandom = loadComputeShader(dx, "shaders/load4dRandom.cso");
+	// Load shaders 
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped1dInvariant = loadComputeShader(dx, "shaders/loadTyped1dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped1dLinear = loadComputeShader(dx, "shaders/loadTyped1dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped1dRandom = loadComputeShader(dx, "shaders/loadTyped1dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped2dInvariant = loadComputeShader(dx, "shaders/loadTyped2dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped2dLinear = loadComputeShader(dx, "shaders/loadTyped2dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped2dRandom = loadComputeShader(dx, "shaders/loadTyped2dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped4dInvariant = loadComputeShader(dx, "shaders/loadTyped4dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped4dLinear = loadComputeShader(dx, "shaders/loadTyped4dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadTyped4dRandom = loadComputeShader(dx, "shaders/loadTyped4dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw1dInvariant = loadComputeShader(dx, "shaders/loadRaw1dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw1dLinear = loadComputeShader(dx, "shaders/loadRaw1dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw1dRandom = loadComputeShader(dx, "shaders/loadRaw1dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dInvariant = loadComputeShader(dx, "shaders/loadRaw2dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dLinear = loadComputeShader(dx, "shaders/loadRaw2dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw2dRandom = loadComputeShader(dx, "shaders/loadRaw2dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dInvariant = loadComputeShader(dx, "shaders/loadRaw4dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dLinear = loadComputeShader(dx, "shaders/loadRaw4dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderLoadRaw4dRandom = loadComputeShader(dx, "shaders/loadRaw4dRandom.cso");
 
 	// Create buffers and output UAV
 	com_ptr<ID3D11Buffer> bufferOutput = dx.createBuffer(1024, 32, DirectXDevice::BufferType::ByteAddress);
@@ -64,35 +73,45 @@ int main()
 			printf("%s: %.3fms\n", name.c_str(), timeMillis);
 		});
 
-		benchTest(dx, shaderLoad1dInvariant, loadCB, outputUAV, typedSRV_R8, "Load R8 invariant");
-		benchTest(dx, shaderLoad1dLinear, loadCB, outputUAV, typedSRV_R8, "Load R8 linear");
-		benchTest(dx, shaderLoad1dRandom, loadCB, outputUAV, typedSRV_R8, "Load R8 random");
-		benchTest(dx, shaderLoad2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
-		benchTest(dx, shaderLoad2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
-		benchTest(dx, shaderLoad2dRandom, loadCB, outputUAV, typedSRV_RG8, "Load RG8 random");
-		benchTest(dx, shaderLoad4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
-		benchTest(dx, shaderLoad4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
-		benchTest(dx, shaderLoad4dRandom, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 random");
+		benchTest(dx, shaderLoadTyped1dInvariant, loadCB, outputUAV, typedSRV_R8, "Load R8 invariant");
+		benchTest(dx, shaderLoadTyped1dLinear, loadCB, outputUAV, typedSRV_R8, "Load R8 linear");
+		benchTest(dx, shaderLoadTyped1dRandom, loadCB, outputUAV, typedSRV_R8, "Load R8 random");
+		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
+		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
+		benchTest(dx, shaderLoadTyped2dRandom, loadCB, outputUAV, typedSRV_RG8, "Load RG8 random");
+		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
+		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
+		benchTest(dx, shaderLoadTyped4dRandom, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 random");
 
-		benchTest(dx, shaderLoad1dInvariant, loadCB, outputUAV, typedSRV_R16F, "Load R16f invariant");
-		benchTest(dx, shaderLoad1dLinear, loadCB, outputUAV, typedSRV_R16F, "Load R16f linear");
-		benchTest(dx, shaderLoad1dRandom, loadCB, outputUAV, typedSRV_R16F, "Load R16f random");
-		benchTest(dx, shaderLoad2dInvariant, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f invariant");
-		benchTest(dx, shaderLoad2dLinear, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f linear");
-		benchTest(dx, shaderLoad2dRandom, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f random");
-		benchTest(dx, shaderLoad4dInvariant, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f invariant");
-		benchTest(dx, shaderLoad4dLinear, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f linear");
-		benchTest(dx, shaderLoad4dRandom, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f random");
+		benchTest(dx, shaderLoadTyped1dInvariant, loadCB, outputUAV, typedSRV_R16F, "Load R16f invariant");
+		benchTest(dx, shaderLoadTyped1dLinear, loadCB, outputUAV, typedSRV_R16F, "Load R16f linear");
+		benchTest(dx, shaderLoadTyped1dRandom, loadCB, outputUAV, typedSRV_R16F, "Load R16f random");
+		benchTest(dx, shaderLoadTyped2dInvariant, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f invariant");
+		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f linear");
+		benchTest(dx, shaderLoadTyped2dRandom, loadCB, outputUAV, typedSRV_RG16F, "Load RG16f random");
+		benchTest(dx, shaderLoadTyped4dInvariant, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f invariant");
+		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f linear");
+		benchTest(dx, shaderLoadTyped4dRandom, loadCB, outputUAV, typedSRV_RGBA16F, "Load RGBA16f random");
 
-		benchTest(dx, shaderLoad1dInvariant, loadCB, outputUAV, typedSRV_R32F, "Load R32f invariant");
-		benchTest(dx, shaderLoad1dLinear, loadCB, outputUAV, typedSRV_R32F, "Load R32f linear");
-		benchTest(dx, shaderLoad1dRandom, loadCB, outputUAV, typedSRV_R32F, "Load R32f random");
-		benchTest(dx, shaderLoad2dInvariant, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f invariant");
-		benchTest(dx, shaderLoad2dLinear, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f linear");
-		benchTest(dx, shaderLoad2dRandom, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f random");
-		benchTest(dx, shaderLoad4dInvariant, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f invariant");
-		benchTest(dx, shaderLoad4dLinear, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f linear");
-		benchTest(dx, shaderLoad4dRandom, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f random");
+		benchTest(dx, shaderLoadTyped1dInvariant, loadCB, outputUAV, typedSRV_R32F, "Load R32f invariant");
+		benchTest(dx, shaderLoadTyped1dLinear, loadCB, outputUAV, typedSRV_R32F, "Load R32f linear");
+		benchTest(dx, shaderLoadTyped1dRandom, loadCB, outputUAV, typedSRV_R32F, "Load R32f random");
+		benchTest(dx, shaderLoadTyped2dInvariant, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f invariant");
+		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f linear");
+		benchTest(dx, shaderLoadTyped2dRandom, loadCB, outputUAV, typedSRV_RG32F, "Load RG32f random");
+		benchTest(dx, shaderLoadTyped4dInvariant, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f invariant");
+		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f linear");
+		benchTest(dx, shaderLoadTyped4dRandom, loadCB, outputUAV, typedSRV_RGBA32F, "Load RGBA32f random");
+
+		benchTest(dx, shaderLoadRaw1dInvariant, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 invariant");
+		benchTest(dx, shaderLoadRaw1dLinear, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 linear");
+		benchTest(dx, shaderLoadRaw1dRandom, loadCB, outputUAV, byteAddressSRV, "Load1 raw32 random");
+		benchTest(dx, shaderLoadRaw2dInvariant, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 invariant");
+		benchTest(dx, shaderLoadRaw2dLinear, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 linear");
+		benchTest(dx, shaderLoadRaw2dRandom, loadCB, outputUAV, byteAddressSRV, "Load2 raw32 random");
+		benchTest(dx, shaderLoadRaw4dInvariant, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 invariant");
+		benchTest(dx, shaderLoadRaw4dLinear, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 linear");
+		benchTest(dx, shaderLoadRaw4dRandom, loadCB, outputUAV, byteAddressSRV, "Load4 raw32 random");
 
 		dx.presentFrame();
 		status = messagePump();
