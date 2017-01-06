@@ -156,6 +156,61 @@ Load4 raw32 unaligned random: 6.543ms
 
 NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent low level hardware performance documents/benchmarks as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
 
+### Intel Skylake 6700K HD Graphics 530 (Gen9)
+```markdown
+Load R8 invariant: 19.378ms
+Load R8 linear: 48.118ms
+Load R8 random: 56.967ms
+Load RG8 invariant: 19.372ms
+Load RG8 linear: 48.145ms
+Load RG8 random: 57.018ms
+Load RGBA8 invariant: 19.487ms
+Load RGBA8 linear: 48.133ms
+Load RGBA8 random: 56.979ms
+Load R16f invariant: 19.373ms
+Load R16f linear: 48.117ms
+Load R16f random: 56.966ms
+Load RG16f invariant: 19.372ms
+Load RG16f linear: 48.148ms
+Load RG16f random: 58.885ms
+Load RGBA16f invariant: 19.834ms
+Load RGBA16f linear: 48.119ms
+Load RGBA16f random: 56.997ms
+Load R32f invariant: 19.373ms
+Load R32f linear: 48.117ms
+Load R32f random: 56.997ms
+Load RG32f invariant: 19.372ms
+Load RG32f linear: 49.038ms
+Load RG32f random: 59.122ms
+Load RGBA32f invariant: 20.770ms
+Load RGBA32f linear: 50.347ms
+Load RGBA32f random: 59.631ms
+Load1 raw32 invariant: 6.406ms
+Load1 raw32 linear: 10.541ms
+Load1 raw32 random: 11.054ms
+Load2 raw32 invariant: 6.710ms
+Load2 raw32 linear: 19.614ms
+Load2 raw32 random: 29.028ms
+Load3 raw32 invariant: 8.633ms
+Load3 raw32 linear: 35.706ms
+Load3 raw32 random: 66.340ms
+Load4 raw32 invariant: 7.672ms
+Load4 raw32 linear: 36.922ms
+Load4 raw32 random: 71.709ms
+Load2 raw32 unaligned invariant: 6.880ms
+Load2 raw32 unaligned linear: 20.958ms
+Load2 raw32 unaligned random: 31.296ms
+Load4 raw32 unaligned invariant: 7.491ms
+Load4 raw32 unaligned linear: 40.175ms
+Load4 raw32 unaligned random: 79.689ms
+```
+
+**Typed loads:** All typed loads have same identical performance. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't affect performance. Intel seems to have fast path for invariant loads (all threads access same location). It improves performance by 2.5x. Linear typed loads do not coalesce. Best bytes per cycle rate can be achieved by widest RGBA32 loads.
+
+**Raw (ByteAddressBuffer) loads:** Intel raw buffer loads are significantly faster compared to similar typed loads. 1d raw load is 5x faster than any typed load. 2d linear raw load is 2.5x faster than typed loads. 4d linear raw load is 40% faster than typed loads. 2d/4d random raw loads are around 2x slower compared to linear ones. 3d raw load performance matches 4d. Alignment doesn't seem to matter. Invariant raw loads also have a fast path (like invariant typed loads), however the performance improvement is even larger. Invariant 4d raw load = 7x faster than any typed load. 
+
+**Suggestions:** When using typed buffers, prefer widest loads (RGBA32). Raw buffers are significantly faster than typed buffers. Invariant loads are very fast (both raw and typed). Might be that Intel's DX11 drivers are exploiting their cbuffer hardware in this special case. Have to ask Intel for confirmation.
+
 ## License
 
 PerfTest is released under the MIT license. See [LICENSE.md](LICENSE.md) for full text.
