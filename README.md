@@ -10,7 +10,7 @@ Designed to measure performance of various types of buffer and image loads. This
 - Random loads (100% L1 cache hit)
 - Invariant loads (same address for all threads)
 - Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
-- 32 bit byte address SRVs (load, load2, load4)
+- 32 bit byte address SRVs (load, load2, load3, load4 - aligned and unaligned)
 
 ## Explanations
 
@@ -23,8 +23,12 @@ I add a random start offset of 0-15 elements for each thread (still aligned). Th
 **Invariant loads:**
 All threads in group simultaneously load from the same address. This triggers coalesced path on some GPUs and additonal optimizations on some GPUs, such as scalar loads (SGPR storage) on AMD GCN.
 
+**Notes:**
+**Compiler optimizations** can ruin the results. We want to measure only load (read) performance, but write (store) is also needed, otherwise the compiler will just optimize the whole shader away. To avoid this, each thread does first 256 loads followed by a single linear groupshared memory write (no bank-conflicts). Cbuffer contains a write mask (not known at compile time). It controls which elements are written from the groupshared memory to the output buffer. The mask is always zero at runtime. Compilers can also combine multiple narrow raw buffer loads together (as bigger 4d loads) if it an be proven at compile time that loads from the same thread access contiguous offsets. This is prevented by applying an address mask from cbuffer (not known at compile time). 
+
 ## Todo list
 
+- Enumerate GPUs (allow select iGPU/dGPU)
 - Better output (elements/s or bytes/s, etc)
 - Constant buffer loads (both constant address and indexed)
 - Texture loads (1d/2d/3d)
