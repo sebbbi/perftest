@@ -5,8 +5,8 @@
 
 struct LoadConstants
 {
-	uint elementsMask;
-	uint writeIndex;		// Always 0xffffffff (= never write). But the compiler doesn't know this :)
+	uint elementsMask;		// Runtime address mask. Needed to prevent compiler combining narrow raw buffer loads from single thread.
+	uint writeIndex;		// Runtime write mask. Always 0xffffffff (= never write). But the compiler doesn't know this :)
 	uint readStartAddress;
 
 	uint padding;

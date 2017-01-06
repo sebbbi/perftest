@@ -40,17 +40,20 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	htid = htid * 16 + loadConstants.readStartAddress;
 #endif
 
-	[unroll]
+	[loop]
 	for (int i = 0; i < 256; ++i)
 	{
+		// Mask with runtime constant to prevent unwanted compiler optimizations
+		uint address = (htid + i * (4 * LOAD_WIDTH)) | loadConstants.elementsMask;	
+
 #if LOAD_WIDTH == 1
-		value += sourceData.Load(htid + i * 4).xxxx;
+		value += sourceData.Load(address).xxxx;
 #elif LOAD_WIDTH == 2
-		value += sourceData.Load2(htid + i * 8).xyxy;
+		value += sourceData.Load2(address).xyxy;
 #elif LOAD_WIDTH == 3
-		value += sourceData.Load3(htid + i * 12).xyzx;
+		value += sourceData.Load3(address).xyzx; 
 #elif LOAD_WIDTH == 4
-		value += sourceData.Load4(htid + i * 16).xyzw;
+		value += sourceData.Load4(address).xyzw;
 #endif
 	}
 

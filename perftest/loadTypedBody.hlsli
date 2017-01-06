@@ -28,10 +28,12 @@ void main(uint3 tid : SV_DispatchThreadID, uint gix : SV_GroupIndex)
 	uint htid = (hash1(gix) & 0xf);
 #endif
 
-	[unroll]
+	[loop]
 	for (int i = 0; i < 256; ++i)
 	{
-		uint elemIdx = htid + i;
+		// Mask with runtime constant to prevent unwanted compiler optimizations
+		uint elemIdx = (htid + i) | loadConstants.elementsMask;
+
 #if LOAD_WIDTH == 1
 		value += sourceData[elemIdx].xxxx;
 #elif LOAD_WIDTH == 2

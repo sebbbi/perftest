@@ -106,7 +106,7 @@ private:
 	com_ptr<ID3D11DeviceContext> deviceContext;
 
 	// Queries
-	std::array<PerformanceQuery, 1024> queries;
+	std::array<PerformanceQuery, 4096> queries;
 	unsigned queryCounter = 0;
 	unsigned queryProcessCounter = 0;
 };

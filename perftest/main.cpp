@@ -11,12 +11,16 @@ void benchTest(DirectXDevice& dx, ID3D11ComputeShader* shader, ID3D11Buffer* cb,
 	QueryHandle query = dx.startPerformanceQuery(name);
 	dx.dispatch(shader, workloadThreadCount, workloadGroupSize, { cb }, { source }, { output }, {});
 	dx.endPerformanceQuery(query);
+
+	// One test per frame to prevent GPU timeout (on slower iGPUs)
+	// DISABLED: For some reason this results in 4x+ slower results on AMD GPU...
+	//dx.presentFrame();
 }
 
 int main()
 {
 	// Init systems
-	uint2 resolution(1280, 720);
+	uint2 resolution(256, 256);
 	HWND window = createWindow(resolution);
 	DirectXDevice dx(window, resolution);
 
@@ -64,11 +68,11 @@ int main()
 	LoadConstants loadConstants;
 	com_ptr<ID3D11Buffer> loadCB = dx.createConstantBuffer(sizeof(LoadConstants));
 	com_ptr<ID3D11Buffer> loadCBUnaligned = dx.createConstantBuffer(sizeof(LoadConstants));
-	loadConstants.elementsMask = 1024 - 1;
-	loadConstants.writeIndex = 0xffffffff;	// Never write
-	loadConstants.readStartAddress = 0;		// Aligned
+	loadConstants.elementsMask = 0;				// Dummy mask to prevent unwanted compiler optimizations
+	loadConstants.writeIndex = 0xffffffff;		// Never write
+	loadConstants.readStartAddress = 0;			// Aligned
 	dx.updateConstantBuffer(loadCB, loadConstants);
-	loadConstants.readStartAddress = 4;		// Unaligned
+	loadConstants.readStartAddress = 4;			// Unaligned
 	dx.updateConstantBuffer(loadCBUnaligned, loadConstants);
 
 	// Frame loop
@@ -83,10 +87,10 @@ int main()
 		benchTest(dx, shaderLoadTyped1dInvariant, loadCB, outputUAV, typedSRV_R8, "Load R8 invariant");
 		benchTest(dx, shaderLoadTyped1dLinear, loadCB, outputUAV, typedSRV_R8, "Load R8 linear");
 		benchTest(dx, shaderLoadTyped1dRandom, loadCB, outputUAV, typedSRV_R8, "Load R8 random");
-		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
+		benchTest(dx, shaderLoadTyped2dInvariant, loadCB, outputUAV, typedSRV_RG8, "Load RG8 invariant");
 		benchTest(dx, shaderLoadTyped2dLinear, loadCB, outputUAV, typedSRV_RG8, "Load RG8 linear");
 		benchTest(dx, shaderLoadTyped2dRandom, loadCB, outputUAV, typedSRV_RG8, "Load RG8 random");
-		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
+		benchTest(dx, shaderLoadTyped4dInvariant, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 invariant");
 		benchTest(dx, shaderLoadTyped4dLinear, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 linear");
 		benchTest(dx, shaderLoadTyped4dRandom, loadCB, outputUAV, typedSRV_RGBA8, "Load RGBA8 random");
 
@@ -131,6 +135,7 @@ int main()
 		benchTest(dx, shaderLoadRaw4dRandom, loadCBUnaligned, outputUAV, byteAddressSRV, "Load4 raw32 unaligned random");
 
 		dx.presentFrame();
+
 		status = messagePump();
 	}
 	while (status != MessageStatus::Exit);
