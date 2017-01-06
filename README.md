@@ -156,6 +156,57 @@ Load4 raw32 unaligned random: 6.543ms
 
 NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent low level hardware performance documents/benchmarks as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
 
+### NVIDIA Quadro K1100M (Kepler)
+```markdown
+Load R8 invariant: 14.074ms
+Load R8 linear: 13.941ms
+Load R8 random: 13.964ms
+Load RG8 invariant: 14.044ms
+Load RG8 linear: 13.866ms
+Load RG8 random: 13.286ms
+Load RGBA8 invariant: 13.089ms
+Load RGBA8 linear: 13.014ms
+Load RGBA8 random: 13.072ms
+Load R16f invariant: 14.001ms
+Load R16f linear: 13.944ms
+Load R16f random: 13.947ms
+Load RG16f invariant: 14.029ms
+Load RG16f linear: 13.851ms
+Load RG16f random: 13.261ms
+Load RGBA16f invariant: 13.072ms
+Load RGBA16f linear: 13.009ms
+Load RGBA16f random: 13.041ms
+Load R32f invariant: 13.999ms
+Load R32f linear: 13.939ms
+Load R32f random: 13.948ms
+Load RG32f invariant: 14.033ms
+Load RG32f linear: 13.853ms
+Load RG32f random: 13.255ms
+Load RGBA32f invariant: 23.793ms
+Load RGBA32f linear: 23.791ms
+Load RGBA32f random: 23.792ms
+Load1 raw32 invariant: 12.988ms
+Load1 raw32 linear: 13.023ms
+Load1 raw32 random: 13.007ms
+Load2 raw32 invariant: 26.070ms
+Load2 raw32 linear: 26.131ms
+Load2 raw32 random: 26.185ms
+Load3 raw32 invariant: 39.247ms
+Load3 raw32 linear: 38.664ms
+Load3 raw32 random: 38.880ms
+Load4 raw32 invariant: 51.698ms
+Load4 raw32 linear: 51.363ms
+Load4 raw32 random: 51.743ms
+Load2 raw32 unaligned invariant: 26.043ms
+Load2 raw32 unaligned linear: 26.130ms
+Load2 raw32 unaligned random: 26.179ms
+Load4 raw32 unaligned invariant: 51.697ms
+Load4 raw32 unaligned linear: 51.351ms
+Load4 raw32 unaligned random: 51.765ms
+```
+
+**NVIDIA Kepler** results (ratios) are identical to Maxwell2. See Maxwell2 for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
+
 ### Intel Skylake 6700K HD Graphics 530 (Gen9)
 ```markdown
 Load R8 invariant: 19.378ms
