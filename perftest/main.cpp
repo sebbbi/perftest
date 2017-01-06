@@ -17,12 +17,33 @@ void benchTest(DirectXDevice& dx, ID3D11ComputeShader* shader, ID3D11Buffer* cb,
 	//dx.presentFrame();
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+	// Enumerate adapters
+	std::vector<com_ptr<IDXGIAdapter>> adapters = enumerateAdapters();
+	printf("PerfTest\nTo select adapter, use: PerfTest.exe [ADAPTER_INDEX]\n\n");
+	printf("Adapters found:\n");
+	int index = 0;
+	for (auto&& adapter : adapters)
+	{
+		DXGI_ADAPTER_DESC desc;
+		adapter->GetDesc(&desc);
+		printf("%d: %S\n", index++, desc.Description);
+	}
+
+	// Command line index can be used to select adapter
+	int selectedAdapterIdx = 0;
+	if (argc == 2)
+	{
+		selectedAdapterIdx = std::stoi(argv[1]);
+		selectedAdapterIdx = min(max(0, selectedAdapterIdx), (int)adapters.size() - 1);
+	}
+	printf("Using adapter %d\n", selectedAdapterIdx);
+
 	// Init systems
 	uint2 resolution(256, 256);
 	HWND window = createWindow(resolution);
-	DirectXDevice dx(window, resolution);
+	DirectXDevice dx(window, resolution, adapters[selectedAdapterIdx]);
 
 	// Load shaders 
 	com_ptr<ID3D11ComputeShader> shaderLoadTyped1dInvariant = loadComputeShader(dx, "shaders/loadTyped1dInvariant.cso");

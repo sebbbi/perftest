@@ -1,7 +1,26 @@
 #include "directx.h"
 #include <assert.h>
 
-DirectXDevice::DirectXDevice(HWND window, uint2 resolution) : 
+std::vector<com_ptr<IDXGIAdapter>> enumerateAdapters()
+{
+	std::vector<com_ptr<IDXGIAdapter>> adapters;
+
+	com_ptr<IDXGIFactory> factory;
+	if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+	{
+		return adapters;
+	}
+
+	IDXGIAdapter* adapter;
+	for (UINT i = 0; factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND; ++i)
+	{
+		adapters.push_back(adapter);
+	}
+
+	return adapters;
+}
+
+DirectXDevice::DirectXDevice(HWND window, uint2 resolution, IDXGIAdapter* adapter) : 
 	windowHandle(window),
 	resolution(resolution)
 
@@ -25,8 +44,8 @@ DirectXDevice::DirectXDevice(HWND window, uint2 resolution) :
 	swapDesc.Flags = 0;// DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE; // TODO: Fullscreen needs: DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH
 
 	HRESULT result = D3D11CreateDeviceAndSwapChain(
-		nullptr, // adapter
-		D3D_DRIVER_TYPE_HARDWARE,
+		adapter,
+		D3D_DRIVER_TYPE_UNKNOWN,
 		nullptr, // software rasterizer
 		flags,
 		&featureLevel,

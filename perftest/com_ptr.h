@@ -5,12 +5,19 @@ class com_ptr
 {
 public:
 	com_ptr() : ptr(nullptr) {}
-	com_ptr(T *ptr) : ptr(ptr) {}
-	com_ptr(const com_ptr<T> &other) = delete;
+	com_ptr(T* ptr) : ptr(ptr) {}
+	com_ptr(const com_ptr<T>& other) = delete;
+	
+	com_ptr(com_ptr<T>&& other)
+	{
+		ptr = other.ptr;
+		other.ptr = nullptr;
+	}
 
 	~com_ptr()
 	{
-		ptr->Release();
+		if (ptr)
+			ptr->Release();
 	}
 
 	T& operator*() { return *ptr; }

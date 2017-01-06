@@ -21,6 +21,8 @@ struct PerformanceQuery
 	std::string name;
 };
 
+std::vector<com_ptr<IDXGIAdapter>> enumerateAdapters();
+
 class DirectXDevice
 {
 public:
@@ -39,7 +41,7 @@ public:
 		Trilinear
 	};
 
-	DirectXDevice(HWND window, uint2 resolution);
+	DirectXDevice(HWND window, uint2 resolution, IDXGIAdapter* adapter = nullptr);
 
 	// Create resources
 	ID3D11UnorderedAccessView* createBackBufferUAV();
