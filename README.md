@@ -28,9 +28,9 @@ All threads in group simultaneously load from the same address. This triggers co
 
 ## Todo list
 
-- Enumerate GPUs (allow select iGPU/dGPU)
 - Better output (elements/s or bytes/s, etc)
 - Constant buffer loads (both constant address and indexed)
+- UAV loads (RWBuffer, RWByteAddressBuffer)
 - Texture loads (1d/2d/3d)
 - Texture sampling (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths, R10G10B10, R11G11B10f)
