@@ -101,47 +101,56 @@ These results match with AMDs wide loads & coalescing documents, see: http://gpu
 
 ### NVIDIA GeForce GTX 980 (Maxwell2)
 ```markdown
-Load R8 invariant: 1.632ms
-Load R8 linear: 1.825ms
-Load R8 random: 1.629ms
-Load RG8 linear: 1.632ms
-Load RG8 linear: 1.630ms
-Load RG8 random: 1.631ms
-Load RGBA8 linear: 1.719ms
-Load RGBA8 linear: 1.720ms
-Load RGBA8 random: 1.705ms
-Load R16f invariant: 1.625ms
-Load R16f linear: 1.631ms
-Load R16f random: 1.821ms
-Load RG16f invariant: 1.634ms
-Load RG16f linear: 1.633ms
-Load RG16f random: 1.633ms
+Load R8 invariant: 1.631ms
+Load R8 linear: 1.816ms
+Load R8 random: 1.633ms
+Load RG8 invariant: 1.631ms
+Load RG8 linear: 1.634ms
+Load RG8 random: 1.634ms
+Load RGBA8 invariant: 1.687ms
+Load RGBA8 linear: 1.723ms
+Load RGBA8 random: 1.708ms
+Load R16f invariant: 1.627ms
+Load R16f linear: 1.636ms
+Load R16f random: 1.795ms
+Load RG16f invariant: 1.629ms
+Load RG16f linear: 1.637ms
+Load RG16f random: 1.632ms
 Load RGBA16f invariant: 1.688ms
-Load RGBA16f linear: 1.718ms
-Load RGBA16f random: 1.706ms
-Load R32f invariant: 1.628ms
-Load R32f linear: 1.631ms
+Load RGBA16f linear: 1.726ms
+Load RGBA16f random: 1.710ms
+Load R32f invariant: 1.630ms
+Load R32f linear: 1.630ms
 Load R32f random: 1.631ms
-Load RG32f invariant: 1.634ms
-Load RG32f linear: 1.630ms
-Load RG32f random: 1.629ms
-Load RGBA32f invariant: 3.246ms
-Load RGBA32f linear: 3.249ms
-Load RGBA32f random: 3.250ms
-Load1 raw32 invariant: 1.638ms
-Load1 raw32 linear: 1.638ms
+Load RG32f invariant: 1.637ms
+Load RG32f linear: 1.636ms
+Load RG32f random: 1.631ms
+Load RGBA32f invariant: 3.265ms
+Load RGBA32f linear: 3.269ms
+Load RGBA32f random: 3.272ms
+Load1 raw32 invariant: 1.631ms
+Load1 raw32 linear: 1.636ms
 Load1 raw32 random: 1.636ms
-Load2 raw32 invariant: 3.259ms
-Load2 raw32 linear: 3.268ms
-Load2 raw32 random: 3.255ms
-Load4 raw32 invariant: 6.505ms
-Load4 raw32 linear: 7.773ms
-Load4 raw32 random: 6.520ms
+Load2 raw32 invariant: 3.254ms
+Load2 raw32 linear: 3.266ms
+Load2 raw32 random: 3.259ms
+Load3 raw32 invariant: 4.890ms
+Load3 raw32 linear: 5.544ms
+Load3 raw32 random: 4.897ms
+Load4 raw32 invariant: 6.518ms
+Load4 raw32 linear: 6.684ms
+Load4 raw32 random: 6.538ms
+Load2 raw32 unaligned invariant: 3.271ms
+Load2 raw32 unaligned linear: 3.267ms
+Load2 raw32 unaligned random: 3.267ms
+Load4 raw32 unaligned invariant: 6.526ms
+Load4 raw32 unaligned linear: 6.528ms
+Load4 raw32 unaligned random: 6.543ms
 ```
 
 **Typed loads:** Maxwell2 doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32). Best bytes per cycle rate can be achieved by 64+ bit loads (RGBA16, RG32, RGBA32).
 
-**Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower than 1d and 4d is 4x slower. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment. My test case is perfectly aligned. HLSL ByteAddressBuffer.Load4() only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
+**Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower, 3d is 3x slower and 4d is 4x slower than 1d. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment (8/16 bytes). My test case however is perfectly aligned. HLSL ByteAddressBuffer.Load4() specification only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
 
 **Suggestions:** Prefer 64+ bit typed loads (RGBA16, RG32, RGBA32). ByteAddressBuffer wide loads and coalescing doesn't seem to work in DirectX.
 
