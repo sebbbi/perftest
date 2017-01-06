@@ -34,14 +34,14 @@ DirectXDevice::DirectXDevice(HWND window, uint2 resolution, IDXGIAdapter* adapte
 	swapDesc.BufferDesc.Height = resolution.y;
 	swapDesc.BufferDesc.RefreshRate.Numerator = 60;
 	swapDesc.BufferDesc.RefreshRate.Denominator = 1;
-	swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // DXGI_FORMAT_B8G8R8A8_UNORM;	// BGRA needed for GDI text output
+	swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapDesc.SampleDesc.Count = 1;
 	swapDesc.BufferUsage = DXGI_USAGE_UNORDERED_ACCESS | DXGI_USAGE_RENDER_TARGET_OUTPUT; // RT needed for GDI text output
 	swapDesc.BufferCount = 1;
 	swapDesc.OutputWindow = window;
 	swapDesc.Windowed = true;
 	swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapDesc.Flags = 0;// DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE; // TODO: Fullscreen needs: DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH
+	swapDesc.Flags = 0;
 
 	HRESULT result = D3D11CreateDeviceAndSwapChain(
 		adapter,
@@ -436,7 +436,7 @@ void DirectXDevice::setRenderTargets(std::initializer_list<ID3D11RenderTargetVie
 
 void DirectXDevice::presentFrame()
 {
-	const bool vsync = true;
+	const bool vsync = false;
 	swapChain->Present(vsync ? 1 : 0, 0);
 }
 
