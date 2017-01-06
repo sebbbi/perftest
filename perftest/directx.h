@@ -55,7 +55,7 @@ public:
 	ID3D11Texture3D* createTexture3d(uint3 dimensions, DXGI_FORMAT format, unsigned mips);
 	ID3D11SamplerState* createSampler(SamplerType type);
 
-	ID3D11UnorderedAccessView* createUAV(ID3D11Resource* buffer);
+	ID3D11UnorderedAccessView* createUAV(ID3D11Resource* resource);
 	ID3D11UnorderedAccessView* createTypedUAV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
 	ID3D11UnorderedAccessView* createByteAddressUAV(ID3D11Resource* buffer, unsigned numElements);
 

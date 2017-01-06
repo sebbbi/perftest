@@ -22,6 +22,9 @@
     <Filter Include="Shaders\raw_load">
       <UniqueIdentifier>{789c5a00-0b5b-41a2-862d-694ca2bbdc42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\texture_load">
+      <UniqueIdentifier>{502f0124-fac7-414e-86c4-12f6b4488385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="directx.cpp">
@@ -124,6 +127,24 @@
     <FxCompile Include="loadRaw3dRandom.hlsl">
       <Filter>Shaders\raw_load</Filter>
     </FxCompile>
+    <FxCompile Include="loadTex1dInvariant.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex1dLinear.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex1dRandom.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex4dInvariant.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex4dLinear.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex4dRandom.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
@@ -134,6 +155,9 @@
     </None>
     <None Include="loadTypedBody.hlsli">
       <Filter>Shaders\typed_load</Filter>
+    </None>
+    <None Include="loadTexBody.hlsli">
+      <Filter>Shaders\texture_load</Filter>
     </None>
   </ItemGroup>
 </Project>

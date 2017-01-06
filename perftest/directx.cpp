@@ -260,10 +260,10 @@ ID3D11UnorderedAccessView* DirectXDevice::createTypedUAV(ID3D11Resource *buffer,
 	return view;
 }
 
-ID3D11ShaderResourceView* DirectXDevice::createSRV(ID3D11Resource *buffer)
+ID3D11ShaderResourceView* DirectXDevice::createSRV(ID3D11Resource *resource)
 {
 	ID3D11ShaderResourceView *view = nullptr;
-	HRESULT result = device->CreateShaderResourceView(buffer, nullptr, &view);
+	HRESULT result = device->CreateShaderResourceView(resource, nullptr, &view);
 	assert(SUCCEEDED(result));
 	return view;
 }
