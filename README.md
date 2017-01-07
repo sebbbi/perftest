@@ -11,7 +11,7 @@ Designed to measure performance of various types of buffer and image loads. This
 - Invariant loads (same address for all threads)
 - Typed Buffer SRVs: 1/2/4 channels, 8/16/32 bits per channel
 - ByteAddressBuffer SRVs (load, load2, load3, load4 - aligned and unaligned)
-- Texture loads: 1/4 channels, 8/16/32 bits per channel (TODO: 2 channel formats, 1d textures & 3d textures)
+- Texture2D loads: 1/2/4 channels, 8/16/32 bits per channel
 
 ## Explanations
 
@@ -34,6 +34,7 @@ All threads in group simultaneously load from the same address. This triggers co
 - Structured buffer loads
 - UAV loads (RWBuffer, RWByteAddressBuffer)
 - Groupshared loads vs L1 memory loads
+- Texture1D / Texture3D support (currently only Texture2D)
 - Texture sampling (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths, R10G10B10, R11G11B10f)
 - Measure write performance
@@ -46,16 +47,16 @@ All threads in group simultaneously load from the same address. This triggers co
 ### AMD Radeon 7970 GE (GCN1)
 ```markdown
 Load R8 invariant: 0.541ms
-Load R8 linear: 0.539ms
+Load R8 linear: 0.538ms
 Load R8 random: 2.121ms
 Load RG8 invariant: 2.386ms
 Load RG8 linear: 2.386ms
 Load RG8 random: 2.386ms
-Load RGBA8 invariant: 2.122ms
+Load RGBA8 invariant: 2.121ms
 Load RGBA8 linear: 2.122ms
-Load RGBA8 random: 2.121ms
+Load RGBA8 random: 2.122ms
 Load R16f invariant: 0.536ms
-Load R16f linear: 0.538ms
+Load R16f linear: 0.537ms
 Load R16f random: 2.121ms
 Load RG16f invariant: 2.385ms
 Load RG16f linear: 2.385ms
@@ -78,34 +79,40 @@ Load1 raw32 random: 2.122ms
 Load2 raw32 invariant: 0.549ms
 Load2 raw32 linear: 2.386ms
 Load2 raw32 random: 2.386ms
-Load3 raw32 invariant: 0.812ms
+Load3 raw32 invariant: 0.811ms
 Load3 raw32 linear: 2.122ms
 Load3 raw32 random: 4.239ms
 Load4 raw32 invariant: 1.082ms
-Load4 raw32 linear: 2.139ms
-Load4 raw32 random: 2.371ms
-Load2 raw32 unaligned invariant: 0.548ms
+Load4 raw32 linear: 2.140ms
+Load4 raw32 random: 2.370ms
+Load2 raw32 unaligned invariant: 0.551ms
 Load2 raw32 unaligned linear: 2.385ms
 Load2 raw32 unaligned random: 2.385ms
 Load4 raw32 unaligned invariant: 1.076ms
-Load4 raw32 unaligned linear: 2.124ms
+Load4 raw32 unaligned linear: 2.138ms
 Load4 raw32 unaligned random: 2.622ms
-Tex2D load R8 invariant: 2.123ms
-Tex2D load R8 linear: 2.131ms
+Tex2D load R8 invariant: 2.122ms
+Tex2D load R8 linear: 2.129ms
 Tex2D load R8 random: 3.180ms
-Tex2D load RGBA8 invariant: 2.122ms
-Tex2D load RGBA8 linear: 2.125ms
+Tex2D load RG8 invariant: 2.386ms
+Tex2D load RG8 linear: 2.386ms
+Tex2D load RG8 random: 3.282ms
+Tex2D load RGBA8 invariant: 2.138ms
+Tex2D load RGBA8 linear: 2.126ms
 Tex2D load RGBA8 random: 2.916ms
-Tex2D load R16F invariant: 2.123ms
-Tex2D load R16F linear: 2.129ms
-Tex2D load R16F random: 3.180ms
+Tex2D load R16F invariant: 2.122ms
+Tex2D load R16F linear: 2.130ms
+Tex2D load R16F random: 3.179ms
 Tex2D load RGBA16F invariant: 2.122ms
-Tex2D load RGBA16F linear: 2.121ms
+Tex2D load RGBA16F linear: 2.123ms
 Tex2D load RGBA16F random: 4.371ms
 Tex2D load R32F invariant: 2.122ms
-Tex2D load R32F linear: 2.129ms
+Tex2D load R32F linear: 2.130ms
 Tex2D load R32F random: 2.915ms
-Tex2D load RGBA32F invariant: 2.123ms
+Tex2D load RG32F invariant: 2.385ms
+Tex2D load RG32F linear: 2.386ms
+Tex2D load RG32F random: 4.371ms
+Tex2D load RGBA32F invariant: 2.122ms
 Tex2D load RGBA32F linear: 3.180ms
 Tex2D load RGBA32F random: 4.239ms
 ```
