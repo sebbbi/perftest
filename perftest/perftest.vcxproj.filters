@@ -145,6 +145,15 @@
     <FxCompile Include="loadTex4dRandom.hlsl">
       <Filter>Shaders\texture_load</Filter>
     </FxCompile>
+    <FxCompile Include="loadTex2dInvariant.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex2dLinear.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadTex2dRandom.hlsl">
+      <Filter>Shaders\texture_load</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
