@@ -9,8 +9,9 @@ Designed to measure performance of various types of buffer and image loads. This
 - Coalesced loads (100% L1 cache hit)
 - Random loads (100% L1 cache hit)
 - Invariant loads (same address for all threads)
-- Typed SRVs: 1/2/4 channels, 8/16/32 bits per channel
-- 32 bit byte address SRVs (load, load2, load3, load4 - aligned and unaligned)
+- Typed Buffer SRVs: 1/2/4 channels, 8/16/32 bits per channel
+- ByteAddressBuffer SRVs (load, load2, load3, load4 - aligned and unaligned)
+- Texture loads: 1/4 channels, 8/16/32 bits per channel (TODO: 2 channel formats, 1d textures & 3d textures)
 
 ## Explanations
 
@@ -30,8 +31,9 @@ All threads in group simultaneously load from the same address. This triggers co
 
 - Better output (elements/s or bytes/s, etc)
 - Constant buffer loads (both constant address and indexed)
+- Structured buffer loads
 - UAV loads (RWBuffer, RWByteAddressBuffer)
-- Texture loads (1d/2d/3d)
+- Groupshared loads vs L1 memory loads
 - Texture sampling (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths, R10G10B10, R11G11B10f)
 - Measure write performance
@@ -281,6 +283,10 @@ Load4 raw32 unaligned random: 79.689ms
 **Raw (ByteAddressBuffer) loads:** Intel raw buffer loads are significantly faster compared to similar typed loads. 1d raw load is 5x faster than any typed load. 2d linear raw load is 2.5x faster than typed loads. 4d linear raw load is 40% faster than typed loads. 2d/4d random raw loads are around 2x slower compared to linear ones (could be coalescing or something else). 3d raw load performance matches 4d. Alignment doesn't seem to matter. Invariant raw loads also have a fast path (like invariant typed loads), however the performance improvement is even larger. Widest invariant 4d raw load = 7x faster than any typed load.
 
 **Suggestions:** When using typed buffers, prefer widest loads (RGBA32). Raw buffers are significantly faster than typed buffers. Invariant loads are very fast (both raw and typed). Might be that Intel's DX11 drivers are exploiting their cbuffer hardware in this special case. Have to ask Intel for confirmation.
+
+## Contact
+
+Send private message to @SebAaltonen at Twitter. We can discuss via company emails later.
 
 ## License
 
