@@ -34,6 +34,7 @@ All threads in group simultaneously load from the same address. This triggers co
 - Structured buffer loads
 - UAV loads (RWBuffer, RWByteAddressBuffer)
 - Groupshared loads vs L1 memory loads
+- Mixed loads (textures, raw/typed/constant buffers)
 - Texture1D / Texture3D support (currently only Texture2D)
 - Texture sampling (1d/2d/3d)
 - Extended format support (uint/unorm/float of all widths, R10G10B10, R11G11B10f)
