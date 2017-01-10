@@ -43,8 +43,6 @@ All threads in group simultaneously load from the same address. This triggers co
 
 ## Results
 
-**TODO:** Add comprehensive AMD, NV & Intel results here. Add some graphs. Add percentage comparison and/or ops per cycle.
-
 ### AMD Radeon 7970 GE (GCN1)
 ```markdown
 Load R8 invariant: 0.541ms
