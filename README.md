@@ -125,12 +125,97 @@ Tex2D load RGBA32F random: 4.239ms
 
 **Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d raw loads coalesce perfectly (4x) on linear access. Invariant raw loads generates scalar unit loads on GCN (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (similar to coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16). 3d raw linear loads have equal performance to 4d loads, but random 3d loads are 2x slower than 4d loads. 
 
-**Texture loads:** Similar performance as typed buffer loads. However no coalescing in 1d linear access and no scalar unit offload of invariant access. Random access of wide formats seems slightly slower (but 2d random produces different access pattern than 1d random).
+**Texture loads:** Similar performance as typed buffer loads. However no coalescing in 1d linear access and no scalar unit offload of invariant access. Random access of wide formats tends to be slightly slower (but my 2d random produces different access pattern than 1d).
 
 **Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads invariant loads to scalar unit, saving VGPR pressure and vector memory instructions. Avoid 3d random loads if possible (4d load is 2x faster).
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
+### NVIDIA GeForce Titan X (Pascal)
+```markdown
+Load R8 invariant: 0.648ms
+Load R8 linear: 0.647ms
+Load R8 random: 0.647ms
+Load RG8 invariant: 0.646ms
+Load RG8 linear: 0.647ms
+Load RG8 random: 0.647ms
+Load RGBA8 invariant: 0.681ms
+Load RGBA8 linear: 0.693ms
+Load RGBA8 random: 0.690ms
+Load R16f invariant: 0.646ms
+Load R16f linear: 1.170ms
+Load R16f random: 0.646ms
+Load RG16f invariant: 0.647ms
+Load RG16f linear: 0.646ms
+Load RG16f random: 0.648ms
+Load RGBA16f invariant: 0.681ms
+Load RGBA16f linear: 0.693ms
+Load RGBA16f random: 0.689ms
+Load R32f invariant: 0.651ms
+Load R32f linear: 0.647ms
+Load R32f random: 0.647ms
+Load RG32f invariant: 0.646ms
+Load RG32f linear: 0.647ms
+Load RG32f random: 0.647ms
+Load RGBA32f invariant: 1.315ms
+Load RGBA32f linear: 1.315ms
+Load RGBA32f random: 1.315ms
+Load1 raw32 invariant: 0.648ms
+Load1 raw32 linear: 0.648ms
+Load1 raw32 random: 0.648ms
+Load2 raw32 invariant: 1.291ms
+Load2 raw32 linear: 1.298ms
+Load2 raw32 random: 1.290ms
+Load3 raw32 invariant: 1.934ms
+Load3 raw32 linear: 1.956ms
+Load3 raw32 random: 1.936ms
+Load4 raw32 invariant: 2.593ms
+Load4 raw32 linear: 2.582ms
+Load4 raw32 random: 2.599ms
+Load2 raw32 unaligned invariant: 1.291ms
+Load2 raw32 unaligned linear: 1.290ms
+Load2 raw32 unaligned random: 1.291ms
+Load4 raw32 unaligned invariant: 2.593ms
+Load4 raw32 unaligned linear: 2.593ms
+Load4 raw32 unaligned random: 2.586ms
+Tex2D load R8 invariant: 0.648ms
+Tex2D load R8 linear: 0.646ms
+Tex2D load R8 random: 0.647ms
+Tex2D load RG8 invariant: 0.663ms
+Tex2D load RG8 linear: 0.652ms
+Tex2D load RG8 random: 0.741ms
+Tex2D load RGBA8 invariant: 0.666ms
+Tex2D load RGBA8 linear: 0.685ms
+Tex2D load RGBA8 random: 1.188ms
+Tex2D load R16F invariant: 0.647ms
+Tex2D load R16F linear: 0.646ms
+Tex2D load R16F random: 0.729ms
+Tex2D load RG16F invariant: 0.664ms
+Tex2D load RG16F linear: 0.655ms
+Tex2D load RG16F random: 1.157ms
+Tex2D load RGBA16F invariant: 0.667ms
+Tex2D load RGBA16F linear: 0.693ms
+Tex2D load RGBA16F random: 1.382ms
+Tex2D load R32F invariant: 0.647ms
+Tex2D load R32F linear: 0.647ms
+Tex2D load R32F random: 1.149ms
+Tex2D load RG32F invariant: 0.663ms
+Tex2D load RG32F linear: 0.652ms
+Tex2D load RG32F random: 1.348ms
+Tex2D load RGBA32F invariant: 1.299ms
+Tex2D load RGBA32F linear: 1.316ms
+Tex2D load RGBA32F random: 1.667ms
+```
+
+**Typed loads:** Pascal doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32). Best bytes per cycle rate can be achieved by 64+ bit loads (RGBA16, RG32, RGBA32).
+
+**Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower, 3d is 3x slower and 4d is 4x slower than 1d. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment (8/16 bytes). My test case however is perfectly aligned. HLSL ByteAddressBuffer.Load4() specification only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
+
+**Texture loads:** Similar performance as typed buffer loads. Random access of wide formats tends to be slightly slower (but my 2d random produces different access pattern than 1d).
+
+**Suggestions:** Prefer 64+ bit typed loads (RGBA16, RG32, RGBA32). ByteAddressBuffer wide loads and coalescing doesn't seem to work in DirectX.
+
+NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent low level hardware performance documents/benchmarks as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
 
 ### NVIDIA GeForce GTX 980 (Maxwell2)
 ```markdown
@@ -181,13 +266,7 @@ Load4 raw32 unaligned linear: 6.528ms
 Load4 raw32 unaligned random: 6.543ms
 ```
 
-**Typed loads:** Maxwell2 doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32). Best bytes per cycle rate can be achieved by 64+ bit loads (RGBA16, RG32, RGBA32).
-
-**Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower, 3d is 3x slower and 4d is 4x slower than 1d. NVIDIA supports 64 bit and 128 wide raw loads, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment (8/16 bytes). My test case however is perfectly aligned. HLSL ByteAddressBuffer.Load4() specification only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16). I need to ask NVIDIA whether their HLSL compiler should emit raw wide loads (and if so, what are the limitations).
-
-**Suggestions:** Prefer 64+ bit typed loads (RGBA16, RG32, RGBA32). ByteAddressBuffer wide loads and coalescing doesn't seem to work in DirectX.
-
-NVIDIA's coalescing & wide load documents are all CUDA centric. I coudn't reproduce coalescing or wide load performance gains in HLSL (DirectX). NVIDIA should provide game developers similar excellent low level hardware performance documents/benchmarks as they provide CUDA developers. It's often hard to understand why HLSL compute shader performance doesn't match equal CUDA code.
+**NVIDIA Maxwell2** results (ratios) are identical to Pascal & Maxwell2. See Pascal for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
 
 ### NVIDIA Quadro K1100M (Kepler)
 ```markdown
@@ -238,7 +317,7 @@ Load4 raw32 unaligned linear: 51.351ms
 Load4 raw32 unaligned random: 51.765ms
 ```
 
-**NVIDIA Kepler** results (ratios) are identical to Maxwell2. See Maxwell2 for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
+**NVIDIA Kepler** results (ratios) are identical to Pascal & Maxwell2. See Pascal for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
 
 ### Intel Skylake 6700K HD Graphics 530 (Gen9)
 ```markdown
