@@ -264,7 +264,7 @@ Load4 raw32 unaligned linear: 6.528ms
 Load4 raw32 unaligned random: 6.543ms
 ```
 
-**NVIDIA Maxwell2** results (ratios) are identical to Pascal & Maxwell2. See Pascal for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
+**NVIDIA Maxwell2** results (ratios) are identical to Pascal. See Pascal for analysis. GTX 980 has 2048 shader cores @ 1126 MHz. In comparison Titan X has 3584 shader cores @ 1417 MHz. This is 2.2x theoretical difference. Results show 2.5x difference, proving that Pascal and Maxwell2 architectures are close to each other regarding to L1 cached loads.
 
 ### NVIDIA Quadro K1100M (Kepler)
 ```markdown
@@ -397,7 +397,7 @@ Tex2D load RGBA32F random: 59.521ms
 
 **Raw (ByteAddressBuffer) loads:** Intel raw buffer loads are significantly faster compared to similar typed loads. 1d raw load is 5x faster than any typed load. 2d linear raw load is 2.5x faster than typed loads. 4d linear raw load is 40% faster than typed loads. 2d/4d random raw loads are around 2x slower compared to linear ones (could be coalescing or something else). 3d raw load performance matches 4d. Alignment doesn't seem to matter. Invariant raw loads also have a fast path (like invariant typed loads), however the performance improvement is even larger. Widest invariant 4d raw load = 7x faster than any typed load.
 
-**Texture loads:** All formats perform similarly, except the widest RGBA32 (half speed linear). Invariant texture loads are 2x faster than linear. Random loads are up to 2x slower, so there seems to be some memory coalescing happening. There's certainly something fishy going on, as Texture2D loads are generally 2x+ faster than same format buffer loads. I find it odd that texture loads seems to coalesce, but buffer loads do not. Maybe I am hitting some bank conflict case here...
+**Texture loads:** All formats perform similarly, except the widest RGBA32 (half speed linear). Invariant texture loads are 2x faster than linear. Random loads are up to 2x slower, so there seems to be some memory coalescing happening. There's certainly something fishy going on, as Texture2D loads are generally 2x+ faster than same format buffer loads. I find it odd that texture loads seems to coalesce, but buffer loads do not. Maybe I am hitting some bank conflict case or Intel is swizzling the buffer layout.
 
 **Suggestions:** When using typed buffers, prefer widest loads (RGBA32). Raw buffers are significantly faster than typed buffers. Invariant loads are very fast (both raw and typed). Might be that Intel's DX11 drivers are exploiting their cbuffer hardware in this special case. Have to ask Intel for confirmation.
 
