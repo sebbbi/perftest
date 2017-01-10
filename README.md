@@ -129,6 +129,83 @@ Tex2D load RGBA32F random: 4.239ms
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
+### AMD Radeon R9 Fury X (GCN3)
+```markdown
+Load R8 invariant: 0.286ms
+Load R8 linear: 0.276ms
+Load R8 random: 1.062ms
+Load RG8 invariant: 1.151ms
+Load RG8 linear: 1.126ms
+Load RG8 random: 1.125ms
+Load RGBA8 invariant: 1.001ms
+Load RGBA8 linear: 1.003ms
+Load RGBA8 random: 1.001ms
+Load R16f invariant: 0.256ms
+Load R16f linear: 0.255ms
+Load R16f random: 1.000ms
+Load RG16f invariant: 1.125ms
+Load RG16f linear: 1.125ms
+Load RG16f random: 1.125ms
+Load RGBA16f invariant: 1.001ms
+Load RGBA16f linear: 1.001ms
+Load RGBA16f random: 1.001ms
+Load R32f invariant: 0.256ms
+Load R32f linear: 0.255ms
+Load R32f random: 1.001ms
+Load RG32f invariant: 1.125ms
+Load RG32f linear: 1.125ms
+Load RG32f random: 1.125ms
+Load RGBA32f invariant: 1.000ms
+Load RGBA32f linear: 1.001ms
+Load RGBA32f random: 1.125ms
+Load1 raw32 invariant: 0.314ms
+Load1 raw32 linear: 0.261ms
+Load1 raw32 random: 1.001ms
+Load2 raw32 invariant: 0.317ms
+Load2 raw32 linear: 1.125ms
+Load2 raw32 random: 1.125ms
+Load3 raw32 invariant: 0.388ms
+Load3 raw32 linear: 1.001ms
+Load3 raw32 random: 1.999ms
+Load4 raw32 invariant: 0.512ms
+Load4 raw32 linear: 1.002ms
+Load4 raw32 random: 1.118ms
+Load2 raw32 unaligned invariant: 0.316ms
+Load2 raw32 unaligned linear: 1.125ms
+Load2 raw32 unaligned random: 1.125ms
+Load4 raw32 unaligned invariant: 0.512ms
+Load4 raw32 unaligned linear: 1.002ms
+Load4 raw32 unaligned random: 1.234ms
+Tex2D load R8 invariant: 1.001ms
+Tex2D load R8 linear: 1.000ms
+Tex2D load R8 random: 1.500ms
+Tex2D load RG8 invariant: 1.125ms
+Tex2D load RG8 linear: 1.125ms
+Tex2D load RG8 random: 1.548ms
+Tex2D load RGBA8 invariant: 1.000ms
+Tex2D load RGBA8 linear: 1.001ms
+Tex2D load RGBA8 random: 1.375ms
+Tex2D load R16F invariant: 1.000ms
+Tex2D load R16F linear: 1.001ms
+Tex2D load R16F random: 1.500ms
+Tex2D load RG16F invariant: 1.125ms
+Tex2D load RG16F linear: 1.125ms
+Tex2D load RG16F random: 1.375ms
+Tex2D load RGBA16F invariant: 1.001ms
+Tex2D load RGBA16F linear: 1.001ms
+Tex2D load RGBA16F random: 2.061ms
+Tex2D load R32F invariant: 1.001ms
+Tex2D load R32F linear: 1.000ms
+Tex2D load R32F random: 1.375ms
+Tex2D load RG32F invariant: 1.125ms
+Tex2D load RG32F linear: 1.125ms
+Tex2D load RG32F random: 2.061ms
+Tex2D load RGBA32F invariant: 1.001ms
+Tex2D load RGBA32F linear: 1.500ms
+Tex2D load RGBA32F random: 1.999ms
+```
+**AMD GCN3** results (ratios) are identical to GCN1. See GCN1 for analysis. 7970 GE has 2048 shader cores @ 1000 MHz. In comparison Fury X has 4096 shader cores @ 1050 MHz. This is 2.1x theoretical difference. Results show the same 2.1x difference, proving that GCN1 & GCN3 architectures are very similar regarding to L1 cached loads.
+
 ### NVIDIA GeForce Titan X (Pascal)
 ```markdown
 Load R8 invariant: 0.648ms
