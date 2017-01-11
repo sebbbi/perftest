@@ -2,9 +2,13 @@
 
 A simple GPU shader memory operation performance test tool. Current implementation is DirectX 11.0 based.
 
+The purpose of this application is not to benchmark different brand GPUs against each other. Its purpose is to help rendering programmers to choose right types of resources when optimizing their compute shader performance.
+
+This application is designed to measure peak data load performance from L1 caches. I tried to avoid known hardware bottlenecks. **If you notice something wrong or suspicious in the shader workload, please inform me immediately and I will fix it.** If my shaders are affected by some hardware bottlenecks, I am glad to hear about it and write more test cases to show the best performance. The goal is that developers gain better understanding of various GPU hardware on the market and gain insight to optimize code for them.
+
 ## Features
 
-Designed to measure performance of various types of buffer and image loads. This application is not a GPU memory bandwidth benchmark tool. All tests operate inside GPUs L1 caches (no larger than 16 KB working sets). 
+Designed to measure performance of various types of buffer and image loads. This application is not a GPU memory bandwidth measurement tool. All tests operate inside GPUs L1 caches (no larger than 16 KB working sets). 
 
 - Coalesced loads (100% L1 cache hit)
 - Random loads (100% L1 cache hit)
@@ -33,6 +37,7 @@ All threads in group simultaneously load from the same address. This triggers co
 - Constant buffer loads (both constant address and indexed)
 - Structured buffer loads
 - UAV loads (RWBuffer, RWByteAddressBuffer)
+- Texture gather (loads 2x2 neighborhood of texels)
 - Groupshared loads vs L1 memory loads
 - Mixed loads (textures, raw/typed/constant buffers)
 - Texture1D / Texture3D support (currently only Texture2D)
