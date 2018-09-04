@@ -476,6 +476,84 @@ Load4 raw32 unaligned random: 51.765ms
 
 **NVIDIA Kepler** results (ratios) are identical to Pascal & Maxwell2. See Pascal for analysis. This is a slow laptop GPU with 384 shader cores @ 705 MHz. In comparison GTX 980 has 2048 shader cores @ 1126 MHz. This is 8.5x theoretical difference. Results show the same 8.5x difference, proving that Maxwell2 and Kepler architectures are practically identical regarding to L1 cached loads.
 
+### NVIDIA Titan V (Volta)
+```markdown
+Load R8 invariant: 0.076ms
+Load R8 linear: 0.497ms
+Load R8 random: 1.018ms
+Load RG8 invariant: 0.141ms
+Load RG8 linear: 0.498ms
+Load RG8 random: 0.496ms
+Load RGBA8 invariant: 0.279ms
+Load RGBA8 linear: 0.490ms
+Load RGBA8 random: 0.493ms
+Load R16f invariant: 0.073ms
+Load R16f linear: 0.497ms
+Load R16f random: 0.486ms
+Load RG16f invariant: 0.136ms
+Load RG16f linear: 0.498ms
+Load RG16f random: 0.499ms
+Load RGBA16f invariant: 0.279ms
+Load RGBA16f linear: 0.493ms
+Load RGBA16f random: 0.496ms
+Load R32f invariant: 0.073ms
+Load R32f linear: 0.489ms
+Load R32f random: 1.004ms
+Load RG32f invariant: 0.196ms
+Load RG32f linear: 0.500ms
+Load RG32f random: 0.509ms
+Load RGBA32f invariant: 0.281ms
+Load RGBA32f linear: 0.956ms
+Load RGBA32f random: 0.975ms
+Load1 raw32 invariant: 0.288ms
+Load1 raw32 linear: 0.287ms
+Load1 raw32 random: 0.286ms
+Load2 raw32 invariant: 0.341ms
+Load2 raw32 linear: 0.361ms
+Load2 raw32 random: 0.361ms
+Load3 raw32 invariant: 0.421ms
+Load3 raw32 linear: 0.446ms
+Load3 raw32 random: 0.429ms
+Load4 raw32 invariant: 0.515ms
+Load4 raw32 linear: 0.825ms
+Load4 raw32 random: 0.591ms
+Load2 raw32 unaligned invariant: 0.344ms
+Load2 raw32 unaligned linear: 0.361ms
+Load2 raw32 unaligned random: 0.360ms
+Load4 raw32 unaligned invariant: 0.515ms
+Load4 raw32 unaligned linear: 0.826ms
+Load4 raw32 unaligned random: 0.586ms
+Tex2D load R8 invariant: 0.483ms
+Tex2D load R8 linear: 0.483ms
+Tex2D load R8 random: 0.483ms
+Tex2D load RG8 invariant: 0.155ms
+Tex2D load RG8 linear: 0.490ms
+Tex2D load RG8 random: 0.541ms
+Tex2D load RGBA8 invariant: 0.508ms
+Tex2D load RGBA8 linear: 0.513ms
+Tex2D load RGBA8 random: 0.868ms
+Tex2D load R16F invariant: 0.487ms
+Tex2D load R16F linear: 0.486ms
+Tex2D load R16F random: 0.566ms
+Tex2D load RG16F invariant: 0.157ms
+Tex2D load RG16F linear: 0.497ms
+Tex2D load RG16F random: 0.862ms
+Tex2D load RGBA16F invariant: 0.515ms
+Tex2D load RGBA16F linear: 0.519ms
+Tex2D load RGBA16F random: 1.018ms
+Tex2D load R32F invariant: 0.488ms
+Tex2D load R32F linear: 0.490ms
+Tex2D load R32F random: 0.862ms
+Tex2D load RG32F invariant: 0.157ms
+Tex2D load RG32F linear: 0.497ms
+Tex2D load RG32F random: 0.998ms
+Tex2D load RGBA32F invariant: 0.967ms
+Tex2D load RGBA32F linear: 1.564ms
+Tex2D load RGBA32F random: 1.214ms
+```
+
+**NVIDIA Volta** results (ratios) of most common load/sample operations are identical to Pascal. However there are some huge changes in invariant load and raw load performance. Invariant loads: 1d ~8x faster, 2d ~4x faster, 4d ~2x faster. Raw loads: 1d ~2x faster, 2d-4d ~4x faster (slightly more on 3d and 4d). Nvidia definitely seems to now emit wide raw load instructions and raw loads are faster than typed loads too, indicating that they use a faster direct memory path for raw loads now. Raw loads are now the best choice on Nvidia hardware (which is a direct opposite of their last gen hardware).
+
 ### Intel Skylake 6700K HD Graphics 530 (Gen9)
 ```markdown
 Load R8 invariant: 19.984ms
