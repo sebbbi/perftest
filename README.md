@@ -211,6 +211,83 @@ Tex2D load RGBA32F random: 1.999ms
 ```
 **AMD GCN3** results (ratios) are identical to GCN1. See GCN1 for analysis. 7970 GE has 2048 shader cores @ 1000 MHz. In comparison Fury X has 4096 shader cores @ 1050 MHz. This is 2.1x theoretical difference. Results show the same 2.1x difference, proving that GCN1 & GCN3 architectures are very similar regarding to L1 cached loads.
 
+### AMD Radeon Vega 64 (GCN5)
+```markdown
+Load R8 invariant: 0.212ms
+Load R8 linear: 0.209ms
+Load R8 random: 0.748ms
+Load RG8 invariant: 0.748ms
+Load RG8 linear: 0.751ms
+Load RG8 random: 0.749ms
+Load RGBA8 invariant: 0.750ms
+Load RGBA8 linear: 0.753ms
+Load RGBA8 random: 0.751ms
+Load R16f invariant: 0.210ms
+Load R16f linear: 0.209ms
+Load R16f random: 0.748ms
+Load RG16f invariant: 0.748ms
+Load RG16f linear: 0.751ms
+Load RG16f random: 0.749ms
+Load RGBA16f invariant: 0.750ms
+Load RGBA16f linear: 0.754ms
+Load RGBA16f random: 0.752ms
+Load R32f invariant: 0.210ms
+Load R32f linear: 0.209ms
+Load R32f random: 0.749ms
+Load RG32f invariant: 0.748ms
+Load RG32f linear: 0.752ms
+Load RG32f random: 0.750ms
+Load RGBA32f invariant: 0.751ms
+Load RGBA32f linear: 0.754ms
+Load RGBA32f random: 0.845ms
+Load1 raw32 invariant: 0.175ms
+Load1 raw32 linear: 0.211ms
+Load1 raw32 random: 0.750ms
+Load2 raw32 invariant: 0.195ms
+Load2 raw32 linear: 0.753ms
+Load2 raw32 random: 0.752ms
+Load3 raw32 invariant: 0.292ms
+Load3 raw32 linear: 0.755ms
+Load3 raw32 random: 1.492ms
+Load4 raw32 invariant: 0.379ms
+Load4 raw32 linear: 0.756ms
+Load4 raw32 random: 0.841ms
+Load2 raw32 unaligned invariant: 0.196ms
+Load2 raw32 unaligned linear: 0.753ms
+Load2 raw32 unaligned random: 0.751ms
+Load4 raw32 unaligned invariant: 0.379ms
+Load4 raw32 unaligned linear: 0.755ms
+Load4 raw32 unaligned random: 0.928ms
+Tex2D load R8 invariant: 0.748ms
+Tex2D load R8 linear: 0.749ms
+Tex2D load R8 random: 1.027ms
+Tex2D load RG8 invariant: 0.750ms
+Tex2D load RG8 linear: 0.751ms
+Tex2D load RG8 random: 1.028ms
+Tex2D load RGBA8 invariant: 0.752ms
+Tex2D load RGBA8 linear: 0.754ms
+Tex2D load RGBA8 random: 1.031ms
+Tex2D load R16F invariant: 0.749ms
+Tex2D load R16F linear: 0.750ms
+Tex2D load R16F random: 1.027ms
+Tex2D load RG16F invariant: 0.750ms
+Tex2D load RG16F linear: 0.752ms
+Tex2D load RG16F random: 1.029ms
+Tex2D load RGBA16F invariant: 0.753ms
+Tex2D load RGBA16F linear: 0.754ms
+Tex2D load RGBA16F random: 1.539ms
+Tex2D load R32F invariant: 0.748ms
+Tex2D load R32F linear: 0.751ms
+Tex2D load R32F random: 1.028ms
+Tex2D load RG32F invariant: 0.750ms
+Tex2D load RG32F linear: 0.753ms
+Tex2D load RG32F random: 1.537ms
+Tex2D load RGBA32F invariant: 0.753ms
+Tex2D load RGBA32F linear: 1.125ms
+Tex2D load RGBA32F random: 1.495ms
+```
+**AMD GCN5** results (ratios) are identical to GCN1 & GCN3. See GCN1 for analysis. Fury X and Vega 64 have same amount of shader cores (64 CUs). Only the clock rate differs. Fury X runs @ 1050 MHz. Vega 64 runs at @ 1200 MHz (base) to 1536 MHz (boost). There's 33% performance difference in the results. This would equal to 1400 MHz clock rate, if we assume linear scaling. This result is an indication that no significant architectural changes (affecting peak performance) to load/store/sampling pipeline was made.
+
 ### NVIDIA GeForce Titan X (Pascal)
 ```markdown
 Load R8 invariant: 0.648ms
