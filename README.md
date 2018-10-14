@@ -554,6 +554,83 @@ Tex2D load RGBA32F random: 1.214ms
 
 **NVIDIA Volta** results (ratios) of most common load/sample operations are identical to Pascal. However there are some huge changes in invariant load and raw load performance. Invariant loads: 1d ~8x faster, 2d ~4x faster, 4d ~2x faster. Raw loads: 1d ~2x faster, 2d-4d ~4x faster (slightly more on 3d and 4d). Nvidia definitely seems to now emit wide raw load instructions and raw loads are faster than typed loads too, indicating that they use a faster direct memory path for raw loads now. Raw loads are now the best choice on Nvidia hardware (which is a direct opposite of their last gen hardware).
 
+### NVIDIA RTX 2080 Ti (Turing)
+```Load R8 invariant: 0.023ms
+Load R8 linear: 0.526ms
+Load R8 random: 0.526ms
+Load RG8 invariant: 0.029ms
+Load RG8 linear: 0.526ms
+Load RG8 random: 0.525ms
+Load RGBA8 invariant: 0.045ms
+Load RGBA8 linear: 0.539ms
+Load RGBA8 random: 0.542ms
+Load R16f invariant: 0.025ms
+Load R16f linear: 0.528ms
+Load R16f random: 0.528ms
+Load RG16f invariant: 0.031ms
+Load RG16f linear: 0.526ms
+Load RG16f random: 0.528ms
+Load RGBA16f invariant: 0.045ms
+Load RGBA16f linear: 0.539ms
+Load RGBA16f random: 0.540ms
+Load R32f invariant: 0.023ms
+Load R32f linear: 0.525ms
+Load R32f random: 0.526ms
+Load RG32f invariant: 0.029ms
+Load RG32f linear: 0.526ms
+Load RG32f random: 0.525ms
+Load RGBA32f invariant: 0.045ms
+Load RGBA32f linear: 1.048ms
+Load RGBA32f random: 1.046ms
+Load1 raw32 invariant: 0.221ms
+Load1 raw32 linear: 0.223ms
+Load1 raw32 random: 0.250ms
+Load2 raw32 invariant: 0.321ms
+Load2 raw32 linear: 0.575ms
+Load2 raw32 random: 1.225ms
+Load3 raw32 invariant: 0.474ms
+Load3 raw32 linear: 0.606ms
+Load3 raw32 random: 0.502ms
+Load4 raw32 invariant: 0.618ms
+Load4 raw32 linear: 1.415ms
+Load4 raw32 random: 1.093ms
+Load2 raw32 unaligned invariant: 0.322ms
+Load2 raw32 unaligned linear: 0.575ms
+Load2 raw32 unaligned random: 0.332ms
+Load4 raw32 unaligned invariant: 0.618ms
+Load4 raw32 unaligned linear: 1.413ms
+Load4 raw32 unaligned random: 1.092ms
+Tex2D load R8 invariant: 0.534ms
+Tex2D load R8 linear: 0.536ms
+Tex2D load R8 random: 0.535ms
+Tex2D load RG8 invariant: 0.035ms
+Tex2D load RG8 linear: 0.526ms
+Tex2D load RG8 random: 0.591ms
+Tex2D load RGBA8 invariant: 0.561ms
+Tex2D load RGBA8 linear: 0.573ms
+Tex2D load RGBA8 random: 0.937ms
+Tex2D load R16F invariant: 0.534ms
+Tex2D load R16F linear: 0.538ms
+Tex2D load R16F random: 0.601ms
+Tex2D load RG16F invariant: 0.035ms
+Tex2D load RG16F linear: 0.526ms
+Tex2D load RG16F random: 0.932ms
+Tex2D load RGBA16F invariant: 0.563ms
+Tex2D load RGBA16F linear: 0.576ms
+Tex2D load RGBA16F random: 1.081ms
+Tex2D load R32F invariant: 0.535ms
+Tex2D load R32F linear: 0.539ms
+Tex2D load R32F random: 0.936ms
+Tex2D load RG32F invariant: 0.035ms
+Tex2D load RG32F linear: 0.526ms
+Tex2D load RG32F random: 1.078ms
+Tex2D load RGBA32F invariant: 1.049ms
+Tex2D load RGBA32F linear: 1.051ms
+Tex2D load RGBA32F random: 2.236ms
+```
+
+**NVIDIA Turing** results (ratios) of most common load/sample operations are identical Volta. Invariant loads seem to be even faster.  
+
 ### Intel Skylake 6700K HD Graphics 530 (Gen9)
 ```markdown
 Load R8 invariant: 19.984ms
