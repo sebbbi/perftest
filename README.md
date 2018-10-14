@@ -555,7 +555,8 @@ Tex2D load RGBA32F random: 1.214ms
 **NVIDIA Volta** results (ratios) of most common load/sample operations are identical to Pascal. However there are some huge changes in invariant load and raw load performance. Invariant loads: 1d ~8x faster, 2d ~4x faster, 4d ~2x faster. Raw loads: 1d ~2x faster, 2d-4d ~4x faster (slightly more on 3d and 4d). Nvidia definitely seems to now emit wide raw load instructions and raw loads are faster than typed loads too, indicating that they use a faster direct memory path for raw loads now. Raw loads are now the best choice on Nvidia hardware (which is a direct opposite of their last gen hardware).
 
 ### NVIDIA RTX 2080 Ti (Turing)
-```Load R8 invariant: 0.023ms
+```
+Load R8 invariant: 0.023ms
 Load R8 linear: 0.526ms
 Load R8 random: 0.526ms
 Load RG8 invariant: 0.029ms
