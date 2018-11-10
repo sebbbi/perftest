@@ -24,8 +24,8 @@ void main(uint3 tid : SV_DispatchThreadID, uint3 gid : SV_GroupThreadID)
 	// Linearly increasing starting address.
 	uint2 htid = gid;
 #elif defined(LOAD_RANDOM)
-    // Randomize start address offset (0-15)
-	uint2 htid = uint2((hash1(gid.x) & 0xf), (hash1(gid.y) & 0xf));
+    // Randomize start address offset (0-3, 0-3)
+	uint2 htid = uint2((hash1(gid.x) & 0x4), (hash1(gid.y) & 0x4));
 #endif
 
 	[loop]

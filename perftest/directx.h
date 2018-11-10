@@ -18,6 +18,7 @@ struct PerformanceQuery
 	com_ptr<ID3D11Query> start;
 	com_ptr<ID3D11Query> end;
 
+	unsigned id;
 	std::string name;
 };
 
@@ -87,9 +88,9 @@ public:
 	void clearUAV(ID3D11UnorderedAccessView* uav, std::array<float, 4> color);
 
 	// Performance querys
-	QueryHandle startPerformanceQuery(const std::string& name);
+	QueryHandle startPerformanceQuery(unsigned id, const std::string& name);
 	void endPerformanceQuery(QueryHandle queryHandle);
-	void processPerformanceResults(const std::function<void(float, std::string&)>& functor);
+	void processPerformanceResults(const std::function<void(float, unsigned, std::string&)>& functor);
 
 	// Device and window
 	HWND getWindowHandle() { return windowHandle; }

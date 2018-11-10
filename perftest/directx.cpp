@@ -459,10 +459,11 @@ void DirectXDevice::clearUAV(ID3D11UnorderedAccessView* uav, std::array<float, 4
 	deviceContext->ClearUnorderedAccessViewFloat(uav, color.data());
 }
 
-QueryHandle DirectXDevice::startPerformanceQuery(const std::string& name)
+QueryHandle DirectXDevice::startPerformanceQuery(unsigned id, const std::string& name)
 {
 	PerformanceQuery& query = queries[queryCounter % queries.size()];	
 	
+	query.id = id;
 	query.name = name;
 	deviceContext->Begin(query.disjoint);
 	deviceContext->End(query.start);	// NOTE: timestamp queries don't use Begin(), only End()
@@ -480,7 +481,7 @@ void DirectXDevice::endPerformanceQuery(QueryHandle queryHandle)
 	deviceContext->End(query.disjoint);
 }
 
-void DirectXDevice::processPerformanceResults(const std::function<void(float, std::string&)>& functor)
+void DirectXDevice::processPerformanceResults(const std::function<void(float, unsigned, std::string&)>& functor)
 {
 	while(true)
 	{
@@ -504,7 +505,7 @@ void DirectXDevice::processPerformanceResults(const std::function<void(float, st
 			float delta = (float(d) / float(disjoint.Frequency)) * 1000.0f;
 
 			// Call functor to process results
-			functor(delta, query.name);
+			functor(delta, query.id, query.name);
 		}
 
 		queryProcessCounter++;
