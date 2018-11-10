@@ -25,6 +25,12 @@
     <Filter Include="Shaders\texture_load">
       <UniqueIdentifier>{502f0124-fac7-414e-86c4-12f6b4488385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\structured_load">
+      <UniqueIdentifier>{32fdc9cb-be5a-47ad-94fb-ccdcaedb5462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\constant_load">
+      <UniqueIdentifier>{d9f28910-09d3-4e83-8c61-a18336adb25a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="directx.cpp">
@@ -154,6 +160,42 @@
     <FxCompile Include="loadTex2dRandom.hlsl">
       <Filter>Shaders\texture_load</Filter>
     </FxCompile>
+    <FxCompile Include="loadStructured1dInvariant.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured1dLinear.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured1dRandom.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured2dInvariant.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured2dLinear.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured4dInvariant.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured4dLinear.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured4dRandom.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadConstant4dInvariant.hlsl">
+      <Filter>Shaders\constant_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadConstant4dLinear.hlsl">
+      <Filter>Shaders\constant_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadConstant4dRandom.hlsl">
+      <Filter>Shaders\constant_load</Filter>
+    </FxCompile>
+    <FxCompile Include="loadStructured2dRandom.hlsl">
+      <Filter>Shaders\structured_load</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
@@ -167,6 +209,12 @@
     </None>
     <None Include="loadTexBody.hlsli">
       <Filter>Shaders\texture_load</Filter>
+    </None>
+    <None Include="loadStructuredBody.hlsli">
+      <Filter>Shaders\structured_load</Filter>
+    </None>
+    <None Include="loadConstantBody.hlsli">
+      <Filter>Shaders\constant_load</Filter>
     </None>
   </ItemGroup>
 </Project>

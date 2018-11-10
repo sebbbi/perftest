@@ -61,6 +61,7 @@ public:
 
 	ID3D11ShaderResourceView* createSRV(ID3D11Resource* buffer);
 	ID3D11ShaderResourceView* createTypedSRV(ID3D11Resource* buffer, unsigned numElements, DXGI_FORMAT format);
+	ID3D11ShaderResourceView* createStructuredSRV(ID3D11Resource* buffer, unsigned numElements, unsigned stride);
 	ID3D11ShaderResourceView* createByteAddressSRV(ID3D11Resource* buffer, unsigned numElements);
 
 	// Data update

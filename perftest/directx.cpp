@@ -164,7 +164,7 @@ ID3D11Buffer* DirectXDevice::createBuffer(unsigned numElements, unsigned strideB
 {
 	D3D11_BUFFER_DESC desc;
 	desc.ByteWidth = strideBytes * numElements;
-	desc.StructureByteStride = strideBytes;
+	desc.StructureByteStride = (type == BufferType::Structured) ? strideBytes : 0;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 	desc.CPUAccessFlags = 0;
@@ -273,6 +273,20 @@ ID3D11ShaderResourceView* DirectXDevice::createTypedSRV(ID3D11Resource *buffer, 
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 	desc.ViewDimension = D3D_SRV_DIMENSION_BUFFER;
 	desc.Format = format;
+	desc.Buffer.FirstElement = 0;
+	desc.Buffer.NumElements = numElements;
+
+	ID3D11ShaderResourceView *view = nullptr;
+	HRESULT result = device->CreateShaderResourceView(buffer, &desc, &view);
+	assert(SUCCEEDED(result));
+	return view;
+}
+
+ID3D11ShaderResourceView* DirectXDevice::createStructuredSRV(ID3D11Resource* buffer, unsigned numElements, unsigned stride)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	desc.ViewDimension = D3D_SRV_DIMENSION_BUFFER;
+	desc.Format = DXGI_FORMAT_UNKNOWN;
 	desc.Buffer.FirstElement = 0;
 	desc.Buffer.NumElements = numElements;
 
