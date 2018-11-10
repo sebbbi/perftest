@@ -35,9 +35,6 @@ All threads in group simultaneously load from the same address. This triggers co
 
 ## Todo list
 
-- Better output
-- Constant buffer loads (both constant address and indexed)
-- Structured buffer loads
 - UAV loads (RWBuffer, RWByteAddressBuffer)
 - Port to Vulkan and/or DX12 (upload heap load performance, etc)
 
