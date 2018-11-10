@@ -12,9 +12,11 @@ Designed to measure performance of various types of buffer and image loads. This
 
 - Coalesced loads (100% L1 cache hit)
 - Random loads (100% L1 cache hit)
-- Invariant loads (same address for all threads)
+- Uniform address loads (same address for all threads)
 - Typed Buffer SRVs: 1/2/4 channels, 8/16/32 bits per channel
-- ByteAddressBuffer SRVs (load, load2, load3, load4 - aligned and unaligned)
+- ByteAddressBuffer SRVs: load, load2, load3, load4 - aligned and unaligned
+- Structured Buffer SRVs: float/float2/float4
+- Constant Buffer float4 array indexed loads
 - Texture2D loads: 1/2/4 channels, 8/16/32 bits per channel
 
 ## Explanations
@@ -25,7 +27,7 @@ GPUs optimize linear address patterns. Coalescing occurs when all threads in a w
 **Random loads:**
 I add a random start offset of 0-15 elements for each thread (still aligned). This prevents GPU coalescing, and provides more realistic view of performance for common case (non-linear) memory accessing. This benchmark is as cache efficient as the previous. All data still comes from the L1 cache.
 
-**Invariant loads:**
+**Uniform loads:**
 All threads in group simultaneously load from the same address. This triggers coalesced path on some GPUs and additonal optimizations on some GPUs, such as scalar loads (SGPR storage) on AMD GCN.
 
 **Notes:**
