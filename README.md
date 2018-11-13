@@ -39,7 +39,18 @@ All threads in group simultaneously load from the same address. This triggers co
 - Port to Vulkan and/or DX12 (upload heap load performance, etc)
 
 ## Uniform Load Investigation
-Blablablaa...
+When I first implemented this benchmark, I noticed that Intel uniform address loads were surprisingly fast. Intel ISA documents don't mention anything about a scalar unit or other hardware feature to make uniform address loads fast. This optimization affected every single resource type, unlike AMDs hardware scalar unit (which only works for raw data loads). I didnt't investigate this further however at that point. When Nvidia released Volta GPUs, they brought new driver that implemented similar compiler optimization. Later drivers introduced the same optimization to Maxwell and Pascal too. And now Turing also has it. It's certainly not hardware based, since 20x+ gains apply to all their existing GPUs too.
+
+In Nov 10-11 weekend (2018) I was toying around with Vulkan/DX12 wave intrinsics, and came up with a crazy idea to use a single wave wide load and then use wave intrinsics to broadcast scalar result (single lane) to each loop iteration. This results in up to wave width reduced amount of loads. 
+
+See the gist and Shader Playground links here:
+https://gist.github.com/sebbbi/ba4415339b535d22fb18e2d824564ec4
+
+In Nvidia's uniform load optimization case, their wave width = 32, and their uniform load optimization performance boost is up to 28x. This finding really made me curious. Could Nvidia implement a similar warp shuffle based optimization for this use case? The funny thing is that my tweets escalated the situation, and made Intel reveal their hand:
+
+https://twitter.com/JoshuaBarczak/status/1062060067334189056
+
+Intel has now officially revealed that their driver does a wave shuffle optimization for uniform address loads. They have been doing it for years already. This explains Intel GPU benchmark results perfectly. Now that we have confirmation of Intel's (original) optimization, I suspect that Nvidia's shader compiler employs a highly similar optimization in this case. Both optimizations are great, because Nvidia/Intel do not have a dedicated scalar unit. They need to lean more on vector loads, and this trick allows sharing one vector load with multiple uniform address load loop iterations.
 
 ## Results
 
