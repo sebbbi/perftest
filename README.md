@@ -28,7 +28,7 @@ GPUs optimize linear address patterns. Coalescing occurs when all threads in a w
 I add a random start offset of 0-15 elements for each thread (still aligned). This prevents GPU coalescing, and provides more realistic view of performance for common case (non-linear) memory accessing. This benchmark is as cache efficient as the previous. All data still comes from the L1 cache.
 
 **Uniform loads:**
-All threads in group simultaneously load from the same address. This triggers coalesced path on some GPUs and additonal optimizations on some GPUs, such as scalar loads (SGPR storage) on AMD GCN.
+All threads in group simultaneously load from the same address. This triggers coalesced path on some GPUs and additonal optimizations on some GPUs, such as scalar loads (SGPR storage) on AMD GCN. I have noticed that recent Intel and Nvidia drivers also implement a software optimization for uniform load loop case (which is employed by this benchmark).
 
 **Notes:**
 **Compiler optimizations** can ruin the results. We want to measure only load (read) performance, but write (store) is also needed, otherwise the compiler will just optimize the whole shader away. To avoid this, each thread does first 256 loads followed by a single linear groupshared memory write (no bank-conflicts). Cbuffer contains a write mask (not known at compile time). It controls which elements are written from the groupshared memory to the output buffer. The mask is always zero at runtime. Compilers can also combine multiple narrow raw buffer loads together (as bigger 4d loads) if it an be proven at compile time that loads from the same thread access contiguous offsets. This is prevented by applying an address mask from cbuffer (not known at compile time). 
@@ -40,80 +40,10 @@ All threads in group simultaneously load from the same address. This triggers co
 
 ## Results
 
-### AMD Radeon 7970 GE (GCN1)
+### AMD GCN1 (Radeon 7000 series)
 ```markdown
-Load R8 invariant: 0.541ms
-Load R8 linear: 0.538ms
-Load R8 random: 2.121ms
-Load RG8 invariant: 2.386ms
-Load RG8 linear: 2.386ms
-Load RG8 random: 2.386ms
-Load RGBA8 invariant: 2.121ms
-Load RGBA8 linear: 2.122ms
-Load RGBA8 random: 2.121ms
-Load R16f invariant: 0.536ms
-Load R16f linear: 0.537ms
-Load R16f random: 2.121ms
-Load RG16f invariant: 2.385ms
-Load RG16f linear: 2.385ms
-Load RG16f random: 2.385ms
-Load RGBA16f invariant: 2.121ms
-Load RGBA16f linear: 2.121ms
-Load RGBA16f random: 2.121ms
-Load R32f invariant: 0.536ms
-Load R32f linear: 0.538ms
-Load R32f random: 2.121ms
-Load RG32f invariant: 2.385ms
-Load RG32f linear: 2.385ms
-Load RG32f random: 2.385ms
-Load RGBA32f invariant: 2.121ms
-Load RGBA32f linear: 2.121ms
-Load RGBA32f random: 2.385ms
-Load1 raw32 invariant: 0.495ms
-Load1 raw32 linear: 0.561ms
-Load1 raw32 random: 2.122ms
-Load2 raw32 invariant: 0.548ms
-Load2 raw32 linear: 2.386ms
-Load2 raw32 random: 2.386ms
-Load3 raw32 invariant: 0.812ms
-Load3 raw32 linear: 2.122ms
-Load3 raw32 random: 4.239ms
-Load4 raw32 invariant: 1.083ms
-Load4 raw32 linear: 2.140ms
-Load4 raw32 random: 2.370ms
-Load2 raw32 unaligned invariant: 0.548ms
-Load2 raw32 unaligned linear: 2.385ms
-Load2 raw32 unaligned random: 2.385ms
-Load4 raw32 unaligned invariant: 1.076ms
-Load4 raw32 unaligned linear: 2.139ms
-Load4 raw32 unaligned random: 2.622ms
-Tex2D load R8 invariant: 2.123ms
-Tex2D load R8 linear: 2.129ms
-Tex2D load R8 random: 3.180ms
-Tex2D load RG8 invariant: 2.387ms
-Tex2D load RG8 linear: 2.386ms
-Tex2D load RG8 random: 3.282ms
-Tex2D load RGBA8 invariant: 2.123ms
-Tex2D load RGBA8 linear: 2.141ms
-Tex2D load RGBA8 random: 2.916ms
-Tex2D load R16F invariant: 2.122ms
-Tex2D load R16F linear: 2.129ms
-Tex2D load R16F random: 3.179ms
-Tex2D load RG16F invariant: 2.386ms
-Tex2D load RG16F linear: 2.385ms
-Tex2D load RG16F random: 2.915ms
-Tex2D load RGBA16F invariant: 2.122ms
-Tex2D load RGBA16F linear: 2.122ms
-Tex2D load RGBA16F random: 4.371ms
-Tex2D load R32F invariant: 2.122ms
-Tex2D load R32F linear: 2.129ms
-Tex2D load R32F random: 2.915ms
-Tex2D load RG32F invariant: 2.386ms
-Tex2D load RG32F linear: 2.386ms
-Tex2D load RG32F random: 4.371ms
-Tex2D load RGBA32F invariant: 2.122ms
-Tex2D load RGBA32F linear: 3.179ms
-Tex2D load RGBA32F random: 4.239ms
+OLD VERSION RESULTS REMOVED. ANALYSIS STILL VALID.
+PLEASE SEND ME NEW RESULTS IF YOU OWN GCN1 GPU
 ```
 
 **Typed loads:** GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and invariant access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
@@ -126,82 +56,95 @@ Tex2D load RGBA32F random: 4.239ms
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
-### AMD Radeon R9 Fury X (GCN3)
+### AMD GCN3 (R9 Fury 56 CU)
 ```markdown
-Load R8 invariant: 0.286ms
-Load R8 linear: 0.276ms
-Load R8 random: 1.062ms
-Load RG8 invariant: 1.151ms
-Load RG8 linear: 1.126ms
-Load RG8 random: 1.125ms
-Load RGBA8 invariant: 1.001ms
-Load RGBA8 linear: 1.003ms
-Load RGBA8 random: 1.001ms
-Load R16f invariant: 0.256ms
-Load R16f linear: 0.255ms
-Load R16f random: 1.000ms
-Load RG16f invariant: 1.125ms
-Load RG16f linear: 1.125ms
-Load RG16f random: 1.125ms
-Load RGBA16f invariant: 1.001ms
-Load RGBA16f linear: 1.001ms
-Load RGBA16f random: 1.001ms
-Load R32f invariant: 0.256ms
-Load R32f linear: 0.255ms
-Load R32f random: 1.001ms
-Load RG32f invariant: 1.125ms
-Load RG32f linear: 1.125ms
-Load RG32f random: 1.125ms
-Load RGBA32f invariant: 1.000ms
-Load RGBA32f linear: 1.001ms
-Load RGBA32f random: 1.125ms
-Load1 raw32 invariant: 0.314ms
-Load1 raw32 linear: 0.261ms
-Load1 raw32 random: 1.001ms
-Load2 raw32 invariant: 0.317ms
-Load2 raw32 linear: 1.125ms
-Load2 raw32 random: 1.125ms
-Load3 raw32 invariant: 0.388ms
-Load3 raw32 linear: 1.001ms
-Load3 raw32 random: 1.999ms
-Load4 raw32 invariant: 0.512ms
-Load4 raw32 linear: 1.002ms
-Load4 raw32 random: 1.118ms
-Load2 raw32 unaligned invariant: 0.316ms
-Load2 raw32 unaligned linear: 1.125ms
-Load2 raw32 unaligned random: 1.125ms
-Load4 raw32 unaligned invariant: 0.512ms
-Load4 raw32 unaligned linear: 1.002ms
-Load4 raw32 unaligned random: 1.234ms
-Tex2D load R8 invariant: 1.001ms
-Tex2D load R8 linear: 1.000ms
-Tex2D load R8 random: 1.500ms
-Tex2D load RG8 invariant: 1.125ms
-Tex2D load RG8 linear: 1.125ms
-Tex2D load RG8 random: 1.548ms
-Tex2D load RGBA8 invariant: 1.000ms
-Tex2D load RGBA8 linear: 1.001ms
-Tex2D load RGBA8 random: 1.375ms
-Tex2D load R16F invariant: 1.000ms
-Tex2D load R16F linear: 1.001ms
-Tex2D load R16F random: 1.500ms
-Tex2D load RG16F invariant: 1.125ms
-Tex2D load RG16F linear: 1.125ms
-Tex2D load RG16F random: 1.375ms
-Tex2D load RGBA16F invariant: 1.001ms
-Tex2D load RGBA16F linear: 1.001ms
-Tex2D load RGBA16F random: 2.061ms
-Tex2D load R32F invariant: 1.001ms
-Tex2D load R32F linear: 1.000ms
-Tex2D load R32F random: 1.375ms
-Tex2D load RG32F invariant: 1.125ms
-Tex2D load RG32F linear: 1.125ms
-Tex2D load RG32F random: 2.061ms
-Tex2D load RGBA32F invariant: 1.001ms
-Tex2D load RGBA32F linear: 1.500ms
-Tex2D load RGBA32F random: 1.999ms
-```
-**AMD GCN3** results (ratios) are identical to GCN1. See GCN1 for analysis. 7970 GE has 2048 shader cores @ 1000 MHz. In comparison Fury X has 4096 shader cores @ 1050 MHz. This is 2.1x theoretical difference. Results show the same 2.1x difference, proving that GCN1 & GCN3 architectures are very similar regarding to L1 cached loads.
+Buffer<R8>.Load uniform: 8.963ms 3.911x
+Buffer<R8>.Load linear: 8.917ms 3.931x
+Buffer<R8>.Load random: 35.058ms 1.000x
+Buffer<RG8>.Load uniform: 39.416ms 0.889x
+Buffer<RG8>.Load linear: 39.447ms 0.889x
+Buffer<RG8>.Load random: 39.413ms 0.889x
+Buffer<RGBA8>.Load uniform: 35.051ms 1.000x
+Buffer<RGBA8>.Load linear: 35.048ms 1.000x
+Buffer<RGBA8>.Load random: 35.051ms 1.000x
+Buffer<R16f>.Load uniform: 8.898ms 3.939x
+Buffer<R16f>.Load linear: 8.909ms 3.934x
+Buffer<R16f>.Load random: 35.050ms 1.000x
+Buffer<RG16f>.Load uniform: 39.405ms 0.890x
+Buffer<RG16f>.Load linear: 39.435ms 0.889x
+Buffer<RG16f>.Load random: 39.407ms 0.889x
+Buffer<RGBA16f>.Load uniform: 35.041ms 1.000x
+Buffer<RGBA16f>.Load linear: 35.043ms 1.000x
+Buffer<RGBA16f>.Load random: 35.046ms 1.000x
+Buffer<R32f>.Load uniform: 8.897ms 3.940x
+Buffer<R32f>.Load linear: 8.910ms 3.934x
+Buffer<R32f>.Load random: 35.048ms 1.000x
+Buffer<RG32f>.Load uniform: 39.407ms 0.889x
+Buffer<RG32f>.Load linear: 39.433ms 0.889x
+Buffer<RG32f>.Load random: 39.406ms 0.889x
+Buffer<RGBA32f>.Load uniform: 35.043ms 1.000x
+Buffer<RGBA32f>.Load linear: 35.045ms 1.000x
+Buffer<RGBA32f>.Load random: 39.405ms 0.890x
+ByteAddressBuffer.Load uniform: 10.956ms 3.199x
+ByteAddressBuffer.Load linear: 9.100ms 3.852x
+ByteAddressBuffer.Load random: 35.038ms 1.000x
+ByteAddressBuffer.Load2 uniform: 11.070ms 3.166x
+ByteAddressBuffer.Load2 linear: 39.413ms 0.889x
+ByteAddressBuffer.Load2 random: 39.411ms 0.889x
+ByteAddressBuffer.Load3 uniform: 13.534ms 2.590x
+ByteAddressBuffer.Load3 linear: 35.047ms 1.000x
+ByteAddressBuffer.Load3 random: 70.033ms 0.500x
+ByteAddressBuffer.Load4 uniform: 17.944ms 1.953x
+ByteAddressBuffer.Load4 linear: 35.072ms 0.999x
+ByteAddressBuffer.Load4 random: 39.149ms 0.895x
+ByteAddressBuffer.Load2 unaligned uniform: 11.209ms 3.127x
+ByteAddressBuffer.Load2 unaligned linear: 39.408ms 0.889x
+ByteAddressBuffer.Load2 unaligned random: 39.406ms 0.890x
+ByteAddressBuffer.Load4 unaligned uniform: 17.933ms 1.955x
+ByteAddressBuffer.Load4 unaligned linear: 35.066ms 1.000x
+ByteAddressBuffer.Load4 unaligned random: 43.241ms 0.811x
+StructuredBuffer<float>.Load uniform: 12.653ms 2.770x
+StructuredBuffer<float>.Load linear: 8.913ms 3.932x
+StructuredBuffer<float>.Load random: 35.059ms 1.000x
+StructuredBuffer<float2>.Load uniform: 12.799ms 2.739x
+StructuredBuffer<float2>.Load linear: 39.445ms 0.889x
+StructuredBuffer<float2>.Load random: 39.413ms 0.889x
+StructuredBuffer<float4>.Load uniform: 12.834ms 2.731x
+StructuredBuffer<float4>.Load linear: 35.049ms 1.000x
+StructuredBuffer<float4>.Load random: 39.411ms 0.889x
+cbuffer{float4} load uniform: 14.861ms 2.359x
+cbuffer{float4} load linear: 35.534ms 0.986x
+cbuffer{float4} load random: 39.412ms 0.889x
+Texture2D<R8>.Load uniform: 35.063ms 1.000x
+Texture2D<R8>.Load linear: 35.038ms 1.000x
+Texture2D<R8>.Load random: 35.040ms 1.000x
+Texture2D<RG8>.Load uniform: 39.430ms 0.889x
+Texture2D<RG8>.Load linear: 39.436ms 0.889x
+Texture2D<RG8>.Load random: 39.436ms 0.889x
+Texture2D<RGBA8>.Load uniform: 35.059ms 1.000x
+Texture2D<RGBA8>.Load linear: 35.061ms 1.000x
+Texture2D<RGBA8>.Load random: 35.055ms 1.000x
+Texture2D<R16F>.Load uniform: 35.056ms 1.000x
+Texture2D<R16F>.Load linear: 35.038ms 1.000x
+Texture2D<R16F>.Load random: 35.040ms 1.000x
+Texture2D<RG16F>.Load uniform: 39.431ms 0.889x
+Texture2D<RG16F>.Load linear: 39.440ms 0.889x
+Texture2D<RG16F>.Load random: 39.436ms 0.889x
+Texture2D<RGBA16F>.Load uniform: 35.054ms 1.000x
+Texture2D<RGBA16F>.Load linear: 35.061ms 1.000x
+Texture2D<RGBA16F>.Load random: 70.037ms 0.500x
+Texture2D<R32F>.Load uniform: 35.055ms 1.000x
+Texture2D<R32F>.Load linear: 35.041ms 1.000x
+Texture2D<R32F>.Load random: 35.041ms 1.000x
+Texture2D<RG32F>.Load uniform: 39.433ms 0.889x
+Texture2D<RG32F>.Load linear: 39.439ms 0.889x
+Texture2D<RG32F>.Load random: 70.039ms 0.500x
+Texture2D<RGBA32F>.Load uniform: 35.054ms 1.000x
+Texture2D<RGBA32F>.Load linear: 52.549ms 0.667x
+Texture2D<RGBA32F>.Load random: 70.037ms 0.500x
+ ```
+  
+**AMD GCN3** results (ratios) are identical to GCN1. See GCN1 for analysis. If you scale GCN1<->GCN3 results by clock rate and CU count, you will get close to identical results, proving that GCN1 & GCN3 architectures are very similar regarding to L1 cached loads. I have plenty of sample points proving this.
 
 ### AMD Radeon Vega 64 (GCN5)
 ```markdown
