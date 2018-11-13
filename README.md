@@ -811,6 +811,8 @@ Texture2D<RG32F>.Load random: 194.397ms 1.487x
 Texture2D<RGBA32F>.Load uniform: 24.660ms 11.719x
 Texture2D<RGBA32F>.Load linear: 243.432ms 1.187x
 Texture2D<RGBA32F>.Load random: 195.579ms 1.478x
+ 
+NOTE: Intel result not directly comparable with other GPUs. I had to reduce workload size to avoid TDR.
 ```
 
 **Typed loads:** All typed loads have same identical performance. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't affect performance. Intel compiler has a fast path for uniform address loads. It improves performance by up to 6x. Linear typed loads do not coalesce. Best bytes per cycle rate can be achieved by widest RGBA32 loads.
