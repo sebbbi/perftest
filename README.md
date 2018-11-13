@@ -55,6 +55,8 @@ PLEASE SEND ME NEW RESULTS IF YOU OWN GCN1 GPU
 
 **Texture loads:** Similar performance as typed buffer loads. However no coalescing in 1d linear access and no scalar unit offload of uniform access. Random access of wide formats tends to be slightly slower (but my 2d random produces different access pattern than 1d).
 
+**Structured buffer loads:** Performance is identical to similar raw buffer loads.
+
 **Cbuffer loads:** AMD GCN architecture doesn't have special constant buffer hardware. Constant buffer load performance is identical to raw and structured buffers. Prefer uniform addresses to allow the compiler to generate scalar loads, which is around 4x faster and has much lower latency.
 
 **Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads uniform address loads to scalar unit, saving VGPR pressure and vector memory instructions. Avoid 3d random loads if possible (4d load is 2x faster).
@@ -420,6 +422,8 @@ Texture2D<RGBA32F>.Load random: 68.049ms 0.529x
 **Typed loads:** Maxwell doesn't coalesce any typed loads. Dimensions (1d/2d/4d) and channel widths (8b/16b/32b) don't directly affect performance. All up to 64 bit loads are full rate. 128 bit loads are half rate (only RGBA32). Best bytes per cycle rate can be achieved by 64+ bit loads (RGBA16, RG32, RGBA32).
 
 **Raw (ByteAddressBuffer) loads:** Oddly we see no coalescing here either. CUDA code shows big performance improvement with similar linear access pattern. All 1d raw loads are as fast as typed buffer loads. However NV doesn't seem to emit wide raw loads either. 2d is exactly 2x slower, 3d is 3x slower and 4d is 4x slower than 1d. NVIDIA supports 64 bit and 128 wide raw loads in CUDA, see: https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-increase-performance-with-vectorized-memory-access/. Wide loads in CUDA however require memory alignment (8/16 bytes). My test case is perfectly aligned, but HLSL ByteAddressBuffer.Load4() specification only requires alignment of 4. In general case it's hard to prove alignment of 16 (in my code there's an explicit multiply address by 16).
+
+**Structured buffer loads:** Structured buffer loads guarantee natural alignment. Nvidia has full rate 1d and 2d structured buffer loads. But 4d loads (128 bit) are half rate as usual.
 
 **Texture loads:** Similar performance as typed buffer loads. Random access of wide formats tends to be slightly slower (but my 2d random produces different access pattern than 1d).
 
@@ -802,9 +806,15 @@ Texture2D<RGBA32F>.Load random: 195.579ms 1.478x
 
 **Raw (ByteAddressBuffer) loads:** Intel raw buffer loads are significantly faster compared to similar typed loads. 1d raw load is 5x faster than any typed load. 2d linear raw load is 2.5x faster than typed loads. 4d linear raw load is 40% faster than typed loads. 2d/4d random raw loads are around 2x slower compared to linear ones (could be coalescing or something else). 3d raw load performance matches 4d. Alignment doesn't seem to matter. Uniform address raw loads also use the same compiler fast path as typed loads (6x gain).
 
+**Structured buffer loads:** Performance is identical to similar raw buffer loads.
+
+**Cbuffer loads:** 22x faster than normal load for fully uniform address. Linear/random access performance identical to typed buffer loads. Raw/structured buffers are up to 2x faster if you have linear/random access pattern.
+
 **Texture loads:** All formats perform similarly, except the widest RGBA32 (half speed linear). Uniform address texture loads are 4x faster than linear. There's certainly something fishy going on, as Texture2D loads are generally 2x+ faster than same format buffer loads. Maybe I am hitting some bank conflict case or Intel is swizzling the buffer layout.
 
-**Suggestions:** When using typed buffers, prefer widest loads (RGBA32). Raw buffers are significantly faster than typed buffers. Uniform address loads are very fast (both raw and typed). Intel has confirmed that their compiler uses a wave shuffle trick to speed up uniform loads inside loops. See "Uniform Address Load Investigation" chapter for more info.
+**Suggestions:** When using typed buffers, prefer widest loads (RGBA32). Raw buffers are significantly faster than typed buffers. 
+
+**Uniform address optimization:** Uniform address loads are very fast (both raw and typed). Intel has confirmed that their compiler uses a wave shuffle trick to speed up uniform loads inside loops. See "Uniform Address Load Investigation" chapter for more info. 
 
 ## Contact
 
