@@ -520,158 +520,182 @@ PLEASE SEND ME NEW RESULTS IF YOU OWN KEPLER GPU
 
 **NVIDIA Kepler** results (ratios) are identical to Maxwell & Pascal. See Maxwell for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between Kepler, Maxwell and Pascal.
 
-### NVIDIA Titan V (Volta)
+### NVidia Volta (Titan V)
 ```markdown
-Load R8 invariant: 0.076ms
-Load R8 linear: 0.497ms
-Load R8 random: 1.018ms
-Load RG8 invariant: 0.141ms
-Load RG8 linear: 0.498ms
-Load RG8 random: 0.496ms
-Load RGBA8 invariant: 0.279ms
-Load RGBA8 linear: 0.490ms
-Load RGBA8 random: 0.493ms
-Load R16f invariant: 0.073ms
-Load R16f linear: 0.497ms
-Load R16f random: 0.486ms
-Load RG16f invariant: 0.136ms
-Load RG16f linear: 0.498ms
-Load RG16f random: 0.499ms
-Load RGBA16f invariant: 0.279ms
-Load RGBA16f linear: 0.493ms
-Load RGBA16f random: 0.496ms
-Load R32f invariant: 0.073ms
-Load R32f linear: 0.489ms
-Load R32f random: 1.004ms
-Load RG32f invariant: 0.196ms
-Load RG32f linear: 0.500ms
-Load RG32f random: 0.509ms
-Load RGBA32f invariant: 0.281ms
-Load RGBA32f linear: 0.956ms
-Load RGBA32f random: 0.975ms
-Load1 raw32 invariant: 0.288ms
-Load1 raw32 linear: 0.287ms
-Load1 raw32 random: 0.286ms
-Load2 raw32 invariant: 0.341ms
-Load2 raw32 linear: 0.361ms
-Load2 raw32 random: 0.361ms
-Load3 raw32 invariant: 0.421ms
-Load3 raw32 linear: 0.446ms
-Load3 raw32 random: 0.429ms
-Load4 raw32 invariant: 0.515ms
-Load4 raw32 linear: 0.825ms
-Load4 raw32 random: 0.591ms
-Load2 raw32 unaligned invariant: 0.344ms
-Load2 raw32 unaligned linear: 0.361ms
-Load2 raw32 unaligned random: 0.360ms
-Load4 raw32 unaligned invariant: 0.515ms
-Load4 raw32 unaligned linear: 0.826ms
-Load4 raw32 unaligned random: 0.586ms
-Tex2D load R8 invariant: 0.483ms
-Tex2D load R8 linear: 0.483ms
-Tex2D load R8 random: 0.483ms
-Tex2D load RG8 invariant: 0.155ms
-Tex2D load RG8 linear: 0.490ms
-Tex2D load RG8 random: 0.541ms
-Tex2D load RGBA8 invariant: 0.508ms
-Tex2D load RGBA8 linear: 0.513ms
-Tex2D load RGBA8 random: 0.868ms
-Tex2D load R16F invariant: 0.487ms
-Tex2D load R16F linear: 0.486ms
-Tex2D load R16F random: 0.566ms
-Tex2D load RG16F invariant: 0.157ms
-Tex2D load RG16F linear: 0.497ms
-Tex2D load RG16F random: 0.862ms
-Tex2D load RGBA16F invariant: 0.515ms
-Tex2D load RGBA16F linear: 0.519ms
-Tex2D load RGBA16F random: 1.018ms
-Tex2D load R32F invariant: 0.488ms
-Tex2D load R32F linear: 0.490ms
-Tex2D load R32F random: 0.862ms
-Tex2D load RG32F invariant: 0.157ms
-Tex2D load RG32F linear: 0.497ms
-Tex2D load RG32F random: 0.998ms
-Tex2D load RGBA32F invariant: 0.967ms
-Tex2D load RGBA32F linear: 1.564ms
-Tex2D load RGBA32F random: 1.214ms
+Buffer<R8>.Load uniform: 2.241ms 8.139x
+Buffer<R8>.Load linear: 14.806ms 1.232x
+Buffer<R8>.Load random: 16.514ms 1.104x
+Buffer<RG8>.Load uniform: 4.576ms 3.985x
+Buffer<RG8>.Load linear: 16.397ms 1.112x
+Buffer<RG8>.Load random: 16.707ms 1.092x
+Buffer<RGBA8>.Load uniform: 5.155ms 3.538x
+Buffer<RGBA8>.Load linear: 16.726ms 1.090x
+Buffer<RGBA8>.Load random: 18.236ms 1.000x
+Buffer<R16f>.Load uniform: 2.807ms 6.497x
+Buffer<R16f>.Load linear: 14.771ms 1.235x
+Buffer<R16f>.Load random: 16.857ms 1.082x
+Buffer<RG16f>.Load uniform: 4.128ms 4.418x
+Buffer<RG16f>.Load linear: 16.155ms 1.129x
+Buffer<RG16f>.Load random: 15.140ms 1.205x
+Buffer<RGBA16f>.Load uniform: 4.747ms 3.841x
+Buffer<RGBA16f>.Load linear: 17.517ms 1.041x
+Buffer<RGBA16f>.Load random: 17.727ms 1.029x
+Buffer<R32f>.Load uniform: 2.630ms 6.935x
+Buffer<R32f>.Load linear: 17.341ms 1.052x
+Buffer<R32f>.Load random: 15.922ms 1.145x
+Buffer<RG32f>.Load uniform: 4.769ms 3.824x
+Buffer<RG32f>.Load linear: 15.745ms 1.158x
+Buffer<RG32f>.Load random: 15.801ms 1.154x
+Buffer<RGBA32f>.Load uniform: 4.772ms 3.822x
+Buffer<RGBA32f>.Load linear: 29.343ms 0.621x
+Buffer<RGBA32f>.Load random: 29.427ms 0.620x
+ByteAddressBuffer.Load uniform: 8.948ms 2.038x
+ByteAddressBuffer.Load linear: 8.722ms 2.091x
+ByteAddressBuffer.Load random: 10.403ms 1.753x
+ByteAddressBuffer.Load2 uniform: 10.132ms 1.800x
+ByteAddressBuffer.Load2 linear: 11.406ms 1.599x
+ByteAddressBuffer.Load2 random: 10.999ms 1.658x
+ByteAddressBuffer.Load3 uniform: 12.638ms 1.443x
+ByteAddressBuffer.Load3 linear: 13.708ms 1.330x
+ByteAddressBuffer.Load3 random: 14.081ms 1.295x
+ByteAddressBuffer.Load4 uniform: 15.421ms 1.183x
+ByteAddressBuffer.Load4 linear: 26.412ms 0.690x
+ByteAddressBuffer.Load4 random: 18.078ms 1.009x
+ByteAddressBuffer.Load2 unaligned uniform: 11.076ms 1.647x
+ByteAddressBuffer.Load2 unaligned linear: 11.474ms 1.589x
+ByteAddressBuffer.Load2 unaligned random: 12.227ms 1.492x
+ByteAddressBuffer.Load4 unaligned uniform: 15.817ms 1.153x
+ByteAddressBuffer.Load4 unaligned linear: 25.894ms 0.704x
+ByteAddressBuffer.Load4 unaligned random: 18.138ms 1.005x
+StructuredBuffer<float>.Load uniform: 6.606ms 2.761x
+StructuredBuffer<float>.Load linear: 6.555ms 2.782x
+StructuredBuffer<float>.Load random: 9.063ms 2.012x
+StructuredBuffer<float2>.Load uniform: 8.332ms 2.189x
+StructuredBuffer<float2>.Load linear: 8.545ms 2.134x
+StructuredBuffer<float2>.Load random: 7.271ms 2.508x
+StructuredBuffer<float4>.Load uniform: 8.890ms 2.051x
+StructuredBuffer<float4>.Load linear: 9.650ms 1.890x
+StructuredBuffer<float4>.Load random: 9.677ms 1.885x
+cbuffer{float4} load uniform: 1.381ms 13.202x
+cbuffer{float4} load linear: 320.961ms 0.057x
+cbuffer{float4} load random: 150.072ms 0.122x
+Texture2D<R8>.Load uniform: 4.481ms 4.070x
+Texture2D<R8>.Load linear: 15.953ms 1.143x
+Texture2D<R8>.Load random: 15.058ms 1.211x
+Texture2D<RG8>.Load uniform: 4.594ms 3.970x
+Texture2D<RG8>.Load linear: 14.838ms 1.229x
+Texture2D<RG8>.Load random: 14.938ms 1.221x
+Texture2D<RGBA8>.Load uniform: 5.140ms 3.548x
+Texture2D<RGBA8>.Load linear: 14.915ms 1.223x
+Texture2D<RGBA8>.Load random: 15.031ms 1.213x
+Texture2D<R16F>.Load uniform: 5.748ms 3.173x
+Texture2D<R16F>.Load linear: 15.321ms 1.190x
+Texture2D<R16F>.Load random: 15.044ms 1.212x
+Texture2D<RG16F>.Load uniform: 4.609ms 3.957x
+Texture2D<RG16F>.Load linear: 14.918ms 1.222x
+Texture2D<RG16F>.Load random: 14.851ms 1.228x
+Texture2D<RGBA16F>.Load uniform: 5.182ms 3.519x
+Texture2D<RGBA16F>.Load linear: 14.915ms 1.223x
+Texture2D<RGBA16F>.Load random: 29.841ms 0.611x
+Texture2D<R32F>.Load uniform: 4.462ms 4.087x
+Texture2D<R32F>.Load linear: 15.615ms 1.168x
+Texture2D<R32F>.Load random: 15.519ms 1.175x
+Texture2D<RG32F>.Load uniform: 4.585ms 3.977x
+Texture2D<RG32F>.Load linear: 16.651ms 1.095x
+Texture2D<RG32F>.Load random: 29.710ms 0.614x
+Texture2D<RGBA32F>.Load uniform: 5.163ms 3.532x
+Texture2D<RGBA32F>.Load linear: 29.970ms 0.608x
+Texture2D<RGBA32F>.Load random: 29.358ms 0.621x
 ```
 
 **NVIDIA Volta** results (ratios) of most common load/sample operations are identical to Pascal. However there are some huge changes raw load performance. Raw loads: 1d ~2x faster, 2d-4d ~4x faster (slightly more on 3d and 4d). Nvidia definitely seems to now use a faster direct memory path for raw loads. Raw loads are now the best choice on Nvidia hardware (which is a direct opposite of their last gen hardware). Independent studies of Volta architecture show that their raw load L1$ latency also dropped from 85 cycles (Pascal) down to 28 cycles (Volta). This should makes raw loads even more viable in real applications. My benchmark measures only throughput, so latency improvement isn't visible.
 
-### NVIDIA RTX 2080 Ti (Turing)
+### NVidia Turing (RTX 2080 Ti)
 ```
-Load R8 invariant: 0.023ms
-Load R8 linear: 0.526ms
-Load R8 random: 0.526ms
-Load RG8 invariant: 0.029ms
-Load RG8 linear: 0.526ms
-Load RG8 random: 0.525ms
-Load RGBA8 invariant: 0.045ms
-Load RGBA8 linear: 0.539ms
-Load RGBA8 random: 0.542ms
-Load R16f invariant: 0.025ms
-Load R16f linear: 0.528ms
-Load R16f random: 0.528ms
-Load RG16f invariant: 0.031ms
-Load RG16f linear: 0.526ms
-Load RG16f random: 0.528ms
-Load RGBA16f invariant: 0.045ms
-Load RGBA16f linear: 0.539ms
-Load RGBA16f random: 0.540ms
-Load R32f invariant: 0.023ms
-Load R32f linear: 0.525ms
-Load R32f random: 0.526ms
-Load RG32f invariant: 0.029ms
-Load RG32f linear: 0.526ms
-Load RG32f random: 0.525ms
-Load RGBA32f invariant: 0.045ms
-Load RGBA32f linear: 1.048ms
-Load RGBA32f random: 1.046ms
-Load1 raw32 invariant: 0.221ms
-Load1 raw32 linear: 0.223ms
-Load1 raw32 random: 0.250ms
-Load2 raw32 invariant: 0.321ms
-Load2 raw32 linear: 0.575ms
-Load2 raw32 random: 1.225ms
-Load3 raw32 invariant: 0.474ms
-Load3 raw32 linear: 0.606ms
-Load3 raw32 random: 0.502ms
-Load4 raw32 invariant: 0.618ms
-Load4 raw32 linear: 1.415ms
-Load4 raw32 random: 1.093ms
-Load2 raw32 unaligned invariant: 0.322ms
-Load2 raw32 unaligned linear: 0.575ms
-Load2 raw32 unaligned random: 0.332ms
-Load4 raw32 unaligned invariant: 0.618ms
-Load4 raw32 unaligned linear: 1.413ms
-Load4 raw32 unaligned random: 1.092ms
-Tex2D load R8 invariant: 0.534ms
-Tex2D load R8 linear: 0.536ms
-Tex2D load R8 random: 0.535ms
-Tex2D load RG8 invariant: 0.035ms
-Tex2D load RG8 linear: 0.526ms
-Tex2D load RG8 random: 0.591ms
-Tex2D load RGBA8 invariant: 0.561ms
-Tex2D load RGBA8 linear: 0.573ms
-Tex2D load RGBA8 random: 0.937ms
-Tex2D load R16F invariant: 0.534ms
-Tex2D load R16F linear: 0.538ms
-Tex2D load R16F random: 0.601ms
-Tex2D load RG16F invariant: 0.035ms
-Tex2D load RG16F linear: 0.526ms
-Tex2D load RG16F random: 0.932ms
-Tex2D load RGBA16F invariant: 0.563ms
-Tex2D load RGBA16F linear: 0.576ms
-Tex2D load RGBA16F random: 1.081ms
-Tex2D load R32F invariant: 0.535ms
-Tex2D load R32F linear: 0.539ms
-Tex2D load R32F random: 0.936ms
-Tex2D load RG32F invariant: 0.035ms
-Tex2D load RG32F linear: 0.526ms
-Tex2D load RG32F random: 1.078ms
-Tex2D load RGBA32F invariant: 1.049ms
-Tex2D load RGBA32F linear: 1.051ms
-Tex2D load RGBA32F random: 2.236ms
+Buffer<R8>.Load uniform: 0.703ms 23.287x
+Buffer<R8>.Load linear: 16.179ms 1.011x
+Buffer<R8>.Load random: 15.435ms 1.060x
+Buffer<RG8>.Load uniform: 0.881ms 18.567x
+Buffer<RG8>.Load linear: 15.983ms 1.024x
+Buffer<RG8>.Load random: 17.044ms 0.960x
+Buffer<RGBA8>.Load uniform: 1.336ms 12.247x
+Buffer<RGBA8>.Load linear: 16.825ms 0.973x
+Buffer<RGBA8>.Load random: 16.364ms 1.000x
+Buffer<R16f>.Load uniform: 0.662ms 24.729x
+Buffer<R16f>.Load linear: 15.431ms 1.060x
+Buffer<R16f>.Load random: 15.916ms 1.028x
+Buffer<RG16f>.Load uniform: 0.870ms 18.811x
+Buffer<RG16f>.Load linear: 16.861ms 0.971x
+Buffer<RG16f>.Load random: 16.384ms 0.999x
+Buffer<RGBA16f>.Load uniform: 1.331ms 12.296x
+Buffer<RGBA16f>.Load linear: 15.892ms 1.030x
+Buffer<RGBA16f>.Load random: 15.949ms 1.026x
+Buffer<R32f>.Load uniform: 0.651ms 25.143x
+Buffer<R32f>.Load linear: 15.438ms 1.060x
+Buffer<R32f>.Load random: 16.851ms 0.971x
+Buffer<RG32f>.Load uniform: 1.369ms 11.953x
+Buffer<RG32f>.Load linear: 15.440ms 1.060x
+Buffer<RG32f>.Load random: 15.917ms 1.028x
+Buffer<RGBA32f>.Load uniform: 1.348ms 12.141x
+Buffer<RGBA32f>.Load linear: 30.695ms 0.533x
+Buffer<RGBA32f>.Load random: 32.514ms 0.503x
+ByteAddressBuffer.Load uniform: 7.013ms 2.333x
+ByteAddressBuffer.Load linear: 6.308ms 2.594x
+ByteAddressBuffer.Load random: 7.347ms 2.227x
+ByteAddressBuffer.Load2 uniform: 9.510ms 1.721x
+ByteAddressBuffer.Load2 linear: 16.912ms 0.968x
+ByteAddressBuffer.Load2 random: 9.715ms 1.684x
+ByteAddressBuffer.Load3 uniform: 14.700ms 1.113x
+ByteAddressBuffer.Load3 linear: 19.200ms 0.852x
+ByteAddressBuffer.Load3 random: 14.804ms 1.105x
+ByteAddressBuffer.Load4 uniform: 18.228ms 0.898x
+ByteAddressBuffer.Load4 linear: 43.493ms 0.376x
+ByteAddressBuffer.Load4 random: 32.616ms 0.502x
+ByteAddressBuffer.Load2 unaligned uniform: 9.549ms 1.714x
+ByteAddressBuffer.Load2 unaligned linear: 16.901ms 0.968x
+ByteAddressBuffer.Load2 unaligned random: 9.719ms 1.684x
+ByteAddressBuffer.Load4 unaligned uniform: 18.218ms 0.898x
+ByteAddressBuffer.Load4 unaligned linear: 41.476ms 0.395x
+ByteAddressBuffer.Load4 unaligned random: 32.081ms 0.510x
+StructuredBuffer<float>.Load uniform: 6.535ms 2.504x
+StructuredBuffer<float>.Load linear: 6.706ms 2.440x
+StructuredBuffer<float>.Load random: 6.911ms 2.368x
+StructuredBuffer<float2>.Load uniform: 8.057ms 2.031x
+StructuredBuffer<float2>.Load linear: 16.874ms 0.970x
+StructuredBuffer<float2>.Load random: 8.374ms 1.954x
+StructuredBuffer<float4>.Load uniform: 15.491ms 1.056x
+StructuredBuffer<float4>.Load linear: 20.327ms 0.805x
+StructuredBuffer<float4>.Load random: 18.112ms 0.903x
+cbuffer{float4} load uniform: 0.834ms 19.616x
+cbuffer{float4} load linear: 328.935ms 0.050x
+cbuffer{float4} load random: 125.135ms 0.131x
+Texture2D<R8>.Load uniform: 0.746ms 21.929x
+Texture2D<R8>.Load linear: 16.173ms 1.012x
+Texture2D<R8>.Load random: 15.400ms 1.063x
+Texture2D<RG8>.Load uniform: 1.043ms 15.691x
+Texture2D<RG8>.Load linear: 15.421ms 1.061x
+Texture2D<RG8>.Load random: 15.400ms 1.063x
+Texture2D<RGBA8>.Load uniform: 1.876ms 8.725x
+Texture2D<RGBA8>.Load linear: 16.462ms 0.994x
+Texture2D<RGBA8>.Load random: 16.461ms 0.994x
+Texture2D<R16F>.Load uniform: 0.741ms 22.092x
+Texture2D<R16F>.Load linear: 16.253ms 1.007x
+Texture2D<R16F>.Load random: 16.222ms 1.009x
+Texture2D<RG16F>.Load uniform: 1.053ms 15.546x
+Texture2D<RG16F>.Load linear: 15.440ms 1.060x
+Texture2D<RG16F>.Load random: 16.148ms 1.013x
+Texture2D<RGBA16F>.Load uniform: 1.890ms 8.659x
+Texture2D<RGBA16F>.Load linear: 16.125ms 1.015x
+Texture2D<RGBA16F>.Load random: 31.047ms 0.527x
+Texture2D<R32F>.Load uniform: 0.746ms 21.930x
+Texture2D<R32F>.Load linear: 16.403ms 0.998x
+Texture2D<R32F>.Load random: 16.638ms 0.983x
+Texture2D<RG32F>.Load uniform: 1.060ms 15.441x
+Texture2D<RG32F>.Load linear: 15.439ms 1.060x
+Texture2D<RG32F>.Load random: 31.903ms 0.513x
+Texture2D<RGBA32F>.Load uniform: 1.888ms 8.668x
+Texture2D<RGBA32F>.Load linear: 31.525ms 0.519x
+Texture2D<RGBA32F>.Load random: 32.783ms 0.499x
 ```
 
 **NVIDIA Turing** results (ratios) of most common load/sample operations are identical Volta.
