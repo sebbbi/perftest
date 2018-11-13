@@ -53,6 +53,7 @@ https://twitter.com/JoshuaBarczak/status/1062060067334189056
 Intel has now officially revealed that their driver does a wave shuffle optimization for uniform address loads. They have been doing it for years already. This explains Intel GPU benchmark results perfectly. Now that we have confirmation of Intel's (original) optimization, I suspect that Nvidia's shader compiler employs a highly similar optimization in this case. Both optimizations are great, because Nvidia/Intel do not have a dedicated scalar unit. They need to lean more on vector loads, and this trick allows sharing one vector load with multiple uniform address load loop iterations.
 
 ## Results
+All results are compared to Buffer<RGBA8> random result (= 1.0x) on the same GPU.
 
 ### AMD GCN1 (Radeon 7000 series)
 ```markdown
