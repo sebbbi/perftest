@@ -616,6 +616,8 @@ Texture2D<RGBA32F>.Load random: 29.358ms 0.621x
 
 **NVIDIA Volta** results (ratios) of most common load/sample operations are identical to Pascal. However there are some huge changes raw load performance. Raw loads: 1d ~2x faster, 2d-4d ~4x faster (slightly more on 3d and 4d). Nvidia definitely seems to now use a faster direct memory path for raw loads. Raw loads are now the best choice on Nvidia hardware (which is a direct opposite of their last gen hardware). Independent studies of Volta architecture show that their raw load L1$ latency also dropped from 85 cycles (Pascal) down to 28 cycles (Volta). This should makes raw loads even more viable in real applications. My benchmark measures only throughput, so latency improvement isn't visible.
 
+**Uniform address optimization:** Uniform address optimization no longer affects StructuredBuffers. My educated guess is that StructuredBuffers (like raw buffers) now use the same lower latency direct memory path. Nvidia most likely hasn't yet implemented uniform address optimization for these new memory operations. Another curiosity is that Volta also has much lower performance advantage in the uniform address optimized cases (versus any other Nvidia GPU, including Turing).
+
 ### NVidia Turing (RTX 2080 Ti)
 ```
 Buffer<R8>.Load uniform: 0.703ms 23.287x
@@ -704,7 +706,9 @@ Texture2D<RGBA32F>.Load linear: 31.525ms 0.519x
 Texture2D<RGBA32F>.Load random: 32.783ms 0.499x
 ```
 
-**NVIDIA Turing** results (ratios) of most common load/sample operations are identical Volta.
+**NVIDIA Turing** results (ratios) of most common load/sample operations are identical Volta. Except wide raw buffer load performance is closer to Maxwell/Pascal. In Volta, Nvidia used one large 128KB shared L1$ (freely configurable between groupshared mem and L1$), while in Turing they have 96KB shared L1$ which can be configured only as 64/32 or 32/64. This benchmark seems to point out that this halves their L1$ bandwidth for raw loads.
+
+**Uniform address optimization:** Like Volta, the new uniform address optimization no longer affects StructuredBuffers. My educated guess is that StructuredBuffers (like raw buffers) now use the same lower latency direct memory path. Nvidia most likely hasn't yet implemented uniform address optimization for these new memory operations. Turing uniform address optimization performance however (in other cases) returns to similar 20x+ figures than Maxwell/Pascal.
 
 ### Intel Gen9 (HD 630 / i7 6700K)
 ```markdown
