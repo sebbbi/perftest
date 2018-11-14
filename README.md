@@ -55,23 +55,106 @@ Intel has now officially revealed that their driver does a wave shuffle optimiza
 ## Results
 All results are compared to ```Buffer<RGBA8>.Load random``` result (=1.0x) on the same GPU.
 
-### AMD GCN1 (Radeon 7000 series)
+### AMD GCN2 (R9 390X)
 ```markdown
-OLD VERSION RESULTS REMOVED. ANALYSIS STILL VALID.
-PLEASE SEND ME NEW RESULTS IF YOU OWN GCN1 GPU
+Buffer<R8>.Load uniform: 11.302ms 3.907x
+Buffer<R8>.Load linear: 11.327ms 3.899x
+Buffer<R8>.Load random: 44.150ms 1.000x
+Buffer<RG8>.Load uniform: 49.611ms 0.890x
+Buffer<RG8>.Load linear: 49.835ms 0.886x
+Buffer<RG8>.Load random: 49.615ms 0.890x
+Buffer<RGBA8>.Load uniform: 44.149ms 1.000x
+Buffer<RGBA8>.Load linear: 44.806ms 0.986x
+Buffer<RGBA8>.Load random: 44.164ms 1.000x
+Buffer<R16f>.Load uniform: 11.131ms 3.968x
+Buffer<R16f>.Load linear: 11.139ms 3.965x
+Buffer<R16f>.Load random: 44.076ms 1.002x
+Buffer<RG16f>.Load uniform: 49.552ms 0.891x
+Buffer<RG16f>.Load linear: 49.560ms 0.891x
+Buffer<RG16f>.Load random: 49.559ms 0.891x
+Buffer<RGBA16f>.Load uniform: 44.066ms 1.002x
+Buffer<RGBA16f>.Load linear: 44.687ms 0.988x
+Buffer<RGBA16f>.Load random: 44.066ms 1.002x
+Buffer<R32f>.Load uniform: 11.132ms 3.967x
+Buffer<R32f>.Load linear: 11.139ms 3.965x
+Buffer<R32f>.Load random: 44.071ms 1.002x
+Buffer<RG32f>.Load uniform: 49.558ms 0.891x
+Buffer<RG32f>.Load linear: 49.560ms 0.891x
+Buffer<RG32f>.Load random: 49.559ms 0.891x
+Buffer<RGBA32f>.Load uniform: 44.061ms 1.002x
+Buffer<RGBA32f>.Load linear: 44.613ms 0.990x
+Buffer<RGBA32f>.Load random: 49.583ms 0.891x
+ByteAddressBuffer.Load uniform: 10.322ms 4.278x
+ByteAddressBuffer.Load linear: 11.546ms 3.825x
+ByteAddressBuffer.Load random: 44.153ms 1.000x
+ByteAddressBuffer.Load2 uniform: 11.499ms 3.841x
+ByteAddressBuffer.Load2 linear: 49.628ms 0.890x
+ByteAddressBuffer.Load2 random: 49.651ms 0.889x
+ByteAddressBuffer.Load3 uniform: 16.985ms 2.600x
+ByteAddressBuffer.Load3 linear: 44.142ms 1.000x
+ByteAddressBuffer.Load3 random: 88.176ms 0.501x
+ByteAddressBuffer.Load4 uniform: 22.472ms 1.965x
+ByteAddressBuffer.Load4 linear: 44.212ms 0.999x
+ByteAddressBuffer.Load4 random: 49.346ms 0.895x
+ByteAddressBuffer.Load2 unaligned uniform: 11.422ms 3.867x
+ByteAddressBuffer.Load2 unaligned linear: 49.552ms 0.891x
+ByteAddressBuffer.Load2 unaligned random: 49.561ms 0.891x
+ByteAddressBuffer.Load4 unaligned uniform: 22.373ms 1.974x
+ByteAddressBuffer.Load4 unaligned linear: 44.095ms 1.002x
+ByteAddressBuffer.Load4 unaligned random: 54.464ms 0.811x
+StructuredBuffer<float>.Load uniform: 12.585ms 3.509x
+StructuredBuffer<float>.Load linear: 11.770ms 3.752x
+StructuredBuffer<float>.Load random: 44.176ms 1.000x
+StructuredBuffer<float2>.Load uniform: 13.210ms 3.343x
+StructuredBuffer<float2>.Load linear: 50.217ms 0.879x
+StructuredBuffer<float2>.Load random: 49.645ms 0.890x
+StructuredBuffer<float4>.Load uniform: 13.818ms 3.196x
+StructuredBuffer<float4>.Load random: 49.666ms 0.889x
+StructuredBuffer<float4>.Load linear: 44.721ms 0.988x
+cbuffer{float4} load uniform: 16.702ms 2.644x
+cbuffer{float4} load linear: 44.447ms 0.994x
+cbuffer{float4} load random: 49.656ms 0.889x
+Texture2D<R8>.Load uniform: 44.214ms 0.999x
+Texture2D<R8>.Load linear: 44.795ms 0.986x
+Texture2D<R8>.Load random: 44.808ms 0.986x
+Texture2D<RG8>.Load uniform: 49.706ms 0.888x
+Texture2D<RG8>.Load linear: 50.231ms 0.879x
+Texture2D<RG8>.Load random: 50.200ms 0.880x
+Texture2D<RGBA8>.Load uniform: 44.760ms 0.987x
+Texture2D<RGBA8>.Load linear: 45.339ms 0.974x
+Texture2D<RGBA8>.Load random: 45.405ms 0.973x
+Texture2D<R16F>.Load uniform: 44.175ms 1.000x
+Texture2D<R16F>.Load linear: 44.157ms 1.000x
+Texture2D<R16F>.Load random: 44.096ms 1.002x
+Texture2D<RG16F>.Load uniform: 49.739ms 0.888x
+Texture2D<RG16F>.Load linear: 49.661ms 0.889x
+Texture2D<RG16F>.Load random: 49.622ms 0.890x
+Texture2D<RGBA16F>.Load uniform: 44.257ms 0.998x
+Texture2D<RGBA16F>.Load linear: 44.267ms 0.998x
+Texture2D<RGBA16F>.Load random: 88.126ms 0.501x
+Texture2D<R32F>.Load uniform: 44.259ms 0.998x
+Texture2D<R32F>.Load linear: 44.193ms 0.999x
+Texture2D<R32F>.Load random: 44.099ms 1.001x
+Texture2D<RG32F>.Load uniform: 49.739ms 0.888x
+Texture2D<RG32F>.Load linear: 49.667ms 0.889x
+Texture2D<RG32F>.Load random: 88.110ms 0.501x
+Texture2D<RGBA32F>.Load uniform: 44.288ms 0.997x
+Texture2D<RGBA32F>.Load linear: 66.145ms 0.668x
+Texture2D<RGBA32F>.Load random: 88.124ms 0.501x
 ```
+**AMD GCN2** was a very popular architecture. First card using this architecture was Radeon 7790. Many Radeon 200 and 300 series cards also use this architecture. Both Xbox and PS4 (base model) GPUs are based on GCN2 architecture, making this architecture very important optimization target.
 
-**Typed loads:** GCN1 coalesces 1d typed loads only (all formats). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and uniform access (all threads in wave load the same address) coalesce perfectly. All dimensions (1d/2d/4d) and channel widths (8b/16b/32b) perform identically. Best bytes per cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
+**Typed loads:** GCN coalesces linear typed loads. But only 1d loads (R8, R16F, R32F). Coalesced load performance is 4x. Both linear access pattern (all threads in wave load subsequent addresses) and uniform access (all threads in wave load the same address) coalesce perfectly. Typed loads of every dimension (1d/2d/4d) and channel width (8b/16b/32b) perform identically. Best bytes/cycle rate can be achieved either by R32 coalesced load (when access pattern suits this) or always with RGBA32 load.
 
-**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d raw loads coalesce perfectly (4x) on linear access. Uniform address raw loads generates scalar unit loads on GCN (separate cache + stored to SGPR -> reduced register & cache pressure & doesn't stress vector load path). Scalar 1d load is 4x faster than random 1d load (similar to coalesced). Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16). 3d raw linear loads have equal performance to 4d loads, but random 3d loads are 2x slower than 4d loads. 
+**Raw (ByteAddressBuffer) loads:** Similar to typed loads. 1d raw loads coalesce perfectly (4x) on linear access. Uniform address raw loads generates scalar unit loads on GCN. Scalar loads use separate cache and are stored to separate SGPR register file -> reduced register & cache pressure & doesn't stress vector load path. Scalar 1d load is 4x faster than normal 1d load. Scalar 2d load is 4x faster than normal 2d load. Scalar 4d load is 2x faster than normal 4d load. Unaligned (alignment=4) loads have equal performance to aligned (alignment=8/16). 3d raw linear loads have equal performance to 4d loads, but random 3d loads are slightly slower.
 
 **Texture loads:** Similar performance as typed buffer loads. However no coalescing in 1d linear access and no scalar unit offload of uniform access. Random access of wide formats tends to be slightly slower (but my 2d random produces different access pattern than 1d).
 
-**Structured buffer loads:** Performance is identical to similar raw buffer loads.
+**Structured buffer loads:** Performance is identical to similar width raw buffer loads.
 
-**Cbuffer loads:** AMD GCN architecture doesn't have special constant buffer hardware. Constant buffer load performance is identical to raw and structured buffers. Prefer uniform addresses to allow the compiler to generate scalar loads, which is around 4x faster and has much lower latency.
+**Cbuffer loads:** AMD GCN architecture doesn't have special constant buffer hardware. Constant buffer load performance is identical to raw and structured buffers. Prefer uniform addresses to allow the compiler to generate scalar loads, which is around 4x faster and has much lower latency and doesn't waste VGPRs.
 
-**Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads uniform address loads to scalar unit, saving VGPR pressure and vector memory instructions. Avoid 3d random loads if possible (4d load is 2x faster).
+**Suggestions:** Prefer wide fat 4d loads instead of multiple narrow loads. If you have perfectly linear memory access pattern, 1d coalesced loads are also fast. ByteAddressBuffers (raw loads) have good performance: Full speed 128 bit 4d loads, 4x rate 1d loads (linear access), and the compiler offloads uniform address loads to scalar unit, saving VGPR pressure and vector memory instructions.
 
 These results match with AMDs wide loads & coalescing documents, see: http://gpuopen.com/gcn-memory-coalescing/. I would be glad if AMD released a public document describing all scalar load optimization cases supported by their compiler.
 
