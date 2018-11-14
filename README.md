@@ -246,7 +246,7 @@ Texture2D<RGBA32F>.Load linear: 52.549ms 0.667x
 Texture2D<RGBA32F>.Load random: 70.037ms 0.500x
  ```
   
-**AMD GCN3** results (ratios) are identical to GCN1. See GCN1 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
+**AMD GCN3** results (ratios) are identical to GCN2. See GCN2 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
 
 ### AMD GCN4 (RX 480)
 ```markdown
@@ -335,7 +335,7 @@ Texture2D<RGBA32F>.Load uniform: 42.927ms 1.000x
 Texture2D<RGBA32F>.Load linear: 64.284ms 0.668x
 Texture2D<RGBA32F>.Load random: 85.638ms 0.501x
 ```
-**AMD GCN4** results (ratios) are identical to GCN1 & GCN3. See GCN1 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
+**AMD GCN4** results (ratios) are identical to GCN2/3. See GCN2 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
 
 ### AMD GCN5 (Vega Frontier Edition)
 ```markdown
@@ -424,7 +424,7 @@ Texture2D<RGBA32F>.Load uniform: 20.551ms 1.083x
 Texture2D<RGBA32F>.Load linear: 31.748ms 0.701x
 Texture2D<RGBA32F>.Load random: 42.097ms 0.529x
 ```
-**AMD GCN5** results (ratios) are identical to GCN1 & GCN3 & GCN4. See GCN1 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
+**AMD GCN5** results (ratios) are identical to GCN2/3/4. See GCN2 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
 
 ### NVidia Maxwell (GTX 980 Ti)
 ```markdown
