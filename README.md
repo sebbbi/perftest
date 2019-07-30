@@ -426,6 +426,96 @@ Texture2D<RGBA32F>.Load random: 42.097ms 0.529x
 ```
 **AMD GCN5** results (ratios) are identical to GCN2/3/4. See GCN2 for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between different GCN revisions.
 
+### AMD GCN5 7nm (Radeon VII)
+```markdown
+Buffer<R8>.Load uniform: 5.214ms 3.667x
+Buffer<R8>.Load linear: 5.332ms 3.586x
+Buffer<R8>.Load random: 18.861ms 1.014x
+Buffer<RG8>.Load uniform: 18.917ms 1.011x
+Buffer<RG8>.Load linear: 18.904ms 1.011x
+Buffer<RG8>.Load random: 18.885ms 1.012x
+Buffer<RGBA8>.Load uniform: 18.882ms 1.013x
+Buffer<RGBA8>.Load linear: 19.074ms 1.002x
+Buffer<RGBA8>.Load random: 19.119ms 1.000x
+Buffer<R16f>.Load uniform: 5.335ms 3.584x
+Buffer<R16f>.Load linear: 5.547ms 3.447x
+Buffer<R16f>.Load random: 18.872ms 1.013x
+Buffer<RG16f>.Load uniform: 19.080ms 1.002x
+Buffer<RG16f>.Load linear: 18.911ms 1.011x
+Buffer<RG16f>.Load random: 18.996ms 1.007x
+Buffer<RGBA16f>.Load uniform: 18.879ms 1.013x
+Buffer<RGBA16f>.Load linear: 19.340ms 0.989x
+Buffer<RGBA16f>.Load random: 18.985ms 1.007x
+Buffer<R32f>.Load uniform: 5.337ms 3.582x
+Buffer<R32f>.Load linear: 5.548ms 3.446x
+Buffer<R32f>.Load random: 18.873ms 1.013x
+Buffer<RG32f>.Load uniform: 19.130ms 0.999x
+Buffer<RG32f>.Load linear: 18.934ms 1.010x
+Buffer<RG32f>.Load random: 19.100ms 1.001x
+Buffer<RGBA32f>.Load uniform: 18.880ms 1.013x
+Buffer<RGBA32f>.Load linear: 19.383ms 0.986x
+Buffer<RGBA32f>.Load random: 21.310ms 0.897x
+ByteAddressBuffer.Load uniform: 4.285ms 4.462x
+ByteAddressBuffer.Load linear: 5.542ms 3.450x
+ByteAddressBuffer.Load random: 18.869ms 1.013x
+ByteAddressBuffer.Load2 uniform: 5.209ms 3.671x
+ByteAddressBuffer.Load2 linear: 19.266ms 0.992x
+ByteAddressBuffer.Load2 random: 19.005ms 1.006x
+ByteAddressBuffer.Load3 uniform: 7.454ms 2.565x
+ByteAddressBuffer.Load3 linear: 19.190ms 0.996x
+ByteAddressBuffer.Load3 random: 37.705ms 0.507x
+ByteAddressBuffer.Load4 uniform: 9.604ms 1.991x
+ByteAddressBuffer.Load4 linear: 19.455ms 0.983x
+ByteAddressBuffer.Load4 random: 21.360ms 0.895x
+ByteAddressBuffer.Load2 unaligned uniform: 5.083ms 3.761x
+ByteAddressBuffer.Load2 unaligned linear: 19.190ms 0.996x
+ByteAddressBuffer.Load2 unaligned random: 18.920ms 1.011x
+ByteAddressBuffer.Load4 unaligned uniform: 9.600ms 1.992x
+ByteAddressBuffer.Load4 unaligned linear: 19.234ms 0.994x
+ByteAddressBuffer.Load4 unaligned random: 23.485ms 0.814x
+StructuredBuffer<float>.Load uniform: 5.360ms 3.567x
+StructuredBuffer<float>.Load linear: 5.335ms 3.584x
+StructuredBuffer<float>.Load random: 18.879ms 1.013x
+StructuredBuffer<float2>.Load uniform: 5.494ms 3.480x
+StructuredBuffer<float2>.Load linear: 18.943ms 1.009x
+StructuredBuffer<float2>.Load random: 18.898ms 1.012x
+StructuredBuffer<float4>.Load uniform: 5.576ms 3.429x
+StructuredBuffer<float4>.Load linear: 19.237ms 0.994x
+StructuredBuffer<float4>.Load random: 21.314ms 0.897x
+cbuffer{float4} load uniform: 6.819ms 2.804x
+cbuffer{float4} load linear: 19.731ms 0.969x
+cbuffer{float4} load random: 21.368ms 0.895x
+Texture2D<R8>.Load uniform: 18.917ms 1.011x
+Texture2D<R8>.Load linear: 19.067ms 1.003x
+Texture2D<R8>.Load random: 18.925ms 1.010x
+Texture2D<RG8>.Load uniform: 18.902ms 1.011x
+Texture2D<RG8>.Load linear: 18.952ms 1.009x
+Texture2D<RG8>.Load random: 18.888ms 1.012x
+Texture2D<RGBA8>.Load uniform: 19.000ms 1.006x
+Texture2D<RGBA8>.Load linear: 19.137ms 0.999x
+Texture2D<RGBA8>.Load random: 18.965ms 1.008x
+Texture2D<R16F>.Load uniform: 18.919ms 1.011x
+Texture2D<R16F>.Load linear: 18.936ms 1.010x
+Texture2D<R16F>.Load random: 19.034ms 1.004x
+Texture2D<RG16F>.Load uniform: 18.910ms 1.011x
+Texture2D<RG16F>.Load linear: 18.971ms 1.008x
+Texture2D<RG16F>.Load random: 18.895ms 1.012x
+Texture2D<RGBA16F>.Load uniform: 18.918ms 1.011x
+Texture2D<RGBA16F>.Load linear: 19.094ms 1.001x
+Texture2D<RGBA16F>.Load random: 37.952ms 0.504x
+Texture2D<R32F>.Load uniform: 18.904ms 1.011x
+Texture2D<R32F>.Load linear: 19.040ms 1.004x
+Texture2D<R32F>.Load random: 19.053ms 1.003x
+Texture2D<RG32F>.Load uniform: 18.942ms 1.009x
+Texture2D<RG32F>.Load linear: 18.999ms 1.006x
+Texture2D<RG32F>.Load random: 37.708ms 0.507x
+Texture2D<RGBA32F>.Load uniform: 18.919ms 1.011x
+Texture2D<RGBA32F>.Load linear: 28.305ms 0.675x
+Texture2D<RGBA32F>.Load random: 37.705ms 0.507x
+```
+**AMD GCN5 7nm** is a 7nm die shink of Vega. Has higher clocks, but four disabled CUs (60 vs 64). Results (ratios) are identical to GCN2/3/4/5. See GCN2 for analysis.
+
+
 ### NVidia Maxwell (GTX 980 Ti)
 ```markdown
 Buffer<R8>.Load uniform: 1.249ms 28.812x
