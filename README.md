@@ -709,8 +709,90 @@ Texture2D<RGBA32F>.Load random: 57.557ms 0.541x
 
 ### NVIDIA Kepler (600/700 series)
 ```markdown
-OLD VERSION RESULTS REMOVED. ANALYSIS STILL VALID.
-PLEASE SEND ME NEW RESULTS IF YOU OWN KEPLER GPU
+Buffer<R8>.Load uniform: 3.073ms 62.440x
+Buffer<R8>.Load linear: 195.662ms 0.981x
+Buffer<R8>.Load random: 197.022ms 0.974x
+Buffer<RG8>.Load uniform: 3.227ms 59.465x
+Buffer<RG8>.Load linear: 195.179ms 0.983x
+Buffer<RG8>.Load random: 196.785ms 0.975x
+Buffer<RGBA8>.Load uniform: 3.598ms 53.329x
+Buffer<RGBA8>.Load linear: 193.676ms 0.991x
+Buffer<RGBA8>.Load random: 191.866ms 1.000x
+Buffer<R16f>.Load uniform: 3.031ms 63.308x
+Buffer<R16f>.Load linear: 195.622ms 0.981x
+Buffer<R16f>.Load random: 197.009ms 0.974x
+Buffer<RG16f>.Load uniform: 3.025ms 63.434x
+Buffer<RG16f>.Load linear: 195.135ms 0.983x
+Buffer<RG16f>.Load random: 196.860ms 0.975x
+Buffer<RGBA16f>.Load uniform: 3.443ms 55.728x
+Buffer<RGBA16f>.Load linear: 193.744ms 0.990x
+Buffer<RGBA16f>.Load random: 191.929ms 1.000x
+Buffer<R32f>.Load uniform: 2.970ms 64.605x
+Buffer<R32f>.Load linear: 195.751ms 0.980x
+Buffer<R32f>.Load random: 197.141ms 0.973x
+Buffer<RG32f>.Load uniform: 3.175ms 60.425x
+Buffer<RG32f>.Load linear: 195.351ms 0.982x
+Buffer<RG32f>.Load random: 196.911ms 0.974x
+Buffer<RGBA32f>.Load uniform: 3.621ms 52.985x
+Buffer<RGBA32f>.Load linear: 350.658ms 0.547x
+Buffer<RGBA32f>.Load random: 350.633ms 0.547x
+ByteAddressBuffer.Load uniform: 3.758ms 51.055x
+ByteAddressBuffer.Load linear: 191.898ms 1.000x
+ByteAddressBuffer.Load random: 216.928ms 0.884x
+ByteAddressBuffer.Load2 uniform: 4.682ms 40.977x
+ByteAddressBuffer.Load2 linear: 390.852ms 0.491x
+ByteAddressBuffer.Load2 random: 442.053ms 0.434x
+ByteAddressBuffer.Load3 uniform: 572.822ms 0.335x
+ByteAddressBuffer.Load3 linear: 568.316ms 0.338x
+ByteAddressBuffer.Load3 random: 570.361ms 0.336x
+ByteAddressBuffer.Load4 uniform: 752.691ms 0.255x
+ByteAddressBuffer.Load4 linear: 758.795ms 0.253x
+ByteAddressBuffer.Load4 random: 763.638ms 0.251x
+ByteAddressBuffer.Load2 unaligned uniform: 4.199ms 45.692x
+ByteAddressBuffer.Load2 unaligned linear: 391.542ms 0.490x
+ByteAddressBuffer.Load2 unaligned random: 442.574ms 0.434x
+ByteAddressBuffer.Load4 unaligned uniform: 752.793ms 0.255x
+ByteAddressBuffer.Load4 unaligned linear: 758.698ms 0.253x
+ByteAddressBuffer.Load4 unaligned random: 763.679ms 0.251x
+StructuredBuffer<float>.Load uniform: 3.103ms 61.827x
+StructuredBuffer<float>.Load linear: 195.674ms 0.981x
+StructuredBuffer<float>.Load random: 196.991ms 0.974x
+StructuredBuffer<float2>.Load uniform: 3.301ms 58.120x
+StructuredBuffer<float2>.Load linear: 195.167ms 0.983x
+StructuredBuffer<float2>.Load random: 196.749ms 0.975x
+StructuredBuffer<float4>.Load uniform: 3.846ms 49.882x
+StructuredBuffer<float4>.Load linear: 350.461ms 0.547x
+StructuredBuffer<float4>.Load random: 350.494ms 0.547x
+cbuffer{float4} load uniform: 4.478ms 42.844x
+cbuffer{float4} load linear: 9217.404ms 0.021x
+cbuffer{float4} load random: 3333.476ms 0.058x
+Texture2D<R8>.Load uniform: 3.384ms 56.695x
+Texture2D<R8>.Load linear: 202.197ms 0.949x
+Texture2D<R8>.Load random: 204.327ms 0.939x
+Texture2D<RG8>.Load uniform: 3.731ms 51.424x
+Texture2D<RG8>.Load linear: 198.542ms 0.966x
+Texture2D<RG8>.Load random: 211.881ms 0.906x
+Texture2D<RGBA8>.Load uniform: 4.306ms 44.558x
+Texture2D<RGBA8>.Load linear: 196.088ms 0.978x
+Texture2D<RGBA8>.Load random: 195.847ms 0.980x
+Texture2D<R16F>.Load uniform: 3.419ms 56.118x
+Texture2D<R16F>.Load linear: 202.264ms 0.949x
+Texture2D<R16F>.Load random: 204.311ms 0.939x
+Texture2D<RG16F>.Load uniform: 3.673ms 52.243x
+Texture2D<RG16F>.Load linear: 198.553ms 0.966x
+Texture2D<RG16F>.Load random: 211.917ms 0.905x
+Texture2D<RGBA16F>.Load uniform: 4.115ms 46.626x
+Texture2D<RGBA16F>.Load linear: 196.084ms 0.978x
+Texture2D<RGBA16F>.Load random: 350.561ms 0.547x
+Texture2D<R32F>.Load uniform: 3.517ms 54.547x
+Texture2D<R32F>.Load linear: 202.339ms 0.948x
+Texture2D<R32F>.Load random: 204.392ms 0.939x
+Texture2D<RG32F>.Load uniform: 3.705ms 51.783x
+Texture2D<RG32F>.Load linear: 198.537ms 0.966x
+Texture2D<RG32F>.Load random: 350.591ms 0.547x
+Texture2D<RGBA32F>.Load uniform: 4.028ms 47.637x
+Texture2D<RGBA32F>.Load linear: 350.589ms 0.547x
+Texture2D<RGBA32F>.Load random: 350.519ms 0.547x
 ```
 
 **NVIDIA Kepler** results (ratios) are identical to Maxwell & Pascal. See Maxwell for analysis. Clock and SM scaling reveal that there's no bandwidth/issue related changes in the texture/L1$ architecture between Kepler, Maxwell and Pascal.
