@@ -515,6 +515,94 @@ Texture2D<RGBA32F>.Load random: 37.705ms 0.507x
 ```
 **AMD GCN5 7nm** is a 7nm die shink of Vega. Has higher clocks, but four disabled CUs (60 vs 64). Results (ratios) are identical to GCN2/3/4/5. See GCN2 for analysis.
 
+### AMD Navi (RX 5700 XT)
+```markdown
+Buffer<R8>.Load uniform: 5.289ms 2.385x
+Buffer<R8>.Load linear: 4.874ms 2.588x
+Buffer<R8>.Load random: 4.656ms 2.710x
+Buffer<RG8>.Load uniform: 5.986ms 2.108x
+Buffer<RG8>.Load linear: 6.514ms 1.937x
+Buffer<RG8>.Load random: 6.115ms 2.063x
+Buffer<RGBA8>.Load uniform: 12.519ms 1.008x
+Buffer<RGBA8>.Load linear: 12.985ms 0.972x
+Buffer<RGBA8>.Load random: 12.617ms 1.000x
+Buffer<R16f>.Load uniform: 4.769ms 2.645x
+Buffer<R16f>.Load linear: 4.599ms 2.744x
+Buffer<R16f>.Load random: 4.687ms 2.692x
+Buffer<RG16f>.Load uniform: 6.210ms 2.032x
+Buffer<RG16f>.Load linear: 6.164ms 2.047x
+Buffer<RG16f>.Load random: 6.170ms 2.045x
+Buffer<RGBA16f>.Load uniform: 12.838ms 0.983x
+Buffer<RGBA16f>.Load linear: 13.138ms 0.960x
+Buffer<RGBA16f>.Load random: 12.725ms 0.991x
+Buffer<R32f>.Load uniform: 4.818ms 2.619x
+Buffer<R32f>.Load linear: 4.697ms 2.686x
+Buffer<R32f>.Load random: 4.771ms 2.644x
+Buffer<RG32f>.Load uniform: 6.295ms 2.004x
+Buffer<RG32f>.Load linear: 6.223ms 2.027x
+Buffer<RG32f>.Load random: 6.217ms 2.029x
+Buffer<RGBA32f>.Load uniform: 13.099ms 0.963x
+Buffer<RGBA32f>.Load linear: 13.312ms 0.948x
+Buffer<RGBA32f>.Load random: 12.819ms 0.984x
+ByteAddressBuffer.Load uniform: 7.299ms 1.728x
+ByteAddressBuffer.Load linear: 6.361ms 1.983x
+ByteAddressBuffer.Load random: 6.279ms 2.009x
+ByteAddressBuffer.Load2 uniform: 6.913ms 1.825x
+ByteAddressBuffer.Load2 linear: 9.648ms 1.308x
+ByteAddressBuffer.Load2 random: 9.693ms 1.302x
+ByteAddressBuffer.Load3 uniform: 9.650ms 1.307x
+ByteAddressBuffer.Load3 linear: 13.069ms 0.965x
+ByteAddressBuffer.Load3 random: 26.009ms 0.485x
+ByteAddressBuffer.Load4 uniform: 12.956ms 0.974x
+ByteAddressBuffer.Load4 linear: 16.076ms 0.785x
+ByteAddressBuffer.Load4 random: 16.332ms 0.773x
+ByteAddressBuffer.Load2 unaligned uniform: 7.340ms 1.719x
+ByteAddressBuffer.Load2 unaligned linear: 12.697ms 0.994x
+ByteAddressBuffer.Load2 unaligned random: 12.598ms 1.001x
+ByteAddressBuffer.Load4 unaligned uniform: 13.019ms 0.969x
+ByteAddressBuffer.Load4 unaligned linear: 19.027ms 0.663x
+ByteAddressBuffer.Load4 unaligned random: 25.387ms 0.497x
+StructuredBuffer<float>.Load uniform: 9.047ms 1.395x
+StructuredBuffer<float>.Load linear: 5.461ms 2.310x
+StructuredBuffer<float>.Load random: 4.722ms 2.672x
+StructuredBuffer<float2>.Load uniform: 8.770ms 1.439x
+StructuredBuffer<float2>.Load linear: 6.795ms 1.857x
+StructuredBuffer<float2>.Load random: 6.074ms 2.077x
+StructuredBuffer<float4>.Load uniform: 9.013ms 1.400x
+StructuredBuffer<float4>.Load linear: 12.948ms 0.974x
+StructuredBuffer<float4>.Load random: 12.428ms 1.015x
+cbuffer{float4} load uniform: 9.561ms 1.320x
+cbuffer{float4} load linear: 13.446ms 0.938x
+cbuffer{float4} load random: 12.445ms 1.014x
+Texture2D<R8>.Load uniform: 6.537ms 1.930x
+Texture2D<R8>.Load linear: 6.652ms 1.897x
+Texture2D<R8>.Load random: 6.474ms 1.949x
+Texture2D<RG8>.Load uniform: 6.652ms 1.897x
+Texture2D<RG8>.Load linear: 6.606ms 1.910x
+Texture2D<RG8>.Load random: 6.644ms 1.899x
+Texture2D<RGBA8>.Load uniform: 12.992ms 0.971x
+Texture2D<RGBA8>.Load linear: 13.012ms 0.970x
+Texture2D<RGBA8>.Load random: 12.877ms 0.980x
+Texture2D<R16F>.Load uniform: 6.655ms 1.896x
+Texture2D<R16F>.Load linear: 6.596ms 1.913x
+Texture2D<R16F>.Load random: 6.476ms 1.948x
+Texture2D<RG16F>.Load uniform: 6.612ms 1.908x
+Texture2D<RG16F>.Load linear: 6.697ms 1.884x
+Texture2D<RG16F>.Load random: 6.436ms 1.960x
+Texture2D<RGBA16F>.Load uniform: 12.956ms 0.974x
+Texture2D<RGBA16F>.Load linear: 12.988ms 0.971x
+Texture2D<RGBA16F>.Load random: 12.856ms 0.981x
+Texture2D<R32F>.Load uniform: 6.651ms 1.897x
+Texture2D<R32F>.Load linear: 6.732ms 1.874x
+Texture2D<R32F>.Load random: 6.469ms 1.950x
+Texture2D<RG32F>.Load uniform: 6.627ms 1.904x
+Texture2D<RG32F>.Load linear: 12.954ms 0.974x
+Texture2D<RG32F>.Load random: 6.450ms 1.956x
+Texture2D<RGBA32F>.Load uniform: 12.949ms 0.974x
+Texture2D<RGBA32F>.Load linear: 12.953ms 0.974x
+Texture2D<RGBA32F>.Load random: 12.804ms 0.985x
+```
+**AMD Navi** TODO.
 
 ### NVidia Maxwell (GTX 980 Ti)
 ```markdown
