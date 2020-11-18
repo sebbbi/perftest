@@ -25,7 +25,11 @@ DirectXDevice::DirectXDevice(HWND window, uint2 resolution, IDXGIAdapter* adapte
 	resolution(resolution)
 
 {
+#ifdef _DEBUG
 	UINT flags = D3D11_CREATE_DEVICE_DEBUG;
+#else
+	UINT flags = 0;
+#endif
 	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
 	DXGI_SWAP_CHAIN_DESC swapDesc;
