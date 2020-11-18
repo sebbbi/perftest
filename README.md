@@ -18,6 +18,8 @@ Designed to measure performance of various types of buffer and image loads. This
 - Structured Buffer SRVs: float/float2/float4
 - Constant Buffer float4 array indexed loads
 - Texture2D loads: 1/2/4 channels, 8/16/32 bits per channel
+- Texture2D nearest sampling: 1/2/4 channels, 8/16/32 bits per channel
+- Texture2D bilinear sampling: 1/2/4 channels, 8/16/32 bits per channel
 
 ## Explanations
 
