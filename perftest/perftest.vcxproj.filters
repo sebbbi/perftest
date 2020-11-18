@@ -31,6 +31,9 @@
     <Filter Include="Shaders\constant_load">
       <UniqueIdentifier>{d9f28910-09d3-4e83-8c61-a18336adb25a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\texture_sample">
+      <UniqueIdentifier>{c5edb56a-d899-4596-9d3b-d63ec3fae752}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="directx.cpp">
@@ -196,6 +199,33 @@
     <FxCompile Include="loadStructured2dRandom.hlsl">
       <Filter>Shaders\structured_load</Filter>
     </FxCompile>
+    <FxCompile Include="sampleTex4dRandom.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex1dInvariant.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex1dLinear.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex1dRandom.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex2dInvariant.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex2dLinear.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex2dRandom.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex4dInvariant.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
+    <FxCompile Include="sampleTex4dLinear.hlsl">
+      <Filter>Shaders\texture_sample</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hash.hlsli">
@@ -215,6 +245,9 @@
     </None>
     <None Include="loadConstantBody.hlsli">
       <Filter>Shaders\constant_load</Filter>
+    </None>
+    <None Include="sampleTexBody.hlsli">
+      <Filter>Shaders\texture_sample</Filter>
     </None>
   </ItemGroup>
 </Project>

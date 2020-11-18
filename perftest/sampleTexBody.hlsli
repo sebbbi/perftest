@@ -28,6 +28,9 @@ void main(uint3 tid : SV_DispatchThreadID, uint3 gid : SV_GroupThreadID)
 	uint2 htid = uint2((hash1(gid.x) & 0x4), (hash1(gid.y) & 0x4));
 #endif
 
+	const float2 invTextureDims = 1.0f / float2(32.0f, 32.0f);
+	const float2 texCenter = invTextureDims * 0.5;
+
 	[loop]
 	for (int y = 0; y < 16; ++y)
 	{
@@ -37,12 +40,14 @@ void main(uint3 tid : SV_DispatchThreadID, uint3 gid : SV_GroupThreadID)
 			// Mask with runtime constant to prevent unwanted compiler optimizations
 			uint2 elemIdx = (htid + uint2(x, y)) | loadConstants.elementsMask;
 
+			float2 uv = float2(elemIdx) * invTextureDims + texCenter;
+
 #if LOAD_WIDTH == 1
-			value += sourceData[elemIdx].xxxx;
+			value += sourceData.SampleLevel(texSampler, uv, 0.0f).xxxx;
 #elif LOAD_WIDTH == 2
-			value += sourceData[elemIdx].xyxy;
+			value += sourceData.SampleLevel(texSampler, uv, 0.0f).xyxy;
 #elif LOAD_WIDTH == 4
-			value += sourceData[elemIdx].xyzw;
+			value += sourceData.SampleLevel(texSampler, uv, 0.0f).xyzw;
 #endif
 		}
 	}

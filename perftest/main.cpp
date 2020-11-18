@@ -23,6 +23,18 @@ public:
 		testCaseNumber++;
 	}
 
+	void testCaseWithSampler(ID3D11ComputeShader* shader, ID3D11Buffer* cb, ID3D11ShaderResourceView* source, ID3D11SamplerState* sampler, const std::string& name)
+	{
+		const uint3 workloadThreadCount(1024, 1024, 1);
+		const uint3 workloadGroupSize(256, 1, 1);
+
+		QueryHandle query = dx.startPerformanceQuery(testCaseNumber, name);
+		dx.dispatch(shader, workloadThreadCount, workloadGroupSize, { cb }, { source }, { output }, { sampler });
+		dx.endPerformanceQuery(query);
+
+		testCaseNumber++;
+	}
+
 private:
 	DirectXDevice& dx;
 	ID3D11UnorderedAccessView* output;
@@ -92,6 +104,16 @@ int main(int argc, char *argv[])
 	com_ptr<ID3D11ComputeShader> shaderLoadTex4dLinear = loadComputeShader(dx, "shaders/loadTex4dLinear.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadTex4dRandom = loadComputeShader(dx, "shaders/loadTex4dRandom.cso");
 
+	com_ptr<ID3D11ComputeShader> shaderSampleTex1dInvariant = loadComputeShader(dx, "shaders/sampleTex1dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex1dLinear = loadComputeShader(dx, "shaders/sampleTex1dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex1dRandom = loadComputeShader(dx, "shaders/sampleTex1dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex2dInvariant = loadComputeShader(dx, "shaders/sampleTex2dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex2dLinear = loadComputeShader(dx, "shaders/sampleTex2dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex2dRandom = loadComputeShader(dx, "shaders/sampleTex2dRandom.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex4dInvariant = loadComputeShader(dx, "shaders/sampleTex4dInvariant.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex4dLinear = loadComputeShader(dx, "shaders/sampleTex4dLinear.cso");
+	com_ptr<ID3D11ComputeShader> shaderSampleTex4dRandom = loadComputeShader(dx, "shaders/sampleTex4dRandom.cso");
+
 	com_ptr<ID3D11ComputeShader> shaderLoadConstant4dInvariant = loadComputeShader(dx, "shaders/loadConstant4dInvariant.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadConstant4dLinear = loadComputeShader(dx, "shaders/loadConstant4dLinear.cso");
 	com_ptr<ID3D11ComputeShader> shaderLoadConstant4dRandom = loadComputeShader(dx, "shaders/loadConstant4dRandom.cso");
@@ -150,6 +172,11 @@ int main(int argc, char *argv[])
 	com_ptr<ID3D11ShaderResourceView> texSRV_RGBA8 = dx.createSRV(texRGBA8);
 	com_ptr<ID3D11ShaderResourceView> texSRV_RGBA16F = dx.createSRV(texRGBA16F);
 	com_ptr<ID3D11ShaderResourceView> texSRV_RGBA32F = dx.createSRV(texRGBA32F);
+
+	// Samplers
+	com_ptr<ID3D11SamplerState> samplerNearest = dx.createSampler(DirectXDevice::SamplerType::Nearest);
+	com_ptr<ID3D11SamplerState> samplerBilinear = dx.createSampler(DirectXDevice::SamplerType::Bilinear);
+	com_ptr<ID3D11SamplerState> samplerTrilinear = dx.createSampler(DirectXDevice::SamplerType::Trilinear);
 
 	// Setup the constant buffer
 	LoadConstants loadConstants;
@@ -297,6 +324,66 @@ int main(int argc, char *argv[])
 		bench.testCase(shaderLoadTex4dInvariant, loadCB, texSRV_RGBA32F, "Texture2D<RGBA32F>.Load uniform");
 		bench.testCase(shaderLoadTex4dLinear, loadCB, texSRV_RGBA32F, "Texture2D<RGBA32F>.Load linear");
 		bench.testCase(shaderLoadTex4dRandom, loadCB, texSRV_RGBA32F, "Texture2D<RGBA32F>.Load random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R8, samplerNearest, "Texture2D<R8>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R8, samplerNearest, "Texture2D<R8>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R8, samplerNearest, "Texture2D<R8>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG8, samplerNearest, "Texture2D<RG8>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG8, samplerNearest, "Texture2D<RG8>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG8, samplerNearest, "Texture2D<RG8>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA8, samplerNearest, "Texture2D<RGBA8>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA8, samplerNearest, "Texture2D<RGBA8>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA8, samplerNearest, "Texture2D<RGBA8>.Sample(nearest) random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R16F, samplerNearest, "Texture2D<R16F>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R16F, samplerNearest, "Texture2D<R16F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R16F, samplerNearest, "Texture2D<R16F>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG16F, samplerNearest, "Texture2D<RG16F>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG16F, samplerNearest, "Texture2D<RG16F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG16F, samplerNearest, "Texture2D<RG16F>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA16F, samplerNearest, "Texture2D<RGBA16F>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA16F, samplerNearest, "Texture2D<RGBA16F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA16F, samplerNearest, "Texture2D<RGBA16F>.Sample(nearest) random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R32F, samplerNearest, "Texture2D<R32F>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R32F, samplerNearest, "Texture2D<R32F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R32F, samplerNearest, "Texture2D<R32F>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG32F, samplerNearest, "Texture2D<RG32F>.Sample(nearest) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG32F, samplerNearest, "Texture2D<RG32F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG32F, samplerNearest, "Texture2D<RG32F>.Sample(nearest) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA32F, samplerNearest, "Texture2D<RGBA32F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA32F, samplerNearest, "Texture2D<RGBA32F>.Sample(nearest) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA32F, samplerNearest, "Texture2D<RGBA32F>.Sample(nearest) random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R8, samplerBilinear, "Texture2D<R8>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R8, samplerBilinear, "Texture2D<R8>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R8, samplerBilinear, "Texture2D<R8>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG8, samplerBilinear, "Texture2D<RG8>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG8, samplerBilinear, "Texture2D<RG8>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG8, samplerBilinear, "Texture2D<RG8>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA8, samplerBilinear, "Texture2D<RGBA8>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA8, samplerBilinear, "Texture2D<RGBA8>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA8, samplerBilinear, "Texture2D<RGBA8>.Sample(bilinear) random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R16F, samplerBilinear, "Texture2D<R16F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R16F, samplerBilinear, "Texture2D<R16F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R16F, samplerBilinear, "Texture2D<R16F>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG16F, samplerBilinear, "Texture2D<RG16F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG16F, samplerBilinear, "Texture2D<RG16F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG16F, samplerBilinear, "Texture2D<RG16F>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA16F, samplerBilinear, "Texture2D<RGBA16F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA16F, samplerBilinear, "Texture2D<RGBA16F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA16F, samplerBilinear, "Texture2D<RGBA16F>.Sample(bilinear) random");
+
+		bench.testCaseWithSampler(shaderSampleTex1dInvariant, loadCB, texSRV_R32F, samplerBilinear, "Texture2D<R32F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex1dLinear, loadCB, texSRV_R32F, samplerBilinear, "Texture2D<R32F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex1dRandom, loadCB, texSRV_R32F, samplerBilinear, "Texture2D<R32F>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex2dInvariant, loadCB, texSRV_RG32F, samplerBilinear, "Texture2D<RG32F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex2dLinear, loadCB, texSRV_RG32F, samplerBilinear, "Texture2D<RG32F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex2dRandom, loadCB, texSRV_RG32F, samplerBilinear, "Texture2D<RG32F>.Sample(bilinear) random");
+		bench.testCaseWithSampler(shaderSampleTex4dInvariant, loadCB, texSRV_RGBA32F, samplerBilinear, "Texture2D<RGBA32F>.Sample(bilinear) uniform");
+		bench.testCaseWithSampler(shaderSampleTex4dLinear, loadCB, texSRV_RGBA32F, samplerBilinear, "Texture2D<RGBA32F>.Sample(bilinear) linear");
+		bench.testCaseWithSampler(shaderSampleTex4dRandom, loadCB, texSRV_RGBA32F, samplerBilinear, "Texture2D<RGBA32F>.Sample(bilinear) random");
 
 		dx.presentFrame();
 
