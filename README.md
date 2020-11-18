@@ -33,11 +33,6 @@ All threads in group simultaneously load from the same address. This triggers co
 **Notes:**
 **Compiler optimizations** can ruin the results. We want to measure only load (read) performance, but write (store) is also needed, otherwise the compiler will just optimize the whole shader away. To avoid this, each thread does first 256 loads followed by a single linear groupshared memory write (no bank-conflicts). Cbuffer contains a write mask (not known at compile time). It controls which elements are written from the groupshared memory to the output buffer. The mask is always zero at runtime. Compilers can also combine multiple narrow raw buffer loads together (as bigger 4d loads) if it an be proven at compile time that loads from the same thread access contiguous offsets. This is prevented by applying an address mask from cbuffer (not known at compile time). 
 
-## Todo list
-
-- UAV loads (RWBuffer, RWByteAddressBuffer)
-- Port to Vulkan and/or DX12 (upload heap load performance, etc)
-
 ## Uniform Load Investigation
 When I first implemented this benchmark, I noticed that Intel uniform address loads were surprisingly fast. Intel ISA documents don't mention anything about a scalar unit or other hardware feature to make uniform address loads fast. This optimization affected every single resource type, unlike AMDs hardware scalar unit (which only works for raw data loads). I didnt't investigate this further however at that point. When Nvidia released Volta GPUs, they brought new driver that implemented similar compiler optimization. Later drivers introduced the same optimization to Maxwell and Pascal too. And now Turing also has it. It's certainly not hardware based, since 20x+ gains apply to all their existing GPUs too.
 
@@ -1068,6 +1063,152 @@ Texture2D<RGBA32F>.Load random: 32.783ms 0.499x
 **NVIDIA Turing** results (ratios) of most common load/sample operations are identical Volta. Except wide raw buffer load performance is closer to Maxwell/Pascal. In Volta, Nvidia used one large 128KB shared L1$ (freely configurable between groupshared mem and L1$), while in Turing they have 96KB shared L1$ which can be configured only as 64/32 or 32/64. This benchmark seems to point out that this halves their L1$ bandwidth for raw loads.
 
 **Uniform address optimization:** Like Volta, the new uniform address optimization no longer affects StructuredBuffers. My educated guess is that StructuredBuffers (like raw buffers) now use the same lower latency direct memory path. Nvidia most likely hasn't yet implemented uniform address optimization for these new memory operations. Turing uniform address optimization performance however (in other cases) returns to similar 20x+ figures than Maxwell/Pascal.
+
+### NVidia Ampere (RTX 3090)
+```
+Buffer<R8>.Load uniform: 0.691ms 15.067x
+Buffer<R8>.Load linear: 6.324ms 1.647x
+Buffer<R8>.Load random: 7.773ms 1.340x
+Buffer<RG8>.Load uniform: 0.717ms 14.529x
+Buffer<RG8>.Load linear: 6.334ms 1.644x
+Buffer<RG8>.Load random: 7.843ms 1.328x
+Buffer<RGBA8>.Load uniform: 0.842ms 12.372x
+Buffer<RGBA8>.Load linear: 7.419ms 1.404x
+Buffer<RGBA8>.Load random: 10.414ms 1.000x
+Buffer<R16f>.Load uniform: 0.651ms 15.991x
+Buffer<R16f>.Load linear: 6.328ms 1.646x
+Buffer<R16f>.Load random: 6.824ms 1.526x
+Buffer<RG16f>.Load uniform: 0.722ms 14.426x
+Buffer<RG16f>.Load linear: 6.845ms 1.521x
+Buffer<RG16f>.Load random: 9.893ms 1.053x
+Buffer<RGBA16f>.Load uniform: 0.891ms 11.690x
+Buffer<RGBA16f>.Load linear: 7.490ms 1.390x
+Buffer<RGBA16f>.Load random: 7.536ms 1.382x
+Buffer<R32f>.Load uniform: 0.676ms 15.409x
+Buffer<R32f>.Load linear: 7.352ms 1.416x
+Buffer<R32f>.Load random: 9.929ms 1.049x
+Buffer<RG32f>.Load uniform: 0.767ms 13.578x
+Buffer<RG32f>.Load linear: 6.349ms 1.640x
+Buffer<RG32f>.Load random: 6.842ms 1.522x
+Buffer<RGBA32f>.Load uniform: 0.973ms 10.705x
+Buffer<RGBA32f>.Load linear: 14.504ms 0.718x
+Buffer<RGBA32f>.Load random: 13.037ms 0.799x
+ByteAddressBuffer.Load uniform: 7.217ms 1.443x
+ByteAddressBuffer.Load linear: 6.009ms 1.733x
+ByteAddressBuffer.Load random: 5.433ms 1.917x
+ByteAddressBuffer.Load2 uniform: 10.077ms 1.033x
+ByteAddressBuffer.Load2 linear: 7.871ms 1.323x
+ByteAddressBuffer.Load2 random: 7.259ms 1.435x
+ByteAddressBuffer.Load3 uniform: 10.867ms 0.958x
+ByteAddressBuffer.Load3 linear: 10.198ms 1.021x
+ByteAddressBuffer.Load3 random: 10.597ms 0.983x
+ByteAddressBuffer.Load4 uniform: 12.582ms 0.828x
+ByteAddressBuffer.Load4 linear: 15.811ms 0.659x
+ByteAddressBuffer.Load4 random: 12.665ms 0.822x
+ByteAddressBuffer.Load2 unaligned uniform: 9.054ms 1.150x
+ByteAddressBuffer.Load2 unaligned linear: 7.347ms 1.417x
+ByteAddressBuffer.Load2 unaligned random: 7.258ms 1.435x
+ByteAddressBuffer.Load4 unaligned uniform: 12.581ms 0.828x
+ByteAddressBuffer.Load4 unaligned linear: 15.790ms 0.660x
+ByteAddressBuffer.Load4 unaligned random: 12.666ms 0.822x
+StructuredBuffer<float>.Load uniform: 5.889ms 1.768x
+StructuredBuffer<float>.Load linear: 4.689ms 2.221x
+StructuredBuffer<float>.Load random: 4.648ms 2.241x
+StructuredBuffer<float2>.Load uniform: 6.670ms 1.561x
+StructuredBuffer<float2>.Load linear: 6.513ms 1.599x
+StructuredBuffer<float2>.Load random: 5.817ms 1.790x
+StructuredBuffer<float4>.Load uniform: 7.168ms 1.453x
+StructuredBuffer<float4>.Load linear: 9.839ms 1.058x
+StructuredBuffer<float4>.Load random: 9.253ms 1.125x
+cbuffer{float4} load uniform: 1.126ms 9.245x
+cbuffer{float4} load linear: 280.222ms 0.037x
+cbuffer{float4} load random: 98.995ms 0.105x
+Texture2D<R8>.Load uniform: 0.676ms 15.409x
+Texture2D<R8>.Load linear: 6.335ms 1.644x
+Texture2D<R8>.Load random: 6.310ms 1.650x
+Texture2D<RG8>.Load uniform: 0.815ms 12.776x
+Texture2D<RG8>.Load linear: 6.338ms 1.643x
+Texture2D<RG8>.Load random: 6.324ms 1.647x
+Texture2D<RGBA8>.Load uniform: 0.973ms 10.705x
+Texture2D<RGBA8>.Load linear: 9.430ms 1.104x
+Texture2D<RGBA8>.Load random: 12.498ms 0.833x
+Texture2D<R16F>.Load uniform: 0.709ms 14.697x
+Texture2D<R16F>.Load linear: 6.337ms 1.644x
+Texture2D<R16F>.Load random: 6.314ms 1.649x
+Texture2D<RG16F>.Load uniform: 0.778ms 13.382x
+Texture2D<RG16F>.Load linear: 9.417ms 1.106x
+Texture2D<RG16F>.Load random: 12.493ms 0.834x
+Texture2D<RGBA16F>.Load uniform: 1.024ms 10.170x
+Texture2D<RGBA16F>.Load linear: 17.148ms 0.607x
+Texture2D<RGBA16F>.Load random: 25.050ms 0.416x
+Texture2D<R32F>.Load uniform: 0.740ms 14.066x
+Texture2D<R32F>.Load linear: 9.774ms 1.065x
+Texture2D<R32F>.Load random: 12.493ms 0.834x
+Texture2D<RG32F>.Load uniform: 0.863ms 12.064x
+Texture2D<RG32F>.Load linear: 17.484ms 0.596x
+Texture2D<RG32F>.Load random: 25.180ms 0.414x
+Texture2D<RGBA32F>.Load uniform: 1.176ms 8.859x
+Texture2D<RGBA32F>.Load linear: 25.574ms 0.407x
+Texture2D<RGBA32F>.Load random: 25.952ms 0.401x
+Texture2D<R8>.Sample(nearest) uniform: 12.506ms 0.833x
+Texture2D<R8>.Sample(nearest) linear: 12.513ms 0.832x
+Texture2D<R8>.Sample(nearest) random: 13.423ms 0.776x
+Texture2D<RG8>.Sample(nearest) uniform: 12.867ms 0.809x
+Texture2D<RG8>.Sample(nearest) linear: 12.884ms 0.808x
+Texture2D<RG8>.Sample(nearest) random: 15.190ms 0.686x
+Texture2D<RGBA8>.Sample(nearest) uniform: 13.018ms 0.800x
+Texture2D<RGBA8>.Sample(nearest) linear: 12.530ms 0.831x
+Texture2D<RGBA8>.Sample(nearest) random: 13.568ms 0.768x
+Texture2D<R16F>.Sample(nearest) uniform: 13.230ms 0.787x
+Texture2D<R16F>.Sample(nearest) linear: 12.514ms 0.832x
+Texture2D<R16F>.Sample(nearest) random: 14.266ms 0.730x
+Texture2D<RG16F>.Sample(nearest) uniform: 13.395ms 0.777x
+Texture2D<RG16F>.Sample(nearest) linear: 13.051ms 0.798x
+Texture2D<RG16F>.Sample(nearest) random: 13.401ms 0.777x
+Texture2D<RGBA16F>.Sample(nearest) uniform: 13.421ms 0.776x
+Texture2D<RGBA16F>.Sample(nearest) linear: 12.902ms 0.807x
+Texture2D<RGBA16F>.Sample(nearest) random: 26.066ms 0.400x
+Texture2D<R32F>.Sample(nearest) uniform: 12.870ms 0.809x
+Texture2D<R32F>.Sample(nearest) linear: 13.069ms 0.797x
+Texture2D<R32F>.Sample(nearest) random: 12.508ms 0.833x
+Texture2D<RG32F>.Sample(nearest) uniform: 13.945ms 0.747x
+Texture2D<RG32F>.Sample(nearest) linear: 12.524ms 0.832x
+Texture2D<RG32F>.Sample(nearest) random: 26.621ms 0.391x
+Texture2D<RGBA32F>.Sample(bilinear) uniform: 26.447ms 0.394x
+Texture2D<RGBA32F>.Sample(nearest) linear: 26.258ms 0.397x
+Texture2D<RGBA32F>.Sample(nearest) random: 25.757ms 0.404x
+Texture2D<R8>.Sample(bilinear) uniform: 12.508ms 0.833x
+Texture2D<R8>.Sample(bilinear) linear: 13.029ms 0.799x
+Texture2D<R8>.Sample(bilinear) random: 12.507ms 0.833x
+Texture2D<RG8>.Sample(bilinear) uniform: 12.510ms 0.832x
+Texture2D<RG8>.Sample(bilinear) linear: 13.034ms 0.799x
+Texture2D<RG8>.Sample(bilinear) random: 13.032ms 0.799x
+Texture2D<RGBA8>.Sample(bilinear) uniform: 12.514ms 0.832x
+Texture2D<RGBA8>.Sample(bilinear) linear: 13.060ms 0.797x
+Texture2D<RGBA8>.Sample(bilinear) random: 12.520ms 0.832x
+Texture2D<R16F>.Sample(bilinear) uniform: 12.507ms 0.833x
+Texture2D<R16F>.Sample(bilinear) linear: 12.514ms 0.832x
+Texture2D<R16F>.Sample(bilinear) random: 12.509ms 0.833x
+Texture2D<RG16F>.Sample(bilinear) uniform: 13.034ms 0.799x
+Texture2D<RG16F>.Sample(bilinear) linear: 12.516ms 0.832x
+Texture2D<RG16F>.Sample(bilinear) random: 12.522ms 0.832x
+Texture2D<RGBA16F>.Sample(bilinear) uniform: 12.508ms 0.833x
+Texture2D<RGBA16F>.Sample(bilinear) linear: 12.533ms 0.831x
+Texture2D<RGBA16F>.Sample(bilinear) random: 24.840ms 0.419x
+Texture2D<R32F>.Sample(bilinear) uniform: 12.507ms 0.833x
+Texture2D<R32F>.Sample(bilinear) linear: 12.516ms 0.832x
+Texture2D<R32F>.Sample(bilinear) random: 12.510ms 0.832x
+Texture2D<RG32F>.Sample(bilinear) uniform: 12.510ms 0.832x
+Texture2D<RG32F>.Sample(bilinear) linear: 12.526ms 0.831x
+Texture2D<RG32F>.Sample(bilinear) random: 24.839ms 0.419x
+Texture2D<RGBA32F>.Sample(bilinear) uniform: 49.561ms 0.210x
+Texture2D<RGBA32F>.Sample(bilinear) linear: 49.592ms 0.210x
+Texture2D<RGBA32F>.Sample(bilinear) random: 74.230ms 0.140x
+```
+
+**NVIDIA Ampere** results (ratios) of most common load/sample operations look similar to Turing.
+
+**Sampler ratios (NEW!):** New tests for sampler ratios show that Ampere has half rate bilinear RG32F and quarter rate bilinear RGBA32F. Nearest filtering is full rate, except for RGBA32F which is half rate (similar to RGBA32F texture loads). In Turing and Ampere RGBA32/float4 buffer loads are full rate.
 
 ### Intel Gen9 (HD 630 / i7 6700K)
 ```markdown
