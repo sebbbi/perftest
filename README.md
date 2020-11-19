@@ -1316,6 +1316,153 @@ NOTE: Intel result not directly comparable with other GPUs. I had to reduce work
 
 **Uniform address optimization:** Uniform address loads are very fast (both raw and typed). Intel has confirmed that their compiler uses a wave shuffle trick to speed up uniform loads inside loops. See "Uniform Address Load Investigation" chapter for more info. 
 
+
+### Intel Gen11 (Iris Plus / i7-1065g7)
+```markdown
+Buffer<R8>.Load uniform: 58.213ms 11.630x
+Buffer<R8>.Load linear: 591.619ms 1.144x
+Buffer<R8>.Load random: 699.948ms 0.967x
+Buffer<RG8>.Load uniform: 59.530ms 11.373x
+Buffer<RG8>.Load linear: 598.979ms 1.130x
+Buffer<RG8>.Load random: 678.129ms 0.998x
+Buffer<RGBA8>.Load uniform: 59.296ms 11.418x
+Buffer<RGBA8>.Load linear: 571.312ms 1.185x
+Buffer<RGBA8>.Load random: 677.040ms 1.000x
+Buffer<R16f>.Load uniform: 58.108ms 11.651x
+Buffer<R16f>.Load linear: 571.071ms 1.186x
+Buffer<R16f>.Load random: 677.930ms 0.999x
+Buffer<RG16f>.Load uniform: 58.052ms 11.663x
+Buffer<RG16f>.Load linear: 575.332ms 1.177x
+Buffer<RG16f>.Load random: 675.883ms 1.002x
+Buffer<RGBA16f>.Load uniform: 58.724ms 11.529x
+Buffer<RGBA16f>.Load linear: 571.145ms 1.185x
+Buffer<RGBA16f>.Load random: 676.597ms 1.001x
+Buffer<R32f>.Load uniform: 57.779ms 11.718x
+Buffer<R32f>.Load linear: 570.898ms 1.186x
+Buffer<R32f>.Load random: 676.160ms 1.001x
+Buffer<RG32f>.Load uniform: 57.770ms 11.720x
+Buffer<RG32f>.Load linear: 571.226ms 1.185x
+Buffer<RG32f>.Load random: 677.745ms 0.999x
+Buffer<RGBA32f>.Load uniform: 58.759ms 11.522x
+Buffer<RGBA32f>.Load linear: 571.372ms 1.185x
+Buffer<RGBA32f>.Load random: 676.695ms 1.001x
+ByteAddressBuffer.Load uniform: 98.943ms 6.843x
+ByteAddressBuffer.Load linear: 254.749ms 2.658x
+ByteAddressBuffer.Load random: 378.516ms 1.789x
+ByteAddressBuffer.Load2 uniform: 68.931ms 9.822x
+ByteAddressBuffer.Load2 linear: 456.746ms 1.482x
+ByteAddressBuffer.Load2 random: 762.950ms 0.887x
+ByteAddressBuffer.Load3 uniform: 77.403ms 8.747x
+ByteAddressBuffer.Load3 linear: 839.961ms 0.806x
+ByteAddressBuffer.Load3 random: 1706.975ms 0.397x
+ByteAddressBuffer.Load4 uniform: 63.715ms 10.626x
+ByteAddressBuffer.Load4 linear: 868.385ms 0.780x
+ByteAddressBuffer.Load4 random: 1796.999ms 0.377x
+ByteAddressBuffer.Load2 unaligned uniform: 78.052ms 8.674x
+ByteAddressBuffer.Load2 unaligned linear: 487.732ms 1.388x
+ByteAddressBuffer.Load2 unaligned random: 787.569ms 0.860x
+ByteAddressBuffer.Load4 unaligned uniform: 79.889ms 8.475x
+ByteAddressBuffer.Load4 unaligned linear: 995.681ms 0.680x
+ByteAddressBuffer.Load4 unaligned random: 2015.342ms 0.336x
+StructuredBuffer<float>.Load uniform: 100.075ms 6.765x
+StructuredBuffer<float>.Load linear: 251.827ms 2.689x
+StructuredBuffer<float>.Load random: 366.612ms 1.847x
+StructuredBuffer<float2>.Load uniform: 69.021ms 9.809x
+StructuredBuffer<float2>.Load linear: 447.962ms 1.511x
+StructuredBuffer<float2>.Load random: 741.070ms 0.914x
+StructuredBuffer<float4>.Load uniform: 62.209ms 10.883x
+StructuredBuffer<float4>.Load linear: 868.643ms 0.779x
+StructuredBuffer<float4>.Load random: 1798.563ms 0.376x
+cbuffer{float4} load uniform: 63.908ms 10.594x
+cbuffer{float4} load linear: 859.170ms 0.788x
+cbuffer{float4} load random: 1815.643ms 0.373x
+Texture2D<R8>.Load uniform: 57.693ms 11.735x
+Texture2D<R8>.Load linear: 229.955ms 2.944x
+Texture2D<R8>.Load random: 230.291ms 2.940x
+Texture2D<RG8>.Load uniform: 57.835ms 11.706x
+Texture2D<RG8>.Load linear: 230.142ms 2.942x
+Texture2D<RG8>.Load random: 230.195ms 2.941x
+Texture2D<RGBA8>.Load uniform: 58.916ms 11.492x
+Texture2D<RGBA8>.Load linear: 230.623ms 2.936x
+Texture2D<RGBA8>.Load random: 230.788ms 2.934x
+Texture2D<R16F>.Load uniform: 60.521ms 11.187x
+Texture2D<R16F>.Load linear: 229.671ms 2.948x
+Texture2D<R16F>.Load random: 229.764ms 2.947x
+Texture2D<RG16F>.Load uniform: 57.673ms 11.739x
+Texture2D<RG16F>.Load linear: 230.141ms 2.942x
+Texture2D<RG16F>.Load random: 230.311ms 2.940x
+Texture2D<RGBA16F>.Load uniform: 58.287ms 11.616x
+Texture2D<RGBA16F>.Load linear: 230.076ms 2.943x
+Texture2D<RGBA16F>.Load random: 459.294ms 1.474x
+Texture2D<R32F>.Load uniform: 57.614ms 11.751x
+Texture2D<R32F>.Load linear: 234.894ms 2.882x
+Texture2D<R32F>.Load random: 229.711ms 2.947x
+Texture2D<RG32F>.Load uniform: 57.674ms 11.739x
+Texture2D<RG32F>.Load linear: 230.058ms 2.943x
+Texture2D<RG32F>.Load random: 459.470ms 1.474x
+Texture2D<RGBA32F>.Load uniform: 58.323ms 11.608x
+Texture2D<RGBA32F>.Load linear: 573.734ms 1.180x
+Texture2D<RGBA32F>.Load random: 459.263ms 1.474x
+Texture2D<R8>.Sample(nearest) uniform: 229.959ms 2.944x
+Texture2D<R8>.Sample(nearest) linear: 229.704ms 2.947x
+Texture2D<R8>.Sample(nearest) random: 232.381ms 2.913x
+Texture2D<RG8>.Sample(nearest) uniform: 230.455ms 2.938x
+Texture2D<RG8>.Sample(nearest) linear: 230.214ms 2.941x
+Texture2D<RG8>.Sample(nearest) random: 230.276ms 2.940x
+Texture2D<RGBA8>.Sample(nearest) uniform: 231.480ms 2.925x
+Texture2D<RGBA8>.Sample(nearest) linear: 231.062ms 2.930x
+Texture2D<RGBA8>.Sample(nearest) random: 240.466ms 2.816x
+Texture2D<R16F>.Sample(nearest) uniform: 229.897ms 2.945x
+Texture2D<R16F>.Sample(nearest) linear: 231.593ms 2.923x
+Texture2D<R16F>.Sample(nearest) random: 229.666ms 2.948x
+Texture2D<RG16F>.Sample(nearest) uniform: 230.391ms 2.939x
+Texture2D<RG16F>.Sample(nearest) linear: 230.027ms 2.943x
+Texture2D<RG16F>.Sample(nearest) random: 230.098ms 2.942x
+Texture2D<RGBA16F>.Sample(nearest) uniform: 230.577ms 2.936x
+Texture2D<RGBA16F>.Sample(nearest) linear: 230.086ms 2.943x
+Texture2D<RGBA16F>.Sample(nearest) random: 459.828ms 1.472x
+Texture2D<R32F>.Sample(nearest) uniform: 229.827ms 2.946x
+Texture2D<R32F>.Sample(nearest) linear: 231.692ms 2.922x
+Texture2D<R32F>.Sample(nearest) random: 229.751ms 2.947x
+Texture2D<RG32F>.Sample(nearest) uniform: 230.528ms 2.937x
+Texture2D<RG32F>.Sample(nearest) linear: 230.021ms 2.943x
+Texture2D<RG32F>.Sample(nearest) random: 460.311ms 1.471x
+Texture2D<RGBA32F>.Sample(bilinear) uniform: 230.903ms 2.932x
+Texture2D<RGBA32F>.Sample(nearest) linear: 573.964ms 1.180x
+Texture2D<RGBA32F>.Sample(nearest) random: 460.377ms 1.471x
+Texture2D<R8>.Sample(bilinear) uniform: 229.860ms 2.945x
+Texture2D<R8>.Sample(bilinear) linear: 229.663ms 2.948x
+Texture2D<R8>.Sample(bilinear) random: 229.689ms 2.948x
+Texture2D<RG8>.Sample(bilinear) uniform: 230.469ms 2.938x
+Texture2D<RG8>.Sample(bilinear) linear: 230.000ms 2.944x
+Texture2D<RG8>.Sample(bilinear) random: 230.095ms 2.942x
+Texture2D<RGBA8>.Sample(bilinear) uniform: 230.668ms 2.935x
+Texture2D<RGBA8>.Sample(bilinear) linear: 230.157ms 2.942x
+Texture2D<RGBA8>.Sample(bilinear) random: 240.543ms 2.815x
+Texture2D<R16F>.Sample(bilinear) uniform: 229.871ms 2.945x
+Texture2D<R16F>.Sample(bilinear) linear: 229.663ms 2.948x
+Texture2D<R16F>.Sample(bilinear) random: 229.777ms 2.947x
+Texture2D<RG16F>.Sample(bilinear) uniform: 230.454ms 2.938x
+Texture2D<RG16F>.Sample(bilinear) linear: 230.009ms 2.944x
+Texture2D<RG16F>.Sample(bilinear) random: 234.252ms 2.890x
+Texture2D<RGBA16F>.Sample(bilinear) uniform: 230.580ms 2.936x
+Texture2D<RGBA16F>.Sample(bilinear) linear: 344.679ms 1.964x
+Texture2D<RGBA16F>.Sample(bilinear) random: 460.104ms 1.471x
+Texture2D<R32F>.Sample(bilinear) uniform: 230.189ms 2.941x
+Texture2D<R32F>.Sample(bilinear) linear: 229.679ms 2.948x
+Texture2D<R32F>.Sample(bilinear) random: 229.726ms 2.947x
+Texture2D<RG32F>.Sample(bilinear) uniform: 460.443ms 1.470x
+Texture2D<RG32F>.Sample(bilinear) linear: 459.809ms 1.472x
+Texture2D<RG32F>.Sample(bilinear) random: 689.533ms 0.982x
+Texture2D<RGBA32F>.Sample(bilinear) uniform: 919.711ms 0.736x
+Texture2D<RGBA32F>.Sample(bilinear) linear: 918.780ms 0.737x
+Texture2D<RGBA32F>.Sample(bilinear) random: 919.250ms 0.737x
+```
+
+**Intel Gen11** results (ratios) of most common load/sample operations look similar to Gen 9, except raw loads are no longer 5x faster, instead they are 2.5x faster. The uniform address speedup seems to be around 2x higher. Maybe SIMD16 mode used instead of SIMD8?
+
+**Sampler ratios (NEW!):** New tests for sampler ratios show that Gen11 has half rate bilinear RG32F and quarter rate bilinear RGBA32F. Nearest filtering is full rate, except for RGBA32F which is half rate (similar to RGBA32F texture loads). 
+
 ## Contact
 
 Send private message to @SebAaltonen at Twitter. We can discuss via company emails later.
